@@ -127,3 +127,70 @@
     @apply font-sans;
   }
 }
+
+/* Hero section (v2-style) keyframes */
+@keyframes hero-blobA {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(30px, -40px) scale(1.06);
+  }
+}
+
+@keyframes hero-blobB {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-20px, 25px) scale(0.96);
+  }
+}
+
+@keyframes hero-sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes hero-flutter {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg) scale(1);
+  }
+  33% {
+    transform: translateY(-6px) rotate(2deg) scale(1.04);
+  }
+  66% {
+    transform: translateY(-2px) rotate(-2deg) scale(0.97);
+  }
+}
+
+@keyframes hero-twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.85) rotate(0deg);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.15) rotate(18deg);
+  }
+}
+
+@keyframes hero-riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
