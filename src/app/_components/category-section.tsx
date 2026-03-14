@@ -238,7 +238,17 @@ const CATEGORIES = [
     bg: "#fff0f6",
     border: "#ffd6e8",
     accent: "#e8739b",
-    items: ["꽃 교배", "작물 재배"],
+    categoryHref: "/gardening",
+    items: [
+      {
+        label: "꽃 교배",
+        href: "/gardening/flowers",
+      },
+      {
+        label: "작물 재배",
+        href: "/gardening/crops",
+      },
+    ],
   },
   {
     id: "cooking",
@@ -249,7 +259,20 @@ const CATEGORIES = [
     bg: "#fff8f0",
     border: "#fde0c8",
     accent: "#d47840",
-    items: ["재료 계산기", "수익 계산기", "레시피"],
+    items: [
+      {
+        label: "재료 계산기",
+        href: "/cooking/ingredient-calculator",
+      },
+      {
+        label: "수익 계산기",
+        href: "/cooking/profit-calculator",
+      },
+      {
+        label: "레시피",
+        href: "/cooking/recipes",
+      },
+    ],
   },
   {
     id: "fishing",
@@ -260,7 +283,12 @@ const CATEGORIES = [
     bg: "#f0faff",
     border: "#c8e8f8",
     accent: "#4a9bbf",
-    items: ["물고기 도감"],
+    items: [
+      {
+        label: "물고기 도감",
+        href: "/fishing/fish-encyclopedia",
+      },
+    ],
   },
   {
     id: "bugs",
@@ -271,7 +299,12 @@ const CATEGORIES = [
     bg: "#f1f8e9",
     border: "#c5e1a5",
     accent: "#689f38",
-    items: ["곤충 도감"],
+    items: [
+      {
+        label: "곤충 도감",
+        href: "/bugs/bug-encyclopedia",
+      },
+    ],
   },
   {
     id: "birds",
@@ -282,7 +315,12 @@ const CATEGORIES = [
     bg: "#f8f0ff",
     border: "#e0d0f8",
     accent: "#8a6bbf",
-    items: ["새 도감"],
+    items: [
+      {
+        label: "새 도감",
+        href: "/birds/bird-encyclopedia",
+      },
+    ],
   },
   {
     id: "pets",
@@ -293,7 +331,16 @@ const CATEGORIES = [
     bg: "#fff3ef",
     border: "#f5d0c4",
     accent: "#c96a42",
-    items: ["강아지", "고양이"],
+    items: [
+      {
+        label: "강아지",
+        href: "/pets/dogs",
+      },
+      {
+        label: "고양이",
+        href: "/pets/cats",
+      },
+    ],
   },
 ] as const;
 
@@ -332,6 +379,8 @@ export function CategorySection() {
           {CATEGORIES.map((cat) => {
             const Icon = cat.icon;
             const isHovered = hovered === cat.id;
+            const isGardening = cat.id === "garden";
+            const showComingSoon = isHovered && !isGardening;
             return (
               <div
                 key={cat.id}
@@ -350,6 +399,21 @@ export function CategorySection() {
                   ["--accent" as string]: cat.accent,
                 }}
               >
+                {showComingSoon && (
+                  <div
+                    className="absolute inset-0 z-10 flex items-center justify-center rounded-[20px] bg-white/90 backdrop-blur-sm transition-opacity duration-300"
+                    style={{ opacity: showComingSoon ? 1 : 0 }}
+                    aria-hidden
+                  >
+                    <span
+                      className="text-base font-semibold"
+                      style={{ color: cat.accent }}
+                    >
+                      준비중입니다
+                    </span>
+                  </div>
+                )}
+
                 <div
                   className="absolute -bottom-2.5 -right-2.5 transition-opacity duration-300"
                   style={{
@@ -361,36 +425,71 @@ export function CategorySection() {
                   <Icon size={48} color={cat.color} />
                 </div>
 
-                <div
-                  className="mb-4 inline-flex h-[52px] w-[52px] items-center justify-center rounded-2xl border-[1.5px] transition-transform duration-300"
-                  style={{
-                    background: `${cat.color}22`,
-                    borderColor: `${cat.color}44`,
-                    transform: isHovered
-                      ? "scale(1.08) rotate(-4deg)"
-                      : "scale(1)",
-                  }}
-                >
-                  <Icon size={26} color={cat.accent} />
-                </div>
-
-                <div className="mb-3.5">
-                  <div
-                    className="mb-0.5 text-xl font-bold leading-tight"
-                    style={{ color: "#4a3060" }}
-                  >
-                    {cat.title}
-                  </div>
-                  <div
-                    className="text-[11px] font-semibold uppercase"
-                    style={{
-                      color: cat.accent,
-                      letterSpacing: "0.06em",
-                    }}
-                  >
-                    {cat.subtitle}
-                  </div>
-                </div>
+                {"categoryHref" in cat && cat.categoryHref ? (
+                  <Link href={cat.categoryHref} className="block no-underline">
+                    <div
+                      className="mb-4 inline-flex h-[52px] w-[52px] items-center justify-center rounded-2xl border-[1.5px] transition-transform duration-300"
+                      style={{
+                        background: `${cat.color}22`,
+                        borderColor: `${cat.color}44`,
+                        transform: isHovered
+                          ? "scale(1.08) rotate(-4deg)"
+                          : "scale(1)",
+                      }}
+                    >
+                      <Icon size={26} color={cat.accent} />
+                    </div>
+                    <div className="mb-3.5">
+                      <div
+                        className="mb-0.5 text-xl font-bold leading-tight"
+                        style={{ color: "#4a3060" }}
+                      >
+                        {cat.title}
+                      </div>
+                      <div
+                        className="text-[11px] font-semibold uppercase"
+                        style={{
+                          color: cat.accent,
+                          letterSpacing: "0.06em",
+                        }}
+                      >
+                        {cat.subtitle}
+                      </div>
+                    </div>
+                  </Link>
+                ) : (
+                  <>
+                    <div
+                      className="mb-4 inline-flex h-[52px] w-[52px] items-center justify-center rounded-2xl border-[1.5px] transition-transform duration-300"
+                      style={{
+                        background: `${cat.color}22`,
+                        borderColor: `${cat.color}44`,
+                        transform: isHovered
+                          ? "scale(1.08) rotate(-4deg)"
+                          : "scale(1)",
+                      }}
+                    >
+                      <Icon size={26} color={cat.accent} />
+                    </div>
+                    <div className="mb-3.5">
+                      <div
+                        className="mb-0.5 text-xl font-bold leading-tight"
+                        style={{ color: "#4a3060" }}
+                      >
+                        {cat.title}
+                      </div>
+                      <div
+                        className="text-[11px] font-semibold uppercase"
+                        style={{
+                          color: cat.accent,
+                          letterSpacing: "0.06em",
+                        }}
+                      >
+                        {cat.subtitle}
+                      </div>
+                    </div>
+                  </>
+                )}
 
                 <div
                   className="mb-3.5 h-px"
@@ -402,15 +501,15 @@ export function CategorySection() {
                 <div className="flex flex-col gap-1.5">
                   {cat.items.map((item) => (
                     <Link
-                      key={item}
-                      href="#"
+                      key={item.href}
+                      href={item.href}
                       className="flex items-center gap-1.5 py-0.5 text-[13px] text-[#8a6898] no-underline transition-colors duration-150 group-hover:text-[var(--accent)]"
                     >
                       <span
                         className="h-1 w-1 shrink-0 rounded-full opacity-80"
                         style={{ background: cat.color }}
                       />
-                      {item}
+                      {item.label}
                     </Link>
                   ))}
                 </div>

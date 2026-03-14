@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { getLatestCoupons } from "@/data/coupons";
 
 function CopyIcon({ size = 14 }: { size?: number }) {
   return (
@@ -74,11 +75,10 @@ function TagIcon({ size = 14 }: { size?: number }) {
   );
 }
 
-const COUPONS = [
-  { code: "WELCOME2026", label: "신규 가입 보너스" },
-  { code: "SPRINGGIFT", label: "봄 시즌 한정" },
-  { code: "BLOOM2025", label: "이벤트 쿠폰" },
-] as const;
+function formatExpiresAt(dateStr: string): string {
+  const [y, m, d] = dateStr.split("-");
+  return `~ ${y}.${m}.${d}`;
+}
 
 export function CouponSection() {
   const [copied, setCopied] = useState<string | null>(null);
@@ -118,10 +118,10 @@ export function CouponSection() {
             />
           </div>
           <h2
-            className="m-0 mb-2 text-[clamp(22px,4vw,30px)] font-bold"
+            className="m-0 text-[clamp(24px,4vw,34px)] font-bold tracking-tight"
             style={{ color: "#6b4a7a" }}
           >
-            🎁 최신 쿠폰 코드
+            최신 쿠폰 코드
           </h2>
           <p className="m-0 text-[13px] text-[#a080b0]">
             현재 사용 가능한 쿠폰 코드를 확인하세요
@@ -147,7 +147,7 @@ export function CouponSection() {
           />
 
           <div className="py-2">
-            {COUPONS.map((coupon, idx) => (
+            {getLatestCoupons().map((coupon, idx) => (
               <div key={coupon.code}>
                 {idx > 0 && (
                   <div
@@ -180,30 +180,38 @@ export function CouponSection() {
                         {coupon.code}
                       </div>
                       <div className="mt-0.5 text-[11px] text-[#b090c0]">
-                        {coupon.label}
+                        {coupon.reward}
                       </div>
                     </div>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => handleCopy(coupon.code)}
-                    className="flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all duration-200"
-                    style={{
-                      border:
-                        copied === coupon.code
-                          ? "1.5px solid rgba(100,200,140,0.5)"
-                          : "1.5px solid rgba(248,164,200,0.5)",
-                      background:
-                        copied === coupon.code
-                          ? "rgba(100,200,140,0.12)"
-                          : "rgba(248,164,200,0.12)",
-                      color: copied === coupon.code ? "#50a870" : "#d060a0",
-                    }}
-                  >
-                    {copied === coupon.code ? <CheckIcon /> : <CopyIcon />}
-                    {copied === coupon.code ? "복사됨!" : "복사"}
-                  </button>
+                  <div className="flex shrink-0 items-center gap-3">
+                    <span
+                      className="text-[12px] text-[#b090c0]"
+                      title={`만료: ${coupon.expiresAt}`}
+                    >
+                      만료 {formatExpiresAt(coupon.expiresAt)}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(coupon.code)}
+                      className="flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all duration-200"
+                      style={{
+                        border:
+                          copied === coupon.code
+                            ? "1.5px solid rgba(100,200,140,0.5)"
+                            : "1.5px solid rgba(248,164,200,0.5)",
+                        background:
+                          copied === coupon.code
+                            ? "rgba(100,200,140,0.12)"
+                            : "rgba(248,164,200,0.12)",
+                        color: copied === coupon.code ? "#50a870" : "#d060a0",
+                      }}
+                    >
+                      {copied === coupon.code ? <CheckIcon /> : <CopyIcon />}
+                      {copied === coupon.code ? "복사됨!" : "복사"}
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -214,7 +222,7 @@ export function CouponSection() {
             style={{ borderTopColor: "rgba(240,220,240,0.7)" }}
           >
             <Link
-              href="#"
+              href="/coupons"
               className="flex items-center gap-1.5 text-xs font-semibold text-[#c060a0] no-underline transition-[gap] duration-200 hover:gap-2"
               style={{ letterSpacing: "0.02em" }}
             >

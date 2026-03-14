@@ -100,8 +100,8 @@ export function Footer() {
             className="m-0 text-[11px]"
             style={{ color: "rgba(180,140,190,0.5)" }}
           >
-            © 2026 Heartopia Wiki — @Jihye817 all rights reserved. - 팬 제작
-            위키, 비공식
+            © {new Date().getFullYear()} Heartopia Wiki - @Jihye817 All rights
+            reserved. - 팬 제작 위키, 비공식
           </p>
           <div className="flex gap-1.5">
             {["🌸", "🍀", "🌿", "✨"].map((emoji, index) => (

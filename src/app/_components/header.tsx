@@ -42,15 +42,38 @@ export function Header() {
         </Link>
 
         <div className="flex items-center gap-7">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item}
-              href="#"
-              className="text-[13px] font-medium text-[#9a7aaa] no-underline transition-colors hover:text-[#e873a8]"
-            >
-              {item}
-            </Link>
-          ))}
+          {NAV_ITEMS.map((item) => {
+            if (item === "원예") {
+              return (
+                <Link
+                  key={item}
+                  href="/gardening"
+                  className="text-[13px] font-medium text-[#9a7aaa] no-underline transition-colors hover:text-[#e873a8]"
+                >
+                  {item}
+                </Link>
+              );
+            }
+            if (item === "쿠폰") {
+              return (
+                <Link
+                  key={item}
+                  href="/coupons"
+                  className="text-[13px] font-medium text-[#9a7aaa] no-underline transition-colors hover:text-[#e873a8]"
+                >
+                  {item}
+                </Link>
+              );
+            }
+            return (
+              <span
+                key={item}
+                className="cursor-default text-[13px] font-medium text-[#9a7aaa]"
+              >
+                {item}
+              </span>
+            );
+          })}
         </div>
       </div>
     </nav>
