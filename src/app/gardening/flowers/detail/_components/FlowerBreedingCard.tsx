@@ -37,7 +37,9 @@ const STAR_STYLE: Record<number, string> = {
 function StarChip({ grade }: { grade: number }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-bold whitespace-nowrap ${STAR_STYLE[grade] ?? "bg-gray-50 text-gray-600 border-gray-200"}`}
+      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-bold whitespace-nowrap ${
+        STAR_STYLE[grade] ?? "bg-gray-50 text-gray-600 border-gray-200"
+      }`}
     >
       {"★".repeat(grade)}
     </span>
@@ -147,18 +149,15 @@ export function FlowerBreedingCard() {
             borderColor: "rgba(248,164,200,0.25)",
           }}
         >
-          <span
-            className="mt-px flex-shrink-0 text-sm opacity-70"
-            aria-hidden
-          >
+          <span className="mt-px flex-shrink-0 text-sm opacity-70" aria-hidden>
             📖
           </span>
           <p
             className="text-[11px] font-semibold leading-relaxed"
             style={{ color: "#8a6898" }}
           >
-            이 정보는 플레이어 커뮤니티의 플레이 데이터를 기반으로 정리된
-            위키 정보입니다. 공식 데이터와 다를 수 있어요.
+            이 정보는 플레이어 커뮤니티의 플레이 데이터를 기반으로 정리된 위키
+            정보입니다. 공식 데이터와 다를 수 있어요.
           </p>
         </div>
 

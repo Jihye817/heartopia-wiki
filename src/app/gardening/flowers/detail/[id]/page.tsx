@@ -8,6 +8,7 @@ import {
   RARITY_STYLE,
 } from "../../_data/flowers";
 import { FlowerBreedingCard } from "../_components/FlowerBreedingCard";
+import { FlowerCrossTable } from "../_components/FlowerCrossTable";
 
 // ─────────────────────────────────────────────
 // sub-components
@@ -303,9 +304,10 @@ export default function FlowerDetailPage() {
           </div>
         </div>
 
-        {/* Breeding rules */}
-        <div className="mt-8">
-          <FlowerBreedingCard />
+        {/* Breeding rules + color cross table */}
+        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-1 lg:items-start">
+          {/* <FlowerBreedingCard /> */}
+          <FlowerCrossTable flower={flower} />
         </div>
       </div>
     </section>
