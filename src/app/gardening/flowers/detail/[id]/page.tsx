@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useParams, notFound } from "next/navigation";
 import {
   FLOWER_DETAILS,
@@ -128,13 +129,16 @@ export default function FlowerDetailPage() {
             {/* Left: flower info */}
             <div>
               <div
-                className="mb-4 inline-flex h-[52px] w-[52px] items-center justify-center rounded-2xl border-[1.5px] text-3xl"
-                style={{
-                  background: "rgba(248,164,200,0.15)",
-                  borderColor: "rgba(248,164,200,0.35)",
-                }}
+                className="mb-4 inline-flex h-[144px] w-[144px] flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] bg-[rgba(248,164,200,0.15)] p-3"
+                style={{ borderColor: "rgba(248,164,200,0.35)" }}
               >
-                {flower.emoji}
+                <Image
+                  src={flower.thumbnail}
+                  alt={flower.ko}
+                  width={120}
+                  height={120}
+                  className="h-full w-full object-contain"
+                />
               </div>
 
               <h1
@@ -271,7 +275,19 @@ export default function FlowerDetailPage() {
                           </div>
                         </td>
                         <td className="px-1.5 py-2">
-                          <ColorDot hex={g.hex} emoji={g.emoji} size={26} />
+                          {g.image ? (
+                            <span className="inline-flex h-[32px] w-[32px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-white/90 bg-gray-100">
+                              <Image
+                                src={g.image}
+                                alt={g.color}
+                                width={32}
+                                height={32}
+                                className="h-full w-full object-contain"
+                              />
+                            </span>
+                          ) : (
+                            <ColorDot hex={g.hex} emoji={g.emoji} size={26} />
+                          )}
                         </td>
                         <td className="px-1.5 py-2">
                           <div

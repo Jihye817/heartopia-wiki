@@ -1,4 +1,9 @@
-import type { CrossCombination, FlowerDetail } from "../../_data/flowers";
+import Image from "next/image";
+import type {
+  CrossCombination,
+  CrossItem,
+  FlowerDetail,
+} from "../../_data/flowers";
 
 // ─────────────────────────────────────────────
 // Types
@@ -10,16 +15,43 @@ interface FlowerCrossTableProps {
 // ─────────────────────────────────────────────
 // Sub-components
 // ─────────────────────────────────────────────
-function ColorChip({
-  name,
-  hex,
-  emoji,
-}: {
-  name: string;
-  nameEn: string;
-  hex: string;
-  emoji: string;
-}) {
+const CHIP_IMAGE_SIZE = 44;
+
+function StarDisplay({ stars }: { stars: number }) {
+  return (
+    <span className="text-[10px] leading-none text-amber-500">
+      {"★".repeat(stars)}
+    </span>
+  );
+}
+
+function ColorChip({ item }: { item: CrossItem }) {
+  const { name, hex, image, emoji, stars } = item;
+
+  const nameBlock = (
+    <span className="flex flex-col items-start gap-0.5">
+      <span className="whitespace-nowrap text-xs font-bold">{name}</span>
+      {stars != null && <StarDisplay stars={stars} />}
+    </span>
+  );
+
+  if (image) {
+    return (
+      <span className="inline-flex items-center gap-2 rounded-full border-2 border-white/90 bg-gray-100 px-2.5 py-1.5 shadow-sm">
+        <span className="relative flex h-11 w-11 flex-shrink-0 overflow-hidden rounded-full">
+          <Image
+            src={image}
+            alt={name}
+            width={CHIP_IMAGE_SIZE}
+            height={CHIP_IMAGE_SIZE}
+            className="h-full w-full object-contain"
+          />
+        </span>
+        {nameBlock}
+      </span>
+    );
+  }
+
   return (
     <span
       className="inline-flex items-center gap-1 rounded-full border-2 border-white/90 px-2.5 py-1 text-xs font-bold shadow-sm"
@@ -28,8 +60,8 @@ function ColorChip({
         color: hex === "#ffffff" ? "#374151" : undefined,
       }}
     >
-      <span style={{ fontSize: "0.9em" }}>{emoji}</span>
-      <span className="whitespace-nowrap">{name}</span>
+      {emoji && <span style={{ fontSize: "0.9em" }}>{emoji}</span>}
+      {nameBlock}
     </span>
   );
 }
@@ -42,34 +74,19 @@ function CombinationRow({ combination }: { combination: CrossCombination }) {
     >
       <td className="px-4 py-3">
         <div className="flex flex-wrap items-center gap-2">
-          <ColorChip
-            name={combination.a.name}
-            nameEn={combination.a.nameEn}
-            hex={combination.a.hex}
-            emoji={combination.a.emoji}
-          />
+          <ColorChip item={combination.a} />
           <span
             className="text-base font-black leading-none"
             style={{ color: "#e8739b" }}
           >
             +
           </span>
-          <ColorChip
-            name={combination.b.name}
-            nameEn={combination.b.nameEn}
-            hex={combination.b.hex}
-            emoji={combination.b.emoji}
-          />
+          <ColorChip item={combination.b} />
         </div>
       </td>
       <td className="px-4 py-3">
         <div className="flex flex-wrap items-center justify-center gap-1.5">
-          <ColorChip
-            name={combination.result.name}
-            nameEn={combination.result.nameEn}
-            hex={combination.result.hex}
-            emoji={combination.result.emoji}
-          />
+          <ColorChip item={combination.result} />
           {combination.note && (
             <span
               className="text-[10px] font-bold"
