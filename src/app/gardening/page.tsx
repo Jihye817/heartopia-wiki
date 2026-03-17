@@ -51,7 +51,7 @@ export default function GardeningPage() {
 
   return (
     <section
-      className="px-6 pb-16 pt-8"
+      className="px-6 pt-8 pb-16"
       style={{ background: "rgba(255,252,248,1)" }}
     >
       <div className="mx-auto max-w-[1100px]">
@@ -132,7 +132,7 @@ export default function GardeningPage() {
               <Link
                 key={cat.href}
                 href={cat.href}
-                className="group relative flex flex-col overflow-hidden rounded-[20px] px-6 pb-6 pt-7 no-underline transition-all duration-300 ease-out"
+                className="group relative flex flex-col overflow-hidden rounded-[20px] px-6 pt-7 pb-6 no-underline transition-all duration-300 ease-out"
                 style={{
                   background: isHovered ? cat.bg : "rgba(255,252,254,0.9)",
                   border: `1.5px solid ${
@@ -148,7 +148,7 @@ export default function GardeningPage() {
               >
                 {/* Background accent blob */}
                 <div
-                  className="absolute -bottom-2.5 -right-2.5 opacity-[0.06] transition-opacity duration-300 group-hover:opacity-[0.1]"
+                  className="absolute -right-2.5 -bottom-2.5 opacity-[0.06] transition-opacity duration-300 group-hover:opacity-[0.1]"
                   style={{
                     transform: "scale(2) rotate(-10deg)",
                     transformOrigin: "bottom right",
@@ -175,7 +175,7 @@ export default function GardeningPage() {
                 </span>
 
                 <h3
-                  className="mb-2 text-xl font-bold leading-tight"
+                  className="mb-2 text-xl leading-tight font-bold"
                   style={{ color: "#4a3060" }}
                 >
                   {cat.title}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { LayoutGrid, List, Search, Sparkles } from "lucide-react";
 import type { Flower, Rarity } from "./_data/flowers";
 import { FLOWERS, RARITY_LABEL, RARITY_STYLE } from "./_data/flowers";
@@ -14,7 +15,7 @@ interface RarityBadgeProps {
 function RarityBadge({ rarity }: RarityBadgeProps) {
   return (
     <span
-      className={`rounded-full border px-2.5 py-0.5 text-xs font-bold ${RARITY_STYLE[rarity]}`}
+      className={`rounded-full border px-2.5 py-1 text-xs font-bold ${RARITY_STYLE[rarity]}`}
     >
       {RARITY_LABEL[rarity]}
     </span>
@@ -29,7 +30,7 @@ function FlowerCard({ flower }: FlowerCardProps) {
   return (
     <Link
       href={`/gardening/flowers/detail/${flower.id}`}
-      className="group relative block cursor-pointer overflow-hidden rounded-[20px] px-6 pb-6 pt-7 no-underline transition-all duration-300 ease-out"
+      className="group relative block cursor-pointer overflow-hidden rounded-[20px] px-6 pt-7 pb-6 no-underline transition-all duration-300 ease-out"
       style={{
         background: "rgba(255,252,254,0.9)",
         border: "1.5px solid rgba(230,210,230,0.6)",
@@ -50,7 +51,7 @@ function FlowerCard({ flower }: FlowerCardProps) {
       }}
     >
       <div
-        className="absolute -bottom-2.5 -right-2.5 text-[#f8a4c8] opacity-[0.06] transition-opacity duration-300 group-hover:opacity-[0.1]"
+        className="absolute -right-2.5 -bottom-2.5 text-[#f8a4c8] opacity-[0.06] transition-opacity duration-300 group-hover:opacity-[0.1]"
         style={{
           transform: "scale(2) rotate(-10deg)",
           transformOrigin: "bottom right",
@@ -61,18 +62,24 @@ function FlowerCard({ flower }: FlowerCardProps) {
       </div>
 
       <div
-        className="mb-4 inline-flex h-[52px] w-[52px] items-center justify-center rounded-2xl border-[1.5px] text-3xl transition-transform duration-300 group-hover:scale-105"
+        className="mb-4 inline-flex h-[60px] w-[60px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] p-2 transition-transform duration-300 group-hover:scale-105"
         style={{
           background: "rgba(248,164,200,0.15)",
           borderColor: "rgba(248,164,200,0.35)",
         }}
       >
-        {flower.emoji}
+        <Image
+          src={flower.thumbnail}
+          alt=""
+          width={60}
+          height={60}
+          className="object-contain"
+        />
       </div>
 
       <div className="mb-3.5">
         <div
-          className="text-xl font-bold leading-tight"
+          className="text-xl leading-tight font-bold"
           style={{ color: "#4a3060" }}
         >
           {flower.ko}
@@ -85,13 +92,6 @@ function FlowerCard({ flower }: FlowerCardProps) {
           background: "linear-gradient(to right, #ffd6e8, transparent)",
         }}
       />
-
-      <p
-        className="mb-3 text-[13px] leading-relaxed"
-        style={{ color: "#8a6898" }}
-      >
-        {flower.desc}
-      </p>
 
       <div className="flex flex-wrap gap-1.5">
         <span
@@ -130,10 +130,10 @@ function FlowerListView({ flowers }: FlowerListViewProps) {
             className="border-b-[1.5px]"
             style={{ borderColor: "rgba(230,210,230,0.6)" }}
           >
-            {["꽃 이름", "설명", "성장 단계", "희귀도"].map((h) => (
+            {["꽃 이름", "성장 단계", "희귀도"].map((h) => (
               <th
                 key={h}
-                className="px-4 py-3.5 text-left text-xs font-bold uppercase tracking-wider"
+                className="px-4 py-3.5 text-left text-xs font-bold tracking-wider uppercase"
                 style={{ color: "#b080c0" }}
               >
                 {h}
@@ -145,29 +145,28 @@ function FlowerListView({ flowers }: FlowerListViewProps) {
           {flowers.map((f) => (
             <tr
               key={f.id}
-              className="border-b border-[rgba(230,210,230,0.4)] last:border-0 transition-colors hover:bg-[#fff0f6]/50"
+              className="border-b border-[rgba(230,210,230,0.4)] transition-colors last:border-0 hover:bg-[#fff0f6]/50"
             >
               <td className="p-0">
                 <Link
                   href={`/gardening/flowers/detail/${f.id}`}
-                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
+                  className="flex items-center px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
-                  <span className="mr-2.5 text-xl">{f.emoji}</span>
+                  <span className="mr-2.5 flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-lg">
+                    <Image
+                      src={f.thumbnail}
+                      alt=""
+                      width={28}
+                      height={28}
+                      className="object-contain"
+                    />
+                  </span>
                   <span
                     className="text-sm font-bold"
                     style={{ color: "#4a3060" }}
                   >
                     {f.ko}
                   </span>
-                </Link>
-              </td>
-              <td className="p-0">
-                <Link
-                  href={`/gardening/flowers/detail/${f.id}`}
-                  className="block px-4 py-3.5 text-sm no-underline transition-opacity hover:opacity-90"
-                  style={{ color: "#8a6898" }}
-                >
-                  {f.desc}
                 </Link>
               </td>
               <td className="p-0">
@@ -211,13 +210,12 @@ export default function FlowersPage() {
   const filteredFlowers = FLOWERS.filter(
     (f) =>
       f.name.toLowerCase().includes(search.toLowerCase()) ||
-      f.ko.includes(search) ||
-      f.desc.includes(search)
+      f.ko.includes(search),
   );
 
   return (
     <section
-      className="px-6 pb-16 pt-8"
+      className="px-6 pt-8 pb-16"
       style={{ background: "rgba(255,252,248,1)" }}
     >
       <div className="mx-auto max-w-[1100px]">
@@ -294,7 +292,7 @@ export default function FlowersPage() {
           <div className="relative max-w-xs flex-1">
             <Search
               size={14}
-              className="absolute left-3 top-1/2 -translate-y-1/2"
+              className="absolute top-1/2 left-3 -translate-y-1/2"
               style={{ color: "#8a6898" }}
               strokeWidth={2.2}
               aria-hidden
@@ -305,7 +303,7 @@ export default function FlowersPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               aria-label="꽃 이름 검색"
-              className="w-full rounded-xl border-[1.5px] py-2.5 pl-9 pr-4 text-sm outline-none transition-all placeholder:opacity-70 focus:border-[#e8739b]"
+              className="w-full rounded-xl border-[1.5px] py-2.5 pr-4 pl-9 text-sm transition-all outline-none placeholder:opacity-70 focus:border-[#e8739b]"
               style={{
                 background: "rgba(255,240,246,0.5)",
                 borderColor: "rgba(230,210,230,0.6)",
