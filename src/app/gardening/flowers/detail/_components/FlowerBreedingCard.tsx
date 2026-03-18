@@ -37,7 +37,7 @@ const STAR_STYLE: Record<number, string> = {
 function StarChip({ grade }: { grade: number }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-bold whitespace-nowrap ${
+      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-sm font-bold whitespace-nowrap ${
         STAR_STYLE[grade] ?? "bg-gray-50 text-gray-600 border-gray-200"
       }`}
     >
@@ -132,7 +132,7 @@ export function FlowerBreedingCard() {
               꽃 교배
             </h2>
             <p
-              className="text-xs font-medium leading-relaxed"
+              className="text-sm font-medium leading-relaxed"
               style={{ color: "#8a6898" }}
             >
               같은 성급의 꽃을 교배하면 같은 성급 또는 더 높은 성급의 꽃이
@@ -153,7 +153,7 @@ export function FlowerBreedingCard() {
             📖
           </span>
           <p
-            className="text-[11px] font-semibold leading-relaxed"
+            className="text-[12px] font-semibold leading-relaxed"
             style={{ color: "#8a6898" }}
           >
             이 정보는 플레이어 커뮤니티의 플레이 데이터를 기반으로 정리된 위키
@@ -219,7 +219,7 @@ export function FlowerBreedingCard() {
           {FOOTNOTES.map((note) => (
             <li
               key={note}
-              className="flex items-start gap-1.5 text-[11px] font-semibold leading-relaxed opacity-80"
+              className="flex items-start gap-1.5 text-[12px] font-semibold leading-relaxed opacity-80"
               style={{ color: "#8a6898" }}
             >
               <span className="flex-shrink-0 opacity-60">※</span>

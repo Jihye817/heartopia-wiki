@@ -20,7 +20,7 @@ function ExpiryBadge({ expiresAt }: ExpiryBadgeProps) {
   const urgent = days <= 7;
   return (
     <span
-      className={`flex items-center gap-1 text-[11px] font-semibold ${urgent ? "font-bold" : ""}`}
+      className={`flex items-center gap-1 text-[12px] font-semibold ${urgent ? "font-bold" : ""}`}
       style={{ color: urgent ? "#d97706" : "#b090c0" }}
     >
       {urgent ? "⏰" : "📅"} {urgent ? `D-${days} · ` : ""}

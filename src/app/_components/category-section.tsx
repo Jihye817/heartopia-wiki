@@ -357,7 +357,7 @@ export function CategorySection() {
               style={{ background: "rgba(200,160,200,0.4)" }}
             />
             <span
-              className="text-[11px] font-bold uppercase tracking-widest"
+              className="text-[12px] font-bold uppercase tracking-widest"
               style={{ color: "#b080c0", letterSpacing: "0.12em" }}
             >
               CATEGORY
@@ -447,7 +447,7 @@ export function CategorySection() {
                         {cat.title}
                       </div>
                       <div
-                        className="text-[11px] font-semibold uppercase"
+                        className="text-[12px] font-semibold uppercase"
                         style={{
                           color: cat.accent,
                           letterSpacing: "0.06em",
@@ -479,7 +479,7 @@ export function CategorySection() {
                         {cat.title}
                       </div>
                       <div
-                        className="text-[11px] font-semibold uppercase"
+                        className="text-[12px] font-semibold uppercase"
                         style={{
                           color: cat.accent,
                           letterSpacing: "0.06em",

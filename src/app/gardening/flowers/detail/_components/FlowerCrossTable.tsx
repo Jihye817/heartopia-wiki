@@ -16,10 +16,12 @@ interface FlowerCrossTableProps {
 // Sub-components
 // ─────────────────────────────────────────────
 const CHIP_IMAGE_SIZE = 44;
+/** 꽃 토큰 가로 길이 통일 (야광 별 5개 토큰 기준) */
+const CHIP_MIN_WIDTH = 130;
 
 function StarDisplay({ stars }: { stars: number }) {
   return (
-    <span className="text-[10px] leading-none text-amber-500">
+    <span className="text-sm leading-none text-amber-500">
       {"★".repeat(stars)}
     </span>
   );
@@ -30,14 +32,17 @@ function ColorChip({ item }: { item: CrossItem }) {
 
   const nameBlock = (
     <span className="flex flex-col items-start gap-0.5">
-      <span className="text-xs font-bold whitespace-nowrap">{name}</span>
+      <span className="text-sm font-bold whitespace-nowrap">{name}</span>
       {stars != null && <StarDisplay stars={stars} />}
     </span>
   );
 
   if (image) {
     return (
-      <span className="inline-flex items-center gap-2 rounded-full border-2 border-white/90 bg-gray-100 px-2.5 py-1.5 shadow-sm">
+      <span
+        className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-white/90 bg-gray-100 px-2.5 py-1.5 shadow-sm"
+        style={{ minWidth: CHIP_MIN_WIDTH }}
+      >
         <span className="relative flex h-11 w-11 flex-shrink-0 overflow-hidden rounded-full">
           <Image
             src={image}
@@ -54,10 +59,11 @@ function ColorChip({ item }: { item: CrossItem }) {
 
   return (
     <span
-      className="inline-flex items-center gap-1 rounded-full border-2 border-white/90 px-2.5 py-1 text-xs font-bold shadow-sm"
+      className="inline-flex items-center justify-center gap-1 rounded-full border-2 border-white/90 px-2.5 py-1 text-sm font-bold shadow-sm"
       style={{
         background: hex,
         color: hex === "#ffffff" ? "#374151" : undefined,
+        minWidth: CHIP_MIN_WIDTH,
       }}
     >
       {emoji && <span style={{ fontSize: "0.9em" }}>{emoji}</span>}
@@ -67,26 +73,36 @@ function ColorChip({ item }: { item: CrossItem }) {
 }
 
 function CombinationRow({ combination }: { combination: CrossCombination }) {
+  const { result, a, b } = combination;
+
   return (
     <tr
       className="border-b border-[rgba(230,210,230,0.4)] transition-colors last:border-0 hover:bg-[#fff0f6]/40"
       style={{ borderColor: "rgba(230,210,230,0.4)" }}
     >
-      <td className="px-4 py-3">
+      <td className="px-4 py-3.5">
         <div className="flex flex-wrap items-center gap-2">
-          <ColorChip item={combination.a} />
+          <div className="flex flex-col gap-1.5">
+            {a.map((item, index) => (
+              <ColorChip key={index} item={item} />
+            ))}
+          </div>
           <span
             className="text-base leading-none font-black"
             style={{ color: "#e8739b" }}
           >
             +
           </span>
-          <ColorChip item={combination.b} />
+          <div className="flex flex-col gap-1.5">
+            {b.map((item, index) => (
+              <ColorChip key={index} item={item} />
+            ))}
+          </div>
         </div>
       </td>
-      <td className="px-4 py-3">
+      <td className="px-4 py-3.5">
         <div className="flex flex-wrap items-center justify-center gap-1.5">
-          <ColorChip item={combination.result} />
+          <ColorChip item={result} />
         </div>
       </td>
     </tr>
@@ -131,13 +147,13 @@ export function FlowerCrossTable({ flower }: FlowerCrossTableProps) {
           </div>
           <div>
             <h2
-              className="mb-1 text-base font-bold tracking-tight"
+              className="mb-1 text-lg font-bold tracking-tight"
               style={{ color: "#4a3060" }}
             >
               색상별 교배
             </h2>
             <p
-              className="text-xs leading-relaxed font-medium"
+              className="text-sm leading-relaxed font-medium"
               style={{ color: "#8a6898" }}
             >
               같은 성급의 꽃을 교배하면 같은 성급 또는 더 높은 성급의 꽃이
@@ -158,7 +174,7 @@ export function FlowerCrossTable({ flower }: FlowerCrossTableProps) {
             📖
           </span>
           <p
-            className="text-[11px] leading-relaxed font-semibold"
+            className="text-sm leading-relaxed font-semibold"
             style={{ color: "#8a6898" }}
           >
             이 정보는 플레이어 커뮤니티의 플레이 데이터를 기반으로 정리된 위키
@@ -171,7 +187,7 @@ export function FlowerCrossTable({ flower }: FlowerCrossTableProps) {
             {/* Section label */}
             <div className="mb-3 flex items-center gap-2">
               <span
-                className="text-[10px] font-bold tracking-widest whitespace-nowrap uppercase"
+                className="text-sm font-bold tracking-widest whitespace-nowrap uppercase"
                 style={{ color: "#b080c0" }}
               >
                 교배 조합
@@ -197,13 +213,13 @@ export function FlowerCrossTable({ flower }: FlowerCrossTableProps) {
                     }}
                   >
                     <th
-                      className="px-4 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase"
+                      className="px-4 py-3 text-left text-sm font-bold tracking-wider uppercase"
                       style={{ color: "#8a6898" }}
                     >
                       부모 색상
                     </th>
                     <th
-                      className="px-4 py-2.5 text-center text-[10px] font-bold tracking-wider uppercase"
+                      className="px-4 py-3 text-center text-sm font-bold tracking-wider uppercase"
                       style={{ color: "#8a6898" }}
                     >
                       가능한 결과
@@ -225,7 +241,7 @@ export function FlowerCrossTable({ flower }: FlowerCrossTableProps) {
           </>
         ) : (
           <p
-            className="text-xs leading-relaxed font-semibold"
+            className="text-sm leading-relaxed font-semibold"
             style={{ color: "#8a6898" }}
           >
             아직 색상별 교배 정보가 없어요.

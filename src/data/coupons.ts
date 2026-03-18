@@ -49,6 +49,12 @@ export const COUPONS: Coupon[] = [
     reward: "🌹 스노우 로즈 x 5, 🎆 무지개빛 요정의 지팡이-분홍색 x 2",
     createdAt: "2026-03-14",
   },
+  {
+    code: "l7m5q2r9a8",
+    expiresAt: "2026-04-01",
+    reward: "⭐️ 소원별 x 5, 🐟 인어 집어기 x 3, 🌱 비료 x 10",
+    createdAt: "2026-03-18",
+  },
 ];
 
 const LATEST_COUPONS_COUNT = 5;
@@ -64,7 +70,7 @@ export function getValidCoupons(): Coupon[] {
 }
 
 export function getLatestCoupons(
-  count: number = LATEST_COUPONS_COUNT
+  count: number = LATEST_COUPONS_COUNT,
 ): Coupon[] {
   return [...COUPONS]
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))

@@ -107,7 +107,7 @@ export function CouponSection() {
               style={{ background: "rgba(200,160,200,0.4)" }}
             />
             <span
-              className="text-[11px] font-bold uppercase tracking-widest"
+              className="text-[12px] font-bold uppercase tracking-widest"
               style={{ color: "#b080c0", letterSpacing: "0.12em" }}
             >
               COUPON
@@ -179,7 +179,7 @@ export function CouponSection() {
                       >
                         {coupon.code}
                       </div>
-                      <div className="mt-0.5 text-[11px] text-[#b090c0]">
+                      <div className="mt-0.5 text-[12px] text-[#b090c0]">
                         {coupon.reward}
                       </div>
                     </div>
@@ -232,7 +232,7 @@ export function CouponSection() {
           </div>
         </div>
 
-        <p className="mt-4 text-center text-[11px] text-[#c0a0c8]">
+        <p className="mt-4 text-center text-[12px] text-[#c0a0c8]">
           쿠폰 코드는 게임 내 환경설정 &gt; 교환 코드 에서 사용하실 수 있습니다.
           ✨
         </p>

@@ -20,13 +20,13 @@ export default function CouponsPage() {
 
   return (
     <section
-      className="min-h-screen px-6 pb-24 pt-8"
+      className="min-h-screen px-6 pt-8 pb-24"
       style={{ background: "rgba(255,252,248,1)" }}
     >
       <div className="mx-auto max-w-[640px]">
         {/* Breadcrumb */}
         <nav
-          className="mb-8 flex items-center gap-1.5 text-xs font-bold tracking-wide"
+          className="mb-8 flex items-center gap-1.5 text-sm font-bold tracking-wide"
           style={{ color: "#b080c0" }}
           aria-label="breadcrumb"
         >
@@ -113,7 +113,7 @@ export default function CouponsPage() {
                 🎁
               </div>
               <h1
-                className="font-bold leading-none tracking-tight"
+                className="leading-none font-bold tracking-tight"
                 style={{
                   fontSize: "clamp(1.6rem,4vw,2.1rem)",
                   color: "#6b4a7a",
@@ -124,13 +124,13 @@ export default function CouponsPage() {
             </div>
 
             <p
-              className="mb-1.5 text-sm font-semibold leading-relaxed"
+              className="mb-1.5 text-sm leading-relaxed font-semibold"
               style={{ color: "#8a6898" }}
             >
               현재 사용 가능한 쿠폰을 모아두었습니다.
             </p>
             <p
-              className="mb-2 text-[11px] font-bold"
+              className="mb-2 text-[12px] font-bold"
               style={{ color: "#b080c0" }}
             >
               ✦ 최신 등록순 &nbsp;·&nbsp; 현재 사용 가능한 쿠폰만 표시
@@ -166,11 +166,10 @@ export default function CouponsPage() {
         </div>
 
         <p
-          className="mt-6 text-center text-[11px]"
+          className="mt-6 text-center text-[12px]"
           style={{ color: "#c0a0c8" }}
         >
-          쿠폰 코드는 게임 내 환경설정 &gt; 교환 코드에서 사용하실 수 있습니다.
-          ✨
+          쿠폰 코드는 게임 내 설정 &gt; 교환 코드에서 사용하실 수 있습니다. ✨
         </p>
       </div>
     </section>

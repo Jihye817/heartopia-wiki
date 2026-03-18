@@ -3,12 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useParams, notFound } from "next/navigation";
-import {
-  FLOWER_DETAILS,
-  RARITY_LABEL,
-  RARITY_STYLE,
-} from "../../_data/flowers";
-import { FlowerBreedingCard } from "../_components/FlowerBreedingCard";
+import { FLOWER_DETAILS } from "../../_data/flowers";
 import { FlowerCrossTable } from "../_components/FlowerCrossTable";
 
 // ─────────────────────────────────────────────
@@ -53,25 +48,15 @@ export default function FlowerDetailPage() {
 
   const starsOf = (n: number) => "★".repeat(n) + "☆".repeat(Math.max(0, 5 - n));
 
-  const gradePrices = flower.grades.map(
-    (g) => g.sellPrice ?? Math.round(flower.sell * (0.75 + 0.25 * g.stars))
-  );
-  const sellPriceMin = Math.min(...gradePrices);
-  const sellPriceMax = Math.max(...gradePrices);
-  const sellPriceRange =
-    sellPriceMin === sellPriceMax
-      ? `${sellPriceMin}G`
-      : `${sellPriceMin}G~${sellPriceMax}G`;
-
   return (
     <section
-      className="px-6 pb-16 pt-8"
+      className="px-6 pt-8 pb-16"
       style={{ background: "rgba(255,252,248,1)" }}
     >
       <div className="mx-auto max-w-[1100px]">
         {/* Breadcrumb */}
         <nav
-          className="mb-8 flex items-center gap-1.5 text-xs font-bold tracking-wide"
+          className="mb-8 flex items-center gap-1.5 text-sm font-bold tracking-wide"
           style={{ color: "#b080c0" }}
           aria-label="breadcrumb"
         >
@@ -99,7 +84,7 @@ export default function FlowerDetailPage() {
         {/* Back */}
         <Link
           href="/gardening/flowers"
-          className="mb-4 inline-flex items-center gap-1.5 text-xs font-bold transition-all hover:gap-2.5"
+          className="mb-4 inline-flex items-center gap-1.5 text-sm font-bold transition-all hover:gap-2.5"
           style={{ color: "#b080c0" }}
         >
           ← 꽃 목록으로
@@ -114,17 +99,6 @@ export default function FlowerDetailPage() {
             boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
           }}
         >
-          <div
-            className="absolute -bottom-2.5 -right-2.5 text-[#f8a4c8] opacity-[0.08]"
-            style={{
-              transform: "scale(2) rotate(-10deg)",
-              transformOrigin: "bottom right",
-            }}
-            aria-hidden
-          >
-            <span className="text-5xl">{flower.emoji}</span>
-          </div>
-
           <div className="relative z-10 grid grid-cols-1 gap-8 md:grid-cols-2 md:items-start">
             {/* Left: flower info */}
             <div>
@@ -142,7 +116,7 @@ export default function FlowerDetailPage() {
               </div>
 
               <h1
-                className="m-0 mb-3 text-[clamp(24px,4vw,34px)] font-bold leading-tight tracking-tight"
+                className="m-0 mb-3 text-[clamp(24px,4vw,34px)] leading-tight font-bold tracking-tight"
                 style={{ color: "#4a3060" }}
               >
                 {flower.ko}
@@ -153,40 +127,37 @@ export default function FlowerDetailPage() {
                   background: "linear-gradient(to right, #ffd6e8, transparent)",
                 }}
               />
-              <p
-                className="mb-4 text-[13px] leading-relaxed"
-                style={{ color: "#8a6898" }}
-              >
-                {flower.desc}
-              </p>
 
               <div className="mb-4 flex flex-wrap gap-1.5">
                 <span
-                  className="rounded-full border px-2.5 py-1 text-xs font-bold"
+                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                  style={{
+                    background: "rgba(189,222,255,0.3)",
+                    color: "#0284c7",
+                    borderColor: "rgba(189,222,255,0.6)",
+                  }}
+                >
+                  원예 Lv.{flower.level}
+                </span>
+                <span
+                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
                   style={{
                     background: "rgba(248,164,200,0.2)",
                     color: "#c06898",
                     borderColor: "rgba(248,164,200,0.4)",
                   }}
                 >
-                  {flower.stages} 단계
+                  {flower.stages} 종류
                 </span>
                 <span
-                  className={`rounded-full border px-2.5 py-1 text-xs font-bold ${
-                    RARITY_STYLE[flower.rarity]
-                  }`}
-                >
-                  {RARITY_LABEL[flower.rarity]}
-                </span>
-                <span
-                  className="rounded-full border px-2.5 py-1 text-xs font-bold"
+                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
                   style={{
                     background: "rgba(254,215,170,0.3)",
                     color: "#b45309",
                     borderColor: "rgba(251,191,36,0.4)",
                   }}
                 >
-                  🌿 {flower.season}
+                  활동시기 : {flower.season}
                 </span>
               </div>
 
@@ -194,8 +165,7 @@ export default function FlowerDetailPage() {
               <div className="flex flex-wrap gap-2">
                 {[
                   ["성장 기간", flower.growTime],
-                  ["판매 가격", `💰 ${sellPriceRange}`],
-                  ["희귀도", RARITY_LABEL[flower.rarity]],
+                  ["판매 가격", `💰 ${flower.sellMin} - ${flower.sellMax}G`],
                 ].map(([label, value]) => (
                   <div
                     key={label}
@@ -206,19 +176,147 @@ export default function FlowerDetailPage() {
                     }}
                   >
                     <div
-                      className="mb-0.5 text-[10px] font-bold uppercase tracking-wider"
+                      className="mb-0.5 text-sm font-bold tracking-wider uppercase"
                       style={{ color: "#8a6898" }}
                     >
                       {label}
                     </div>
                     <div
-                      className="text-sm font-bold"
+                      className="text-base font-bold"
                       style={{ color: "#6b4a7a" }}
                     >
                       {value}
                     </div>
                   </div>
                 ))}
+              </div>
+
+              {/* Divider */}
+              <div
+                className="my-5 h-px w-full"
+                style={{ background: "rgba(230,210,230,0.6)" }}
+              />
+
+              {/* Seed info — 카드형 */}
+              <div
+                className="overflow-hidden rounded-2xl border-[1.5px]"
+                style={{
+                  background: "rgba(255,252,254,0.95)",
+                  borderColor: "rgba(230,210,230,0.6)",
+                }}
+              >
+                <div
+                  className="flex items-center gap-2 border-b-[1.5px] px-4 py-3"
+                  style={{ borderColor: "rgba(230,210,230,0.6)" }}
+                >
+                  <div
+                    className="h-[7px] w-[7px] rounded-full"
+                    style={{ background: "#c06898" }}
+                  />
+                  <span
+                    className="text-sm font-bold tracking-widest uppercase"
+                    style={{ color: "#8a6898" }}
+                  >
+                    씨앗 정보
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2">
+                  <div
+                    className="border-r-[1.5px] border-b-[1.5px] p-4"
+                    style={{ borderColor: "rgba(230,210,230,0.6)" }}
+                  >
+                    <p
+                      className="mb-1.5 text-sm font-bold tracking-wider uppercase"
+                      style={{ color: "#8a6898" }}
+                    >
+                      구매 가격
+                    </p>
+                    <div className="flex items-baseline gap-1">
+                      <span
+                        className="text-2xl leading-none font-bold tabular-nums"
+                        style={{ color: "#b45309" }}
+                      >
+                        {flower.seedCost}
+                      </span>
+                      <span
+                        className="text-base font-semibold"
+                        style={{ color: "#8a6898" }}
+                      >
+                        G
+                      </span>
+                    </div>
+                    <p
+                      className="mt-1 text-sm"
+                      style={{ color: "rgba(138,104,152,0.6)" }}
+                    >
+                      씨앗 1개당
+                    </p>
+                  </div>
+
+                  <div
+                    className="border-b-[1.5px] p-4"
+                    style={{ borderColor: "rgba(230,210,230,0.6)" }}
+                  >
+                    <p
+                      className="mb-1.5 text-sm font-bold tracking-wider uppercase"
+                      style={{ color: "#8a6898" }}
+                    >
+                      구매 NPC
+                    </p>
+                    <p
+                      className="text-lg leading-none font-bold"
+                      style={{ color: "#4a3060" }}
+                    >
+                      {flower.seedNPC}
+                    </p>
+                    <p
+                      className="mt-1 text-sm"
+                      style={{ color: "rgba(138,104,152,0.6)" }}
+                    >
+                      원예 상점 판매
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-4">
+                  <p
+                    className="mb-2.5 text-sm font-bold tracking-wider uppercase"
+                    style={{ color: "#8a6898" }}
+                  >
+                    구매 가능 씨앗 색상
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {flower.seedColors.map((colorName) => {
+                      const grade = flower.grades.find(
+                        (g) => g.color === colorName,
+                      );
+                      return (
+                        <div
+                          key={colorName}
+                          className="flex items-center gap-2.5 rounded-xl border-[1px] px-3 py-2"
+                          style={{
+                            background: "rgba(255,240,246,0.5)",
+                            borderColor: "rgba(230,210,230,0.6)",
+                          }}
+                        >
+                          {grade && (
+                            <div
+                              className="h-7 w-7 flex-shrink-0 rounded-full border-2 border-white/90 shadow-sm"
+                              style={{ background: grade.hex }}
+                            />
+                          )}
+                          <span
+                            className="text-sm font-bold"
+                            style={{ color: "#4a3060" }}
+                          >
+                            {colorName}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -231,7 +329,7 @@ export default function FlowerDetailPage() {
               }}
             >
               <div
-                className="mb-3 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest"
+                className="mb-3 flex items-center gap-1.5 text-sm font-bold tracking-widest uppercase"
                 style={{ color: "#b080c0" }}
               >
                 ⭐ 성급별 색상
@@ -245,7 +343,7 @@ export default function FlowerDetailPage() {
                     {["성급", "꽃", "색상", "판매가"].map((h) => (
                       <th
                         key={h}
-                        className="px-1.5 pb-2 text-left text-[10px] font-bold uppercase tracking-wider"
+                        className="px-2 pb-2.5 text-left text-sm font-bold tracking-wider uppercase"
                         style={{ color: "#8a6898" }}
                       >
                         {h}
@@ -255,33 +353,30 @@ export default function FlowerDetailPage() {
                 </thead>
                 <tbody>
                   {flower.grades.map((g) => {
-                    const price =
-                      g.sellPrice ??
-                      Math.round(flower.sell * (0.75 + 0.25 * g.stars));
                     return (
                       <tr
                         key={`${g.stars}-${g.color}`}
                         className="border-b border-[rgba(230,210,230,0.4)] last:border-0"
                       >
-                        <td className="px-1.5 py-2">
+                        <td className="px-2 py-2.5">
                           <div
-                            className="text-xs font-bold"
+                            className="text-sm font-bold"
                             style={{ color: "#4a3060" }}
                           >
                             {g.stars}성
                           </div>
-                          <div className="text-[10px] leading-none text-amber-500">
+                          <div className="text-sm leading-none text-amber-500">
                             {starsOf(g.stars)}
                           </div>
                         </td>
-                        <td className="px-1.5 py-2">
+                        <td className="flex items-center px-2 py-3">
                           {g.image ? (
-                            <span className="inline-flex h-[32px] w-[32px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-white/90 bg-gray-100">
+                            <span className="inline-flex h-[34px] w-[34px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-white/90 bg-gray-100">
                               <Image
                                 src={g.image}
                                 alt={g.color}
-                                width={32}
-                                height={32}
+                                width={34}
+                                height={34}
                                 className="h-full w-full object-contain"
                               />
                             </span>
@@ -289,26 +384,26 @@ export default function FlowerDetailPage() {
                             <ColorDot hex={g.hex} emoji={g.emoji} size={26} />
                           )}
                         </td>
-                        <td className="px-1.5 py-2">
+                        <td className="px-2 py-2.5">
                           <div
-                            className="text-xs font-bold"
+                            className="text-sm font-bold"
                             style={{ color: "#4a3060" }}
                           >
                             {g.color}
                           </div>
                           <div
-                            className="text-[10px] font-semibold"
+                            className="text-sm font-semibold"
                             style={{ color: "#8a6898" }}
                           >
                             {g.colorEn}
                           </div>
                         </td>
-                        <td className="px-1.5 py-2">
+                        <td className="px-2 py-2.5">
                           <span
-                            className="text-xs font-bold tabular-nums"
+                            className="text-sm font-bold tabular-nums"
                             style={{ color: "#b45309" }}
                           >
-                            {price}G
+                            {g.sellPrice ?? flower.sellMin} G
                           </span>
                         </td>
                       </tr>

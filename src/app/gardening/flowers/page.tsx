@@ -4,23 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { LayoutGrid, List, Search, Sparkles } from "lucide-react";
-import type { Flower, Rarity } from "./_data/flowers";
-import { FLOWERS, RARITY_LABEL, RARITY_STYLE } from "./_data/flowers";
+import type { Flower } from "./_data/flowers";
+import { FLOWERS } from "./_data/flowers";
 
 // ── Subcomponents ─────────────────────────────────────────────────────────────
-interface RarityBadgeProps {
-  rarity: Rarity;
-}
-
-function RarityBadge({ rarity }: RarityBadgeProps) {
-  return (
-    <span
-      className={`rounded-full border px-2.5 py-1 text-xs font-bold ${RARITY_STYLE[rarity]}`}
-    >
-      {RARITY_LABEL[rarity]}
-    </span>
-  );
-}
 
 interface FlowerCardProps {
   flower: Flower;
@@ -95,16 +82,25 @@ function FlowerCard({ flower }: FlowerCardProps) {
 
       <div className="flex flex-wrap gap-1.5">
         <span
-          className="rounded-full border px-2.5 py-1 text-xs font-bold"
+          className="rounded-full border px-2.5 py-1 text-sm font-bold"
+          style={{
+            background: "rgba(189,222,255,0.3)",
+            color: "#0284c7",
+            borderColor: "rgba(189,222,255,0.6)",
+          }}
+        >
+          원예 Lv.{flower.level}
+        </span>
+        <span
+          className="rounded-full border px-2.5 py-1 text-sm font-bold"
           style={{
             background: "rgba(248,164,200,0.2)",
             color: "#c06898",
             borderColor: "rgba(248,164,200,0.4)",
           }}
         >
-          {flower.stages} 단계
+          {flower.stages} 종류
         </span>
-        <RarityBadge rarity={flower.rarity} />
       </div>
     </Link>
   );
@@ -130,10 +126,10 @@ function FlowerListView({ flowers }: FlowerListViewProps) {
             className="border-b-[1.5px]"
             style={{ borderColor: "rgba(230,210,230,0.6)" }}
           >
-            {["꽃 이름", "성장 단계", "희귀도"].map((h) => (
+            {["꽃 이름", "원예 레벨", "종류"].map((h) => (
               <th
                 key={h}
-                className="px-4 py-3.5 text-left text-xs font-bold tracking-wider uppercase"
+                className="px-4 py-3.5 text-left text-sm font-bold tracking-wider uppercase"
                 style={{ color: "#b080c0" }}
               >
                 {h}
@@ -175,14 +171,14 @@ function FlowerListView({ flowers }: FlowerListViewProps) {
                   className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
                   <span
-                    className="rounded-full border px-2.5 py-1 text-xs font-bold"
+                    className="rounded-full border px-2.5 py-1 text-sm font-bold"
                     style={{
-                      background: "rgba(248,164,200,0.2)",
-                      color: "#c06898",
-                      borderColor: "rgba(248,164,200,0.4)",
+                      background: "rgba(189,222,255,0.3)",
+                      color: "#0284c7",
+                      borderColor: "rgba(189,222,255,0.6)",
                     }}
                   >
-                    {f.stages} 단계
+                    Lv.{f.level}
                   </span>
                 </Link>
               </td>
@@ -191,7 +187,16 @@ function FlowerListView({ flowers }: FlowerListViewProps) {
                   href={`/gardening/flowers/detail/${f.id}`}
                   className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
-                  <RarityBadge rarity={f.rarity} />
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                    style={{
+                      background: "rgba(248,164,200,0.2)",
+                      color: "#c06898",
+                      borderColor: "rgba(248,164,200,0.4)",
+                    }}
+                  >
+                    {f.stages} 종류
+                  </span>
                 </Link>
               </td>
             </tr>
@@ -221,7 +226,7 @@ export default function FlowersPage() {
       <div className="mx-auto max-w-[1100px]">
         {/* Breadcrumb */}
         <nav
-          className="mb-8 flex items-center gap-1.5 text-xs font-bold tracking-wide"
+          className="mb-8 flex items-center gap-1.5 text-sm font-bold tracking-wide"
           style={{ color: "#b080c0" }}
           aria-label="breadcrumb"
         >
@@ -271,7 +276,7 @@ export default function FlowersPage() {
                   onClick={() => setViewMode(mode)}
                   role="tab"
                   aria-selected={viewMode === mode}
-                  className="flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all"
+                  className="flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-sm font-bold transition-all"
                   style={{
                     background: viewMode === mode ? "white" : "transparent",
                     color: viewMode === mode ? "#6b4a7a" : "#8a6898",
@@ -312,7 +317,7 @@ export default function FlowersPage() {
             />
           </div>
           <span
-            className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-bold"
+            className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-bold"
             style={{
               background: "rgba(248,164,200,0.15)",
               borderColor: "rgba(248,164,200,0.4)",

@@ -348,7 +348,7 @@ export function HeroSection() {
         >
           <span className="text-sm">🌸</span>
           <span
-            className="text-[11px] font-semibold uppercase tracking-widest"
+            className="text-[12px] font-semibold uppercase tracking-widest"
             style={{ color: "#c06898", letterSpacing: "0.08em" }}
           >
             Fan-made Wiki
@@ -415,7 +415,7 @@ export function HeroSection() {
                 {stat.num}
               </div>
               <div
-                className="mt-1 text-[11px]"
+                className="mt-1 text-[12px]"
                 style={{ color: "#b8a0c0", letterSpacing: "0.05em" }}
               >
                 {stat.label}

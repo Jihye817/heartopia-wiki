@@ -10,10 +10,17 @@ const CATEGORY_LINKS = [
 ] as const;
 const MORE_LINKS = ["쿠폰 코드", "업데이트 노트", "문의"] as const;
 
+const CATEGORY_HREF: Record<string, string> = {
+  원예: "/gardening",
+};
+const MORE_HREF: Record<string, string> = {
+  "쿠폰 코드": "/coupons",
+};
+
 export function Footer() {
   return (
     <footer
-      className="border-t border-[rgba(248,164,200,0.15)] px-6 pb-8 pt-11"
+      className="border-t border-[rgba(248,164,200,0.15)] px-6 pt-11 pb-8"
       style={{ background: "rgba(60,40,75,0.96)" }}
     >
       <div className="mx-auto max-w-[1100px]">
@@ -47,7 +54,7 @@ export function Footer() {
 
           <div>
             <div
-              className="mb-3 text-[11px] font-bold uppercase tracking-wider"
+              className="mb-3 text-[12px] font-bold tracking-wider uppercase"
               style={{
                 color: "rgba(248,164,200,0.8)",
                 letterSpacing: "0.1em",
@@ -59,7 +66,7 @@ export function Footer() {
               {CATEGORY_LINKS.map((link) => (
                 <Link
                   key={link}
-                  href="#"
+                  href={CATEGORY_HREF[link] ?? "#"}
                   className="text-[13px] text-[rgba(200,170,215,0.7)] no-underline transition-colors hover:text-[rgba(248,200,224,0.95)]"
                 >
                   {link}
@@ -70,7 +77,7 @@ export function Footer() {
 
           <div>
             <div
-              className="mb-3 text-[11px] font-bold uppercase tracking-wider"
+              className="mb-3 text-[12px] font-bold tracking-wider uppercase"
               style={{
                 color: "rgba(248,164,200,0.8)",
                 letterSpacing: "0.1em",
@@ -82,7 +89,7 @@ export function Footer() {
               {MORE_LINKS.map((link) => (
                 <Link
                   key={link}
-                  href="#"
+                  href={MORE_HREF[link] ?? "#"}
                   className="text-[13px] text-[rgba(200,170,215,0.7)] no-underline transition-colors hover:text-[rgba(248,200,224,0.95)]"
                 >
                   {link}
@@ -97,7 +104,7 @@ export function Footer() {
           style={{ borderTopColor: "rgba(255,255,255,0.07)" }}
         >
           <p
-            className="m-0 text-[11px]"
+            className="m-0 text-[12px]"
             style={{ color: "rgba(180,140,190,0.5)" }}
           >
             © {new Date().getFullYear()} Heartopia Wiki - @Jihye817 All rights

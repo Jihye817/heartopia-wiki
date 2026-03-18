@@ -15,10 +15,10 @@ const SUBCATEGORIES = [
       style: "bg-rose-50 text-rose-600 border-rose-200",
     },
     title: "꽃 교배",
-    desc: "다양한 꽃을 교배해 새로운 색상의 꽃을 얻을 수 있어요. 데이지, 팬지, 칼라 등 다양한 꽃의 정보을 확인하세요.",
-    meta: ["🌼 10종", "⭐ 성급"],
-    metaStyle: "bg-purple-50 text-purple-600 border-purple-200",
-    ctaStyle: "text-purple-500",
+    desc: "다양한 꽃을 교배해 새로운 색상의 꽃을 얻을 수 있어요. 데이지, 팬지, 칼라 등 다양한 꽃의 정보를 확인하세요.",
+    meta: ["🌼 10종", "⭐ 성급", "🌸 교배"],
+    metaStyle: "bg-pink-50 text-pink-600 border-pink-200",
+    ctaStyle: "text-pink-500",
     color: "#f8a4c8",
     bg: "#fff0f6",
     border: "#ffd6e8",
@@ -57,7 +57,7 @@ export default function GardeningPage() {
       <div className="mx-auto max-w-[1100px]">
         {/* Breadcrumb */}
         <nav
-          className="mb-8 flex items-center gap-1.5 text-xs font-bold tracking-wide"
+          className="mb-8 flex items-center gap-1.5 text-sm font-bold tracking-wide"
           style={{ color: "#b080c0" }}
           aria-label="breadcrumb"
         >
@@ -91,7 +91,7 @@ export default function GardeningPage() {
             ].map(({ label, style }) => (
               <span
                 key={label}
-                className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-[11px] font-bold ${style}`}
+                className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-[12px] font-bold ${style}`}
                 style={{ background: "rgba(255,255,255,0.8)" }}
               >
                 {label}
@@ -109,7 +109,7 @@ export default function GardeningPage() {
             하위 카테고리
           </h2>
           <span
-            className="rounded-full border px-2.5 py-0.5 text-[11px] font-bold"
+            className="rounded-full border px-2.5 py-0.5 text-[12px] font-bold"
             style={{
               background: "rgba(248,164,200,0.15)",
               borderColor: "rgba(248,164,200,0.4)",
@@ -128,10 +128,11 @@ export default function GardeningPage() {
         >
           {SUBCATEGORIES.map((cat) => {
             const isHovered = hovered === cat.href;
+            const isCrops = cat.href === "/gardening/crops";
             return (
               <Link
                 key={cat.href}
-                href={cat.href}
+                href={isCrops ? "#" : cat.href}
                 className="group relative flex flex-col overflow-hidden rounded-[20px] px-6 pt-7 pb-6 no-underline transition-all duration-300 ease-out"
                 style={{
                   background: isHovered ? cat.bg : "rgba(255,252,254,0.9)",
@@ -145,7 +146,20 @@ export default function GardeningPage() {
                 }}
                 onMouseEnter={() => setHovered(cat.href)}
                 onMouseLeave={() => setHovered(null)}
+                onClick={isCrops ? (e) => e.preventDefault() : undefined}
+                aria-disabled={isCrops}
               >
+                {/* 작물 도감: 호버 시 준비중 메시지 */}
+                {isCrops && isHovered && (
+                  <div
+                    className="absolute inset-0 z-10 flex items-center justify-center rounded-[20px] bg-white backdrop-blur-sm"
+                    aria-live="polite"
+                  >
+                    <span className="text-lg font-bold text-emerald-600">
+                      준비중입니다
+                    </span>
+                  </div>
+                )}
                 {/* Background accent blob */}
                 <div
                   className="absolute -right-2.5 -bottom-2.5 opacity-[0.06] transition-opacity duration-300 group-hover:opacity-[0.1]"
@@ -169,7 +183,7 @@ export default function GardeningPage() {
                 </div>
 
                 <span
-                  className={`mb-3 inline-flex w-fit items-center rounded-full border px-2.5 py-0.5 text-[11px] font-bold ${cat.tag.style}`}
+                  className={`mb-3 inline-flex w-fit items-center rounded-full border px-2.5 py-0.5 text-[12px] font-bold ${cat.tag.style}`}
                 >
                   {cat.tag.label}
                 </span>
@@ -195,12 +209,12 @@ export default function GardeningPage() {
                   }}
                 />
 
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-[rgba(230,210,230,0.4)] pt-4">
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-2 pt-2">
                   <div className="flex flex-wrap gap-1.5">
                     {cat.meta.map((m) => (
                       <span
                         key={m}
-                        className={`rounded-full border px-2.5 py-0.5 text-[11px] font-bold ${cat.metaStyle}`}
+                        className={`rounded-full border px-2.5 py-0.5 text-[12px] font-bold ${cat.metaStyle}`}
                       >
                         {m}
                       </span>
