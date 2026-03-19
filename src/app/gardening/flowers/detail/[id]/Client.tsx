@@ -57,7 +57,7 @@ export default function FlowerDetailClient({
       <div className="mx-auto max-w-[1100px]">
         {/* Breadcrumb */}
         <nav
-          className="mb-8 flex items-center gap-1.5 text-sm font-bold tracking-wide"
+          className="mb-4 flex items-center gap-1.5 text-xs font-bold tracking-wide md:mb-8 md:text-sm"
           style={{ color: "#b080c0" }}
           aria-label="breadcrumb"
         >
@@ -85,7 +85,7 @@ export default function FlowerDetailClient({
         {/* Back */}
         <Link
           href="/gardening/flowers"
-          className="mb-4 inline-flex items-center gap-1.5 text-sm font-bold transition-all hover:gap-2.5"
+          className="mb-2 inline-flex items-center gap-1.5 text-xs font-bold transition-all hover:gap-2.5 md:mb-4 md:text-sm"
           style={{ color: "#b080c0" }}
         >
           ← 꽃 목록으로
@@ -117,7 +117,7 @@ export default function FlowerDetailClient({
               </div>
 
               <h1
-                className="m-0 mb-3 text-[clamp(24px,4vw,34px)] leading-tight font-bold tracking-tight"
+                className="m-0 mb-3 text-[clamp(20px,4vw,28px)] leading-tight font-bold tracking-tight md:text-[clamp(24px,4vw,34px)]"
                 style={{ color: "#4a3060" }}
               >
                 {flower.ko}
@@ -131,7 +131,7 @@ export default function FlowerDetailClient({
 
               <div className="mb-4 flex flex-wrap gap-1.5">
                 <span
-                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                  className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
                   style={{
                     background: "rgba(189,222,255,0.3)",
                     color: "#0284c7",
@@ -141,7 +141,7 @@ export default function FlowerDetailClient({
                   원예 Lv.{flower.level}
                 </span>
                 <span
-                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                  className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
                   style={{
                     background: "rgba(248,164,200,0.2)",
                     color: "#c06898",
@@ -151,7 +151,7 @@ export default function FlowerDetailClient({
                   {flower.stages} 종류
                 </span>
                 <span
-                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                  className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
                   style={{
                     background: "rgba(254,215,170,0.3)",
                     color: "#b45309",
@@ -177,13 +177,13 @@ export default function FlowerDetailClient({
                     }}
                   >
                     <div
-                      className="mb-0.5 text-sm font-bold tracking-wider uppercase"
+                      className="mb-0.5 text-xs font-bold tracking-wider uppercase md:text-sm"
                       style={{ color: "#8a6898" }}
                     >
                       {label}
                     </div>
                     <div
-                      className="text-base font-bold"
+                      className="text-sm font-bold md:text-base"
                       style={{ color: "#6b4a7a" }}
                     >
                       {value}
@@ -215,7 +215,7 @@ export default function FlowerDetailClient({
                     style={{ background: "#c06898" }}
                   />
                   <span
-                    className="text-sm font-bold tracking-widest uppercase"
+                    className="text-xs font-bold tracking-widest uppercase md:text-sm"
                     style={{ color: "#8a6898" }}
                   >
                     씨앗 정보
@@ -228,14 +228,14 @@ export default function FlowerDetailClient({
                     style={{ borderColor: "rgba(230,210,230,0.6)" }}
                   >
                     <p
-                      className="mb-1.5 text-sm font-bold tracking-wider uppercase"
+                      className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
                       style={{ color: "#8a6898" }}
                     >
                       구매 가격
                     </p>
                     <div className="flex items-baseline gap-1">
                       <span
-                        className="text-2xl leading-none font-bold tabular-nums"
+                        className="text-xl leading-none font-bold tabular-nums md:text-2xl"
                         style={{ color: "#b45309" }}
                       >
                         {flower.seedCost}
@@ -248,7 +248,7 @@ export default function FlowerDetailClient({
                       </span>
                     </div>
                     <p
-                      className="mt-1 text-sm"
+                      className="mt-1 text-xs md:text-sm"
                       style={{ color: "rgba(138,104,152,0.6)" }}
                     >
                       씨앗 1개당
@@ -260,19 +260,19 @@ export default function FlowerDetailClient({
                     style={{ borderColor: "rgba(230,210,230,0.6)" }}
                   >
                     <p
-                      className="mb-1.5 text-sm font-bold tracking-wider uppercase"
+                      className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
                       style={{ color: "#8a6898" }}
                     >
                       구매 NPC
                     </p>
                     <p
-                      className="text-lg leading-none font-bold"
+                      className="text-base leading-none font-bold md:text-lg"
                       style={{ color: "#4a3060" }}
                     >
                       {flower.seedNPC}
                     </p>
                     <p
-                      className="mt-1 text-sm"
+                      className="mt-1 text-xs md:text-sm"
                       style={{ color: "rgba(138,104,152,0.6)" }}
                     >
                       원예 상점 판매
@@ -282,7 +282,7 @@ export default function FlowerDetailClient({
 
                 <div className="p-4">
                   <p
-                    className="mb-2.5 text-sm font-bold tracking-wider uppercase"
+                    className="mb-2.5 text-xs font-bold tracking-wider uppercase md:text-sm"
                     style={{ color: "#8a6898" }}
                   >
                     구매 가능 씨앗 색상
@@ -303,12 +303,12 @@ export default function FlowerDetailClient({
                         >
                           {grade && (
                             <div
-                              className="h-7 w-7 flex-shrink-0 rounded-full border-2 border-white/90 shadow-sm"
+                              className="h-5 w-5 flex-shrink-0 rounded-full border-2 border-white/90 shadow-sm md:h-7 md:w-7"
                               style={{ background: grade.hex }}
                             />
                           )}
                           <span
-                            className="text-sm font-bold"
+                            className="text-xs font-bold md:text-sm"
                             style={{ color: "#4a3060" }}
                           >
                             {colorName}
@@ -330,7 +330,7 @@ export default function FlowerDetailClient({
               }}
             >
               <div
-                className="mb-3 flex items-center gap-1.5 text-sm font-bold tracking-widest uppercase"
+                className="mb-3 flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase md:text-sm"
                 style={{ color: "#b080c0" }}
               >
                 ⭐ 성급별 색상
@@ -344,7 +344,7 @@ export default function FlowerDetailClient({
                     {["성급", "꽃", "색상", "판매가"].map((h) => (
                       <th
                         key={h}
-                        className="px-2 pb-2.5 text-left text-sm font-bold tracking-wider uppercase"
+                        className="px-2 pb-2.5 text-left text-xs font-bold tracking-wider uppercase md:text-sm"
                         style={{ color: "#8a6898" }}
                       >
                         {h}
@@ -361,18 +361,18 @@ export default function FlowerDetailClient({
                       >
                         <td className="px-2 py-2.5">
                           <div
-                            className="text-sm font-bold"
+                            className="text-xs font-bold md:text-sm"
                             style={{ color: "#4a3060" }}
                           >
                             {g.stars}성
                           </div>
-                          <div className="text-sm leading-none text-amber-500">
+                          <div className="text-xs leading-none text-amber-500 md:text-sm">
                             {starsOf(g.stars)}
                           </div>
                         </td>
                         <td className="flex items-center px-2 py-3">
                           {g.image ? (
-                            <span className="inline-flex h-[34px] w-[34px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-white/90 bg-gray-100">
+                            <span className="inline-flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-white/90 bg-gray-100 md:h-[34px] md:w-[34px]">
                               <Image
                                 src={g.image}
                                 alt={g.color}
@@ -387,13 +387,13 @@ export default function FlowerDetailClient({
                         </td>
                         <td className="px-2 py-2.5">
                           <div
-                            className="text-sm font-bold"
+                            className="text-xs font-bold md:text-sm"
                             style={{ color: "#4a3060" }}
                           >
                             {g.color}
                           </div>
                           <div
-                            className="text-sm font-semibold"
+                            className="text-xs font-semibold md:text-sm"
                             style={{ color: "#8a6898" }}
                           >
                             {g.colorEn}
@@ -401,7 +401,7 @@ export default function FlowerDetailClient({
                         </td>
                         <td className="px-2 py-2.5">
                           <span
-                            className="text-sm font-bold tabular-nums"
+                            className="text-xs font-bold tabular-nums md:text-sm"
                             style={{ color: "#b45309" }}
                           >
                             {g.sellPrice ?? flower.sellMin} G

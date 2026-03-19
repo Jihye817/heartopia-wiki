@@ -16,12 +16,10 @@ interface FlowerCrossTableProps {
 // Sub-components
 // ─────────────────────────────────────────────
 const CHIP_IMAGE_SIZE = 44;
-/** 꽃 토큰 가로 길이 통일 (야광 별 5개 토큰 기준) */
-const CHIP_MIN_WIDTH = 130;
 
 function StarDisplay({ stars }: { stars: number }) {
   return (
-    <span className="text-sm leading-none text-amber-500">
+    <span className="text-xs leading-none text-amber-500 md:text-sm">
       {"★".repeat(stars)}
     </span>
   );
@@ -32,18 +30,17 @@ function ColorChip({ item }: { item: CrossItem }) {
 
   const nameBlock = (
     <span className="flex flex-col items-start gap-0.5">
-      <span className="text-sm font-bold whitespace-nowrap">{name}</span>
+      <span className="text-xs font-bold whitespace-nowrap md:text-sm">
+        {name}
+      </span>
       {stars != null && <StarDisplay stars={stars} />}
     </span>
   );
 
   if (image) {
     return (
-      <span
-        className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-white/90 bg-gray-100 px-2.5 py-1.5 shadow-sm"
-        style={{ minWidth: CHIP_MIN_WIDTH }}
-      >
-        <span className="relative flex h-11 w-11 flex-shrink-0 overflow-hidden rounded-full">
+      <span className="inline-flex min-w-[105px] items-center justify-center gap-1.5 rounded-full border-2 border-white/90 bg-gray-100 px-2 py-1 shadow-sm md:min-w-[130px] md:gap-2 md:px-2.5 md:py-1.5">
+        <span className="relative flex h-8 w-8 flex-shrink-0 overflow-hidden rounded-full md:h-11 md:w-11">
           <Image
             src={image}
             alt={name}
@@ -59,11 +56,10 @@ function ColorChip({ item }: { item: CrossItem }) {
 
   return (
     <span
-      className="inline-flex items-center justify-center gap-1 rounded-full border-2 border-white/90 px-2.5 py-1 text-sm font-bold shadow-sm"
+      className="inline-flex min-w-[105px] items-center justify-center gap-1 rounded-full border-2 border-white/90 px-2 py-0.5 text-xs font-bold shadow-sm md:min-w-[130px] md:px-2.5 md:py-1 md:text-sm"
       style={{
         background: hex,
         color: hex === "#ffffff" ? "#374151" : undefined,
-        minWidth: CHIP_MIN_WIDTH,
       }}
     >
       {emoji && <span style={{ fontSize: "0.9em" }}>{emoji}</span>}
@@ -205,7 +201,7 @@ export function FlowerCrossTable({ flower }: FlowerCrossTableProps) {
               색상별 교배
             </h2>
             <p
-              className="text-sm leading-relaxed font-medium"
+              className="text-xs leading-relaxed font-medium md:text-sm"
               style={{ color: "#8a6898" }}
             >
               같은 성급의 꽃을 교배하면 같은 성급 또는 더 높은 성급의 꽃이
@@ -226,7 +222,7 @@ export function FlowerCrossTable({ flower }: FlowerCrossTableProps) {
             📖
           </span>
           <p
-            className="text-sm leading-relaxed font-semibold"
+            className="text-xs leading-relaxed font-semibold md:text-sm"
             style={{ color: "#8a6898" }}
           >
             이 정보는 플레이어 커뮤니티의 플레이 데이터를 기반으로 정리된 위키
