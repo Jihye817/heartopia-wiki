@@ -65,7 +65,7 @@ function FlowerCard({ flower }: FlowerCardProps) {
 
       <div className="mb-3.5">
         <div
-          className="text-xl leading-tight font-bold"
+          className="text-lg leading-tight font-bold md:text-xl"
           style={{ color: "#4a3060" }}
         >
           {flower.ko}
@@ -81,7 +81,7 @@ function FlowerCard({ flower }: FlowerCardProps) {
 
       <div className="flex flex-wrap gap-1.5">
         <span
-          className="rounded-full border px-2.5 py-1 text-sm font-bold"
+          className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
           style={{
             background: "rgba(189,222,255,0.3)",
             color: "#0284c7",
@@ -91,7 +91,7 @@ function FlowerCard({ flower }: FlowerCardProps) {
           원예 Lv.{flower.level}
         </span>
         <span
-          className="rounded-full border px-2.5 py-1 text-sm font-bold"
+          className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
           style={{
             background: "rgba(248,164,200,0.2)",
             color: "#c06898",
@@ -230,7 +230,7 @@ export default function FlowersPageClient({ flowers }: FlowersPageClientProps) {
       <div className="mx-auto max-w-[1100px]">
         {/* Breadcrumb */}
         <nav
-          className="mb-8 flex items-center gap-1.5 text-sm font-bold tracking-wide"
+          className="mb-4 flex items-center gap-1.5 text-xs font-bold tracking-wide md:mb-8 md:text-sm"
           style={{ color: "#b080c0" }}
           aria-label="breadcrumb"
         >
@@ -253,12 +253,15 @@ export default function FlowersPageClient({ flowers }: FlowersPageClientProps) {
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <h1
-                className="m-0 text-[clamp(24px,4vw,34px)] font-bold tracking-tight"
+                className="m-0 text-[clamp(20px,4vw,28px)] font-bold tracking-tight md:text-[clamp(24px,4vw,34px)]"
                 style={{ color: "#6b4a7a", letterSpacing: "-0.02em" }}
               >
                 꽃 도감
               </h1>
-              <p className="mt-1 text-sm" style={{ color: "#8a6898" }}>
+              <p
+                className="mt-1 text-xs md:text-sm"
+                style={{ color: "#8a6898" }}
+              >
                 두근두근타운 꽃 종류
               </p>
             </div>
@@ -280,7 +283,7 @@ export default function FlowersPageClient({ flowers }: FlowersPageClientProps) {
                   onClick={() => setViewMode(mode)}
                   role="tab"
                   aria-selected={viewMode === mode}
-                  className="flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-sm font-bold transition-all"
+                  className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all md:px-3.5 md:text-sm"
                   style={{
                     background: viewMode === mode ? "white" : "transparent",
                     color: viewMode === mode ? "#6b4a7a" : "#8a6898",
@@ -312,7 +315,7 @@ export default function FlowersPageClient({ flowers }: FlowersPageClientProps) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               aria-label="꽃 이름 검색"
-              className="w-full rounded-xl border-[1.5px] py-2.5 pr-4 pl-9 text-sm transition-all outline-none placeholder:opacity-70 focus:border-[#e8739b]"
+              className="w-full rounded-xl border-[1.5px] py-2 pr-4 pl-9 text-xs transition-all outline-none placeholder:opacity-70 focus:border-[#e8739b] md:py-2.5 md:text-sm"
               style={{
                 background: "rgba(255,240,246,0.5)",
                 borderColor: "rgba(230,210,230,0.6)",
@@ -321,7 +324,7 @@ export default function FlowersPageClient({ flowers }: FlowersPageClientProps) {
             />
           </div>
           <span
-            className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-bold"
+            className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-bold md:text-sm"
             style={{
               background: "rgba(248,164,200,0.15)",
               borderColor: "rgba(248,164,200,0.4)",
@@ -339,7 +342,7 @@ export default function FlowersPageClient({ flowers }: FlowersPageClientProps) {
             <div className="mb-3 text-4xl" aria-hidden>
               🔍
             </div>
-            <p className="text-sm" style={{ color: "#8a6898" }}>
+            <p className="text-xs md:text-sm" style={{ color: "#8a6898" }}>
               검색 결과가 없어요
             </p>
           </div>
