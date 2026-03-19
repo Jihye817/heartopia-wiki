@@ -93,14 +93,14 @@ export function CouponSection() {
 
   return (
     <section
-      className="px-6 pt-16 pb-20"
+      className="px-4 pt-12 pb-16 md:px-6 md:pt-16 md:pb-20"
       style={{
         background:
           "linear-gradient(180deg, rgba(255,252,248,1) 0%, rgba(255,240,250,0.5) 100%)",
       }}
     >
       <div className="mx-auto max-w-[640px]">
-        <div className="mb-9 text-center">
+        <div className="mb-7 text-center md:mb-9">
           <div className="mb-3 inline-flex items-center gap-2">
             <div
               className="h-px w-8"
@@ -151,15 +151,15 @@ export function CouponSection() {
               <div key={coupon.code}>
                 {idx > 0 && (
                   <div
-                    className="mx-6 h-px"
+                    className="mx-4 h-px md:mx-6"
                     style={{
                       background:
                         "linear-gradient(to right, transparent, rgba(230,200,240,0.6), transparent)",
                     }}
                   />
                 )}
-                <div className="flex items-center justify-between gap-4 px-6 py-4 transition-colors duration-150 hover:bg-[rgba(248,240,255,0.5)]">
-                  <div className="flex items-center gap-3.5">
+                <div className="flex flex-col gap-3 px-4 py-4 transition-colors duration-150 hover:bg-[rgba(248,240,255,0.5)] md:flex-row md:items-center md:justify-between md:gap-4 md:px-6">
+                  <div className="flex min-w-0 items-center gap-3.5">
                     <div
                       className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[10px] border border-[rgba(248,164,200,0.3)]"
                       style={{
@@ -185,7 +185,7 @@ export function CouponSection() {
                     </div>
                   </div>
 
-                  <div className="flex shrink-0 items-center gap-3">
+                  <div className="flex shrink-0 items-center gap-2 self-end md:self-auto">
                     <span
                       className="text-xs text-[#b090c0]"
                       title={`만료: ${coupon.expiresAt}`}
@@ -218,7 +218,7 @@ export function CouponSection() {
           </div>
 
           <div
-            className="flex justify-end border-t px-6 py-3.5"
+            className="flex justify-end border-t px-4 py-3.5 md:px-6"
             style={{ borderTopColor: "rgba(240,220,240,0.7)" }}
           >
             <Link
@@ -232,7 +232,7 @@ export function CouponSection() {
           </div>
         </div>
 
-        <p className="mt-4 text-center text-xs text-[#c0a0c8]">
+        <p className="mt-3 text-center text-xs text-[#c0a0c8] md:mt-4">
           쿠폰 코드는 게임 내 환경설정 &gt; 교환 코드 에서 사용하실 수 있습니다.
           ✨
         </p>
