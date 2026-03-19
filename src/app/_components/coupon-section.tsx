@@ -93,7 +93,7 @@ export function CouponSection() {
 
   return (
     <section
-      className="px-6 pb-20 pt-16"
+      className="px-6 pt-16 pb-20"
       style={{
         background:
           "linear-gradient(180deg, rgba(255,252,248,1) 0%, rgba(255,240,250,0.5) 100%)",
@@ -107,7 +107,7 @@ export function CouponSection() {
               style={{ background: "rgba(200,160,200,0.4)" }}
             />
             <span
-              className="text-[12px] font-bold uppercase tracking-widest"
+              className="text-xs font-bold tracking-widest uppercase"
               style={{ color: "#b080c0", letterSpacing: "0.12em" }}
             >
               COUPON
@@ -179,7 +179,7 @@ export function CouponSection() {
                       >
                         {coupon.code}
                       </div>
-                      <div className="mt-0.5 text-[12px] text-[#b090c0]">
+                      <div className="mt-0.5 text-xs text-[#b090c0]">
                         {coupon.reward}
                       </div>
                     </div>
@@ -187,7 +187,7 @@ export function CouponSection() {
 
                   <div className="flex shrink-0 items-center gap-3">
                     <span
-                      className="text-[12px] text-[#b090c0]"
+                      className="text-xs text-[#b090c0]"
                       title={`만료: ${coupon.expiresAt}`}
                     >
                       만료 {formatExpiresAt(coupon.expiresAt)}
@@ -232,7 +232,7 @@ export function CouponSection() {
           </div>
         </div>
 
-        <p className="mt-4 text-center text-[12px] text-[#c0a0c8]">
+        <p className="mt-4 text-center text-xs text-[#c0a0c8]">
           쿠폰 코드는 게임 내 환경설정 &gt; 교환 코드 에서 사용하실 수 있습니다.
           ✨
         </p>

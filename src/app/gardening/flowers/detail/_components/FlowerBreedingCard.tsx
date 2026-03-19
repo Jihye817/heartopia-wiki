@@ -38,7 +38,7 @@ function StarChip({ grade }: { grade: number }) {
   return (
     <span
       className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-sm font-bold whitespace-nowrap ${
-        STAR_STYLE[grade] ?? "bg-gray-50 text-gray-600 border-gray-200"
+        STAR_STYLE[grade] ?? "border-gray-200 bg-gray-50 text-gray-600"
       }`}
     >
       {"★".repeat(grade)}
@@ -54,14 +54,14 @@ function BreedingRow({ rule }: BreedingRowProps) {
   const [a, b] = rule.parent;
   return (
     <tr
-      className="border-b border-[rgba(230,210,230,0.4)] last:border-0 transition-colors hover:bg-[#fff0f6]/40"
+      className="border-b border-[rgba(230,210,230,0.4)] transition-colors last:border-0 hover:bg-[#fff0f6]/40"
       style={{ borderColor: "rgba(230,210,230,0.4)" }}
     >
       <td className="px-4 py-3">
         <div className="flex flex-wrap items-center gap-2">
           <StarChip grade={a} />
           <span
-            className="text-base font-black leading-none"
+            className="text-base leading-none font-black"
             style={{ color: "#e8739b" }}
           >
             +
@@ -96,7 +96,7 @@ function BreedingRow({ rule }: BreedingRowProps) {
 export function FlowerBreedingCard() {
   return (
     <div
-      className="overflow-hidden rounded-[20px] border-[1.5px] max-w-lg w-full"
+      className="w-full max-w-lg overflow-hidden rounded-[20px] border-[1.5px]"
       style={{
         background: "rgba(255,252,254,0.95)",
         borderColor: "rgba(230,210,230,0.6)",
@@ -132,7 +132,7 @@ export function FlowerBreedingCard() {
               꽃 교배
             </h2>
             <p
-              className="text-sm font-medium leading-relaxed"
+              className="text-sm leading-relaxed font-medium"
               style={{ color: "#8a6898" }}
             >
               같은 성급의 꽃을 교배하면 같은 성급 또는 더 높은 성급의 꽃이
@@ -153,7 +153,7 @@ export function FlowerBreedingCard() {
             📖
           </span>
           <p
-            className="text-[12px] font-semibold leading-relaxed"
+            className="text-xs leading-relaxed font-semibold"
             style={{ color: "#8a6898" }}
           >
             이 정보는 플레이어 커뮤니티의 플레이 데이터를 기반으로 정리된 위키
@@ -164,7 +164,7 @@ export function FlowerBreedingCard() {
         {/* Section label */}
         <div className="mb-3 flex items-center gap-2">
           <span
-            className="whitespace-nowrap text-[10px] font-bold uppercase tracking-widest"
+            className="text-[10px] font-bold tracking-widest whitespace-nowrap uppercase"
             style={{ color: "#b080c0" }}
           >
             교배 규칙
@@ -190,13 +190,13 @@ export function FlowerBreedingCard() {
                 }}
               >
                 <th
-                  className="px-4 py-2.5 text-left text-[10px] font-bold uppercase tracking-wider"
+                  className="px-4 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase"
                   style={{ color: "#8a6898" }}
                 >
                   부모 꽃 조합
                 </th>
                 <th
-                  className="px-4 py-2.5 text-center text-[10px] font-bold uppercase tracking-wider"
+                  className="px-4 py-2.5 text-center text-[10px] font-bold tracking-wider uppercase"
                   style={{ color: "#8a6898" }}
                 >
                   가능한 결과
@@ -219,7 +219,7 @@ export function FlowerBreedingCard() {
           {FOOTNOTES.map((note) => (
             <li
               key={note}
-              className="flex items-start gap-1.5 text-[12px] font-semibold leading-relaxed opacity-80"
+              className="flex items-start gap-1.5 text-xs leading-relaxed font-semibold opacity-80"
               style={{ color: "#8a6898" }}
             >
               <span className="flex-shrink-0 opacity-60">※</span>

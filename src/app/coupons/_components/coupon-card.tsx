@@ -20,7 +20,7 @@ function ExpiryBadge({ expiresAt }: ExpiryBadgeProps) {
   const urgent = days <= 7;
   return (
     <span
-      className={`flex items-center gap-1 text-[12px] font-semibold ${urgent ? "font-bold" : ""}`}
+      className={`flex items-center gap-1 text-xs font-semibold ${urgent ? "font-bold" : ""}`}
       style={{ color: urgent ? "#d97706" : "#b090c0" }}
     >
       {urgent ? "⏰" : "📅"} {urgent ? `D-${days} · ` : ""}
@@ -155,7 +155,7 @@ export function CouponCard({ coupon }: CouponCardProps) {
         >
           <span className="flex-shrink-0 text-sm">🎁</span>
           <span
-            className="text-xs font-bold leading-relaxed"
+            className="text-sm leading-relaxed font-semibold"
             style={{ color: "#6b4a7a" }}
           >
             {coupon.reward}

@@ -130,7 +130,7 @@ export default function CouponsPage() {
               현재 사용 가능한 쿠폰을 모아두었습니다.
             </p>
             <p
-              className="mb-2 text-[12px] font-bold"
+              className="mb-2 text-xs font-bold"
               style={{ color: "#b080c0" }}
             >
               ✦ 최신 등록순 &nbsp;·&nbsp; 현재 사용 가능한 쿠폰만 표시
@@ -166,7 +166,7 @@ export default function CouponsPage() {
         </div>
 
         <p
-          className="mt-6 text-center text-[12px]"
+          className="mt-6 text-center text-xs"
           style={{ color: "#c0a0c8" }}
         >
           쿠폰 코드는 게임 내 설정 &gt; 교환 코드에서 사용하실 수 있습니다. ✨

@@ -8,19 +8,20 @@ const CATEGORY_LINKS = [
   "새 관찰",
   "반려동물",
 ] as const;
-const MORE_LINKS = ["쿠폰 코드", "업데이트 노트", "문의"] as const;
+const MORE_LINKS = ["쿠폰", "문의"] as const;
 
 const CATEGORY_HREF: Record<string, string> = {
   원예: "/gardening",
 };
 const MORE_HREF: Record<string, string> = {
-  "쿠폰 코드": "/coupons",
+  쿠폰: "/coupons",
+  문의: "mailto:heartopiawiki@gmail.com",
 };
 
 export function Footer() {
   return (
     <footer
-      className="border-t border-[rgba(248,164,200,0.15)] px-6 pt-11 pb-8"
+      className="border-t border-[rgba(248,164,200,0.15)] px-6 py-12"
       style={{ background: "rgba(60,40,75,0.96)" }}
     >
       <div className="mx-auto max-w-[1100px]">
@@ -54,7 +55,7 @@ export function Footer() {
 
           <div>
             <div
-              className="mb-3 text-[12px] font-bold tracking-wider uppercase"
+              className="mb-3 text-xs font-bold tracking-wider uppercase"
               style={{
                 color: "rgba(248,164,200,0.8)",
                 letterSpacing: "0.1em",
@@ -67,7 +68,7 @@ export function Footer() {
                 <Link
                   key={link}
                   href={CATEGORY_HREF[link] ?? "#"}
-                  className="text-[13px] text-[rgba(200,170,215,0.7)] no-underline transition-colors hover:text-[rgba(248,200,224,0.95)]"
+                  className="text-xs text-[rgba(200,170,215,0.7)] no-underline transition-colors hover:text-[rgba(248,200,224,0.95)]"
                 >
                   {link}
                 </Link>
@@ -77,7 +78,7 @@ export function Footer() {
 
           <div>
             <div
-              className="mb-3 text-[12px] font-bold tracking-wider uppercase"
+              className="mb-3 text-xs font-bold tracking-wider uppercase"
               style={{
                 color: "rgba(248,164,200,0.8)",
                 letterSpacing: "0.1em",
@@ -90,7 +91,7 @@ export function Footer() {
                 <Link
                   key={link}
                   href={MORE_HREF[link] ?? "#"}
-                  className="text-[13px] text-[rgba(200,170,215,0.7)] no-underline transition-colors hover:text-[rgba(248,200,224,0.95)]"
+                  className="text-xs text-[rgba(200,170,215,0.7)] no-underline transition-colors hover:text-[rgba(248,200,224,0.95)]"
                 >
                   {link}
                 </Link>
@@ -100,13 +101,10 @@ export function Footer() {
         </div>
 
         <div
-          className="flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.07] pt-5"
+          className="flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.07] pt-6"
           style={{ borderTopColor: "rgba(255,255,255,0.07)" }}
         >
-          <p
-            className="m-0 text-[12px]"
-            style={{ color: "rgba(180,140,190,0.5)" }}
-          >
+          <p className="m-0 text-xs" style={{ color: "rgba(180,140,190,0.5)" }}>
             © {new Date().getFullYear()} Heartopia Wiki - @Jihye817 All rights
             reserved. - 팬 제작 위키, 비공식
           </p>
