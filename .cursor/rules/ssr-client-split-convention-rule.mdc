@@ -1,0 +1,128 @@
+---
+alwaysApply: true
+---
+
+## 1) Project Context
+
+- This is a **frontend-only project** (no backend server).
+- There is **no authentication system**.
+- All data comes from **local TypeScript files** (e.g. `/data/*.ts`).
+- The project uses **Next.js App Router**.
+
+---
+
+## 2) Absolute Rules (Must Follow)
+
+### 2-1. `page.tsx` (Server Component)
+
+- `"use client"` is strictly forbidden.
+- `page.tsx` must remain a **Server Component**.
+
+Do NOT use:
+
+- React client hooks (`useState`, `useEffect`, etc.)
+- event handlers (`onClick`, `onChange`, etc.)
+- browser APIs (`window`, `document`, `localStorage`, etc.)
+
+Allowed:
+
+- reading `params` / `searchParams`
+- using `notFound()`
+- importing and reading **local static data**
+- generating metadata (`metadata` or `generateMetadata`)
+- passing JSON-serializable props to `Client.tsx`
+
+Important:
+
+- No external API calls (this project has no backend)
+- No authentication logic
+
+---
+
+### 2-2. `Client.tsx` (Client Component)
+
+- Must include `"use client"`
+- All interaction logic lives here:
+  - UI state
+  - event handlers
+  - modals
+  - user input
+  - client-side behavior
+
+- Receives initial data via props from `page.tsx`
+
+---
+
+### 2-3. Data Rules
+
+- Data must be loaded from local files (e.g. `FLOWER_DETAILS`)
+- No remote fetching
+- No API layer
+
+---
+
+### 2-4. Server → Client Props Rules
+
+- Props must be JSON-serializable only:
+  - allowed: string, number, boolean, null, array, plain object
+  - forbidden: function, Date, class instances, Map, Set
+
+---
+
+## 3) Refactoring Tasks
+
+### 3-1. `page.tsx`
+
+- Remove `"use client"` if present
+- Keep only:
+  - route param handling
+  - local data loading
+  - metadata generation
+  - `notFound()` handling
+- Pass prepared data to `Client.tsx`
+
+### 3-2. `Client.tsx`
+
+Move all UI logic into this file:
+
+- state
+- handlers
+- rendering logic
+- interactive components
+
+---
+
+## 4) Required Output Format
+
+For each route:
+
+1. File Tree
+
+- `page.tsx`
+- `Client.tsx`
+
+2. Full `page.tsx` Code
+
+- Server Component only
+- includes params + local data + metadata
+
+3. Full `Client.tsx` Code
+
+- includes `"use client"`
+- includes UI + interaction
+
+4. Change Summary (3–5 lines)
+
+5. Checklist
+
+- no client hooks in `page.tsx`
+- props are serializable
+- no browser APIs in server component
+
+---
+
+## 5) Goal
+
+- Separate **structure (server)** and **interaction (client)**
+- Improve maintainability and SEO
+- Keep architecture simple for a frontend-only project

@@ -1,0 +1,393 @@
+---
+alwaysApply: true
+---
+
+Purpose
+
+These rules define the coding standards and architectural conventions for this project.
+
+Cursor must follow these rules when generating, modifying, or refactoring code.
+
+---
+
+# 1) Naming Conventions
+
+## Functions / Variables / Parameters
+
+- Functions must start with a **verb** and clearly describe the action.
+
+Good:
+fetchProducts  
+calculateSubtotal  
+openCreateModal
+
+Bad:
+getData  
+doSomething
+
+- Variable and parameter names must be **semantic and descriptive**.
+
+Avoid abbreviations such as:
+idx  
+prd  
+flag
+
+- Arrays must use **plural names**.
+
+Example:
+products  
+flowers
+
+- Boolean variables must start with **is / has / can**
+
+Good:
+isOpen  
+hasChildren  
+canSubmit
+
+Avoid negative booleans.
+
+Bad:
+isNotOpen
+
+---
+
+## Constants
+
+Use **SCREAMING_SNAKE_CASE**
+
+Example:
+
+API_BASE_URL  
+MAX_RETRY_COUNT
+
+---
+
+## Event Handler Naming
+
+Handlers passed as props must start with **on**
+
+Example:
+
+onClick  
+onSelectItem
+
+Internal handlers inside components must start with **handle**
+
+Example:
+
+handleClick  
+handleChange  
+handleSubmit
+
+---
+
+## File & Folder Naming
+
+Folders must use **kebab-case**
+
+Example:
+
+flower-card  
+flower-grid
+
+React components must use **PascalCase**
+
+Example:
+
+FlowerCard  
+FlowerGrid  
+ContactForm
+
+Non-component files must use **camelCase**
+
+Example:
+
+formatDate.ts  
+calculateTotal.ts
+
+Prefer meaningful component suffixes when appropriate.
+
+Examples:
+
+Page  
+Modal  
+Card  
+Section  
+Form  
+Dialog
+
+---
+
+# 2) TypeScript Conventions
+
+Use **interface** for object shapes.
+
+Use **type** only for:
+
+- unions
+- mapped types
+- utility types
+
+Props interfaces must use the suffix **Props**
+
+Example:
+
+FlowerCardProps  
+ContactFormProps
+
+Avoid prefixes like:
+
+IProps  
+TProps
+
+Avoid `any`.
+
+If absolutely necessary, include explanation comments.
+
+Use utility types where appropriate:
+
+Pick  
+Omit  
+Partial  
+Readonly  
+ReturnType
+
+`children` must be typed as:
+
+React.ReactNode
+
+---
+
+# 3) Function Declarations
+
+Utility functions must use **arrow functions**
+
+Example:
+
+export const formatPrice = (value: number): string => {
+return `${value}원`;
+};
+
+React components must use **function declarations**
+
+Example:
+
+export function FlowerCard(props: FlowerCardProps) {
+return <div />;
+}
+
+---
+
+# 4) Variable Declarations
+
+Do not use `var`.
+
+Use `const` by default.
+
+Use `let` only when reassignment is required.
+
+Prefer literal initialization for arrays and objects.
+
+Example:
+
+const flowers = []  
+const options = {}
+
+---
+
+# 5) Strings
+
+Use **template literals** instead of string concatenation.
+
+Good:
+
+`Hello ${name}`
+
+Bad:
+
+"Hello " + name
+
+---
+
+# 6) Conditions & Control Flow
+
+Use concise conditions.
+
+Strings:
+
+if (str)
+
+Arrays:
+
+if (array.length)
+
+Objects:
+
+if (Object.keys(obj).length)
+
+Avoid comparisons like:
+
+=== true  
+=== false
+
+Always use curly braces `{}` for control flow blocks.
+
+Use **early returns and guard clauses** for clarity.
+
+---
+
+# 7) React & Next.js Rules
+
+Default to **React Server Components (RSC)**.
+
+Add `"use client"` only when required:
+
+- event handlers
+- browser APIs
+- DOM manipulation
+- client-side state
+
+Avoid unnecessary `useEffect`.
+
+Use it only for real side effects such as:
+
+- subscriptions
+- timers
+- browser APIs
+
+Prefer pure components and derived state when possible.
+
+---
+
+# 8) Project Structure
+
+Route-specific code should be colocated inside the corresponding route folder.
+
+Example:
+
+app/gardening/flowers/page.tsx  
+app/gardening/flowers/\_components/flower-card.tsx
+
+Use private folders with `_` prefix for route-local modules.
+
+Examples:
+
+\_components  
+\_data  
+\_utils
+
+Move code to shared folders only when reused across multiple routes.
+
+Shared folders:
+
+components/ui  
+lib  
+types
+
+---
+
+# 9) Styling & UI
+
+Primary stack:
+
+Tailwind CSS + Shadcn UI
+
+Common UI components must be:
+
+- reusable
+- declarative
+- isolated
+- consistent with the design system
+
+Avoid inline style objects when Tailwind utilities are available.
+
+---
+
+# 10) Accessibility
+
+Use semantic HTML elements first.
+
+Examples:
+
+button  
+nav  
+section  
+ul  
+li
+
+All interactive elements must have an accessible name.
+
+Images must include meaningful `alt` text.
+
+Do not use `div` or `span` as interactive controls unless necessary.
+
+---
+
+# 11) UI States
+
+When rendering data-driven UI, always consider:
+
+- loading state
+- empty state
+- error state
+- success state
+
+Empty states should communicate what the user can do next.
+
+Error states must avoid exposing raw internal errors.
+
+---
+
+# 12) Comments & Documentation
+
+Comment **why**, not what.
+
+Explain business logic, constraints, or non-obvious decisions.
+
+If `any` is used, include:
+
+- reason
+- owner
+- date
+- TODO if temporary
+
+Example:
+
+// Temporary: third-party API returns inconsistent schema  
+// TODO(Jihye, 2026-03-12): remove when API stabilizes  
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+---
+
+# 13) Format & Lint
+
+Use Prettier with the following configuration:
+
+{
+"semi": true,
+"singleQuote": false,
+"printWidth": 100,
+"tabWidth": 2,
+"trailingComma": "all",
+"bracketSpacing": true,
+"arrowParens": "always",
+"plugins": [
+"@trivago/prettier-plugin-sort-imports",
+"prettier-plugin-tailwindcss"
+]
+}
+
+Use Next.js recommended ESLint config:
+
+next/core-web-vitals
+
+Do not override Next.js ESLint rules unless necessary.
+
+Maintain Tailwind class sorting via plugin.
+
+---
+
+General Principle
+
+Prefer simple and readable solutions over premature optimization.
