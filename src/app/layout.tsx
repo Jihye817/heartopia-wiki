@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Header } from "./_components/header";
 import { Footer } from "./_components/footer";
+import { Analytics } from "@vercel/analytics/next";
 
 const pretendard = localFont({
   src: "../fonts/PretendardVariable.woff2",
@@ -13,6 +14,9 @@ const pretendard = localFont({
 export const metadata: Metadata = {
   title: "Heartopia Wiki",
   description: "두근두근타운 정보 위키 - 원예, 채집, 동물, 요리 공략",
+  icons: {
+    icon: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌸</text></svg>",
+  },
 };
 
 export default function RootLayout({
@@ -33,6 +37,7 @@ export default function RootLayout({
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          <Analytics />
         </div>
       </body>
     </html>
