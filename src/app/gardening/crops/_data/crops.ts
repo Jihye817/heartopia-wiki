@@ -74,7 +74,7 @@ export const CROPS: Crop[] = [
     ko: "토마토",
     level: 1,
     season: "일상",
-    growTime: "8시간",
+    growTime: "15분",
   },
   {
     id: "potato",
@@ -84,7 +84,7 @@ export const CROPS: Crop[] = [
     ko: "감자",
     level: 1,
     season: "일상",
-    growTime: "8시간",
+    growTime: "1시간",
   },
   {
     id: "wheat",
@@ -94,7 +94,7 @@ export const CROPS: Crop[] = [
     ko: "밀",
     level: 2,
     season: "일상",
-    growTime: "10시간",
+    growTime: "4시간",
   },
   {
     id: "lettuce",
@@ -104,7 +104,7 @@ export const CROPS: Crop[] = [
     ko: "양상추",
     level: 3,
     season: "일상",
-    growTime: "12시간",
+    growTime: "8시간",
   },
   {
     id: "pineapple",
@@ -114,7 +114,7 @@ export const CROPS: Crop[] = [
     ko: "파인애플",
     level: 4,
     season: "일상",
-    growTime: "24시간",
+    growTime: "30분",
   },
   {
     id: "carrot",
@@ -124,7 +124,7 @@ export const CROPS: Crop[] = [
     ko: "당근",
     level: 5,
     season: "일상",
-    growTime: "14시간",
+    growTime: "2시간",
   },
   {
     id: "strawberry",
@@ -134,7 +134,7 @@ export const CROPS: Crop[] = [
     ko: "딸기",
     level: 6,
     season: "일상",
-    growTime: "16시간",
+    growTime: "6시간",
   },
   {
     id: "corn",
@@ -144,7 +144,7 @@ export const CROPS: Crop[] = [
     ko: "옥수수",
     level: 6,
     season: "일상",
-    growTime: "16시간",
+    growTime: "12시간",
   },
   {
     id: "grape",
@@ -154,7 +154,7 @@ export const CROPS: Crop[] = [
     ko: "포도",
     level: 7,
     season: "일상",
-    growTime: "20시간",
+    growTime: "10시간",
   },
   {
     id: "eggplant",
@@ -164,7 +164,7 @@ export const CROPS: Crop[] = [
     ko: "가지",
     level: 8,
     season: "일상",
-    growTime: "18시간",
+    growTime: "7시간",
   },
 ];
 
