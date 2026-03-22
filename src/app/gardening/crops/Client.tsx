@@ -94,6 +94,16 @@ function CropCard({ crop }: CropCardProps) {
         >
           원예 Lv.{crop.level}
         </span>
+        <span
+          className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+          style={{
+            background: "rgba(179,229,204,0.35)",
+            color: "#15803d",
+            borderColor: "rgba(126,203,170,0.55)",
+          }}
+        >
+          {crop.growTime}
+        </span>
       </div>
     </Link>
   );

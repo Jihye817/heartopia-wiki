@@ -9,6 +9,7 @@ export interface Crop {
   desc?: string;
   level: number;
   season: string;
+  growTime: string;
 }
 
 /** 작물은 색상 구분 없이 성급(1~5)만 존재한다. 성급별 이미지는 없고 썸네일만 쓴다. */
@@ -21,7 +22,6 @@ export interface CropDetail extends Crop {
   thumbnail: string;
   sellMin: number;
   sellMax: number;
-  growTime: string;
   grades: CropGrade[];
   seedCost: number;
   seedNPC: string;
@@ -74,6 +74,7 @@ export const CROPS: Crop[] = [
     ko: "토마토",
     level: 1,
     season: "일상",
+    growTime: "8시간",
   },
   {
     id: "potato",
@@ -83,6 +84,7 @@ export const CROPS: Crop[] = [
     ko: "감자",
     level: 1,
     season: "일상",
+    growTime: "8시간",
   },
   {
     id: "wheat",
@@ -92,6 +94,7 @@ export const CROPS: Crop[] = [
     ko: "밀",
     level: 2,
     season: "일상",
+    growTime: "10시간",
   },
   {
     id: "lettuce",
@@ -101,6 +104,7 @@ export const CROPS: Crop[] = [
     ko: "양상추",
     level: 3,
     season: "일상",
+    growTime: "12시간",
   },
   {
     id: "pineapple",
@@ -110,6 +114,7 @@ export const CROPS: Crop[] = [
     ko: "파인애플",
     level: 4,
     season: "일상",
+    growTime: "24시간",
   },
   {
     id: "carrot",
@@ -119,6 +124,7 @@ export const CROPS: Crop[] = [
     ko: "당근",
     level: 5,
     season: "일상",
+    growTime: "14시간",
   },
   {
     id: "strawberry",
@@ -128,6 +134,7 @@ export const CROPS: Crop[] = [
     ko: "딸기",
     level: 6,
     season: "일상",
+    growTime: "16시간",
   },
   {
     id: "corn",
@@ -137,6 +144,7 @@ export const CROPS: Crop[] = [
     ko: "옥수수",
     level: 6,
     season: "일상",
+    growTime: "16시간",
   },
   {
     id: "grape",
@@ -146,6 +154,7 @@ export const CROPS: Crop[] = [
     ko: "포도",
     level: 7,
     season: "일상",
+    growTime: "20시간",
   },
   {
     id: "eggplant",
@@ -155,6 +164,7 @@ export const CROPS: Crop[] = [
     ko: "가지",
     level: 8,
     season: "일상",
+    growTime: "18시간",
   },
 ];
 
@@ -172,70 +182,60 @@ export const CROP_DETAILS: Record<string, CropDetail> = {
   tomato: {
     ...findCrop("tomato"),
     ...gradesWithBookendRange(30, 40, 50, 60, 90),
-    growTime: "8시간",
     seedCost: 10,
     seedNPC: "블랑코",
   },
   potato: {
     ...findCrop("potato"),
     ...gradesWithBookendRange(90, 120, 150, 180, 270),
-    growTime: "8시간",
     seedCost: 30,
     seedNPC: "블랑코",
   },
   wheat: {
     ...findCrop("wheat"),
     ...gradesWithBookendRange(285, 381, 475, 570, 855),
-    growTime: "10시간",
     seedCost: 95,
     seedNPC: "블랑코",
   },
   lettuce: {
     ...findCrop("lettuce"),
     ...gradesWithBookendRange(435, 582, 726, 870, 1305),
-    growTime: "12시간",
     seedCost: 145,
     seedNPC: "블랑코",
   },
   pineapple: {
     ...findCrop("pineapple"),
     ...gradesWithBookendRange(52, 69, 86, 104, 156),
-    growTime: "24시간",
     seedCost: 15,
     seedNPC: "블랑코",
   },
   carrot: {
     ...findCrop("carrot"),
     ...gradesWithBookendRange(155, 207, 258, 310, 465),
-    growTime: "14시간",
     seedCost: 50,
     seedNPC: "블랑코",
   },
   strawberry: {
     ...findCrop("strawberry"),
     ...gradesWithBookendRange(375, 502, 626, 750, 1125),
-    growTime: "16시간",
     seedCost: 125,
     seedNPC: "블랑코",
   },
   corn: {
     ...findCrop("corn"),
     ...gradesWithBookendRange(515, 690, 860, 1030, 1545),
-    growTime: "16시간",
     seedCost: 170,
     seedNPC: "블랑코",
   },
   grape: {
     ...findCrop("grape"),
     ...gradesWithBookendRange(480, 643, 801, 960, 1440),
-    growTime: "20시간",
     seedCost: 160,
     seedNPC: "블랑코",
   },
   eggplant: {
     ...findCrop("eggplant"),
     ...gradesWithBookendRange(406, 544, 677, 812, 1218),
-    growTime: "18시간",
     seedCost: 135,
     seedNPC: "블랑코",
   },
