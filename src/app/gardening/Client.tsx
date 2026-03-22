@@ -66,7 +66,7 @@ export function GardeningClient({ subcategories }: GardeningClientProps) {
               { label: "🌸 꽃 교배", style: "text-rose-500 border-rose-200" },
               {
                 label: "🌾 작물 재배",
-                style: "text-emerald-600 border-emerald-200",
+                style: "text-emerald-600 border-[#b3e5cc]",
               },
             ].map(({ label, style }) => (
               <span
@@ -108,11 +108,10 @@ export function GardeningClient({ subcategories }: GardeningClientProps) {
         >
           {subcategories.map((cat) => {
             const isHovered = hovered === cat.href;
-            const isCrops = cat.href === "/gardening/crops";
             return (
               <Link
                 key={cat.href}
-                href={isCrops ? "#" : cat.href}
+                href={cat.href}
                 className="group relative flex flex-col overflow-hidden rounded-[20px] px-6 pt-7 pb-6 no-underline transition-all duration-300 ease-out"
                 style={{
                   background: isHovered ? cat.bg : "rgba(255,252,254,0.9)",
@@ -126,20 +125,7 @@ export function GardeningClient({ subcategories }: GardeningClientProps) {
                 }}
                 onMouseEnter={() => setHovered(cat.href)}
                 onMouseLeave={() => setHovered(null)}
-                onClick={isCrops ? (e) => e.preventDefault() : undefined}
-                aria-disabled={isCrops}
               >
-                {/* 작물 도감: 호버 시 준비중 메시지 */}
-                {isCrops && isHovered && (
-                  <div
-                    className="absolute inset-0 z-10 flex items-center justify-center rounded-[20px] bg-white backdrop-blur-sm"
-                    aria-live="polite"
-                  >
-                    <span className="text-lg font-bold text-emerald-600">
-                      준비중입니다
-                    </span>
-                  </div>
-                )}
                 {/* Background accent blob */}
                 <div
                   className="absolute -right-2.5 -bottom-2.5 opacity-[0.06] transition-opacity duration-300 group-hover:opacity-[0.1]"

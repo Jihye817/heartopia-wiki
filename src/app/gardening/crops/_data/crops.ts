@@ -98,7 +98,7 @@ export const CROPS: Crop[] = [
     emoji: "🥬",
     thumbnail: "/images/crops/lettuce_big.png",
     name: "Lettuce",
-    ko: "상추",
+    ko: "양상추",
     level: 3,
     season: "일상",
   },

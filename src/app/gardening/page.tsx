@@ -33,17 +33,17 @@ const SUBCATEGORIES = [
     emoji: "🌾",
     tag: {
       label: "작물 도감",
-      style: "bg-emerald-50 text-emerald-700 border-emerald-200",
+      style: "bg-[#eef9f4] text-emerald-800 border-[#b3e5cc]",
     },
     title: "작물 재배",
     desc: "작물을 심고 재배하는 방법과 정보를 확인할 수 있어요. 수확 기간, 판매 가격, 재배 팁을 한눈에 확인하세요.",
     meta: ["🌽 12종", "💰 수익", "🌱 재배 시간"],
-    metaStyle: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    metaStyle: "bg-[#eef9f4] text-emerald-800 border-[#b3e5cc]",
     ctaStyle: "text-emerald-600",
-    color: "#6ee7b7",
-    bg: "#ecfdf5",
-    border: "#a7f3d0",
-    accent: "#059669",
+    color: "#7dceb0",
+    bg: "#eef9f4",
+    border: "#b3e5cc",
+    accent: "#047857",
   },
 ];
 
