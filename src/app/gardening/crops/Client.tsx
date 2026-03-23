@@ -129,7 +129,7 @@ function CropListView({ crops }: CropListViewProps) {
             className="border-b-[1.5px]"
             style={{ borderColor: `rgba(${CROP_TINT},0.4)` }}
           >
-            {["작물 이름", "원예 레벨", "시즌"].map((h) => (
+            {["작물 이름", "원예 레벨", "성장 시간"].map((h) => (
               <th
                 key={h}
                 className="px-4 py-3.5 text-left text-sm font-bold tracking-wider uppercase"
@@ -191,10 +191,14 @@ function CropListView({ crops }: CropListViewProps) {
                   className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
                   <span
-                    className="text-sm font-bold"
-                    style={{ color: "#8a6898" }}
+                    className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                    style={{
+                      background: "rgba(179,229,204,0.35)",
+                      color: "#15803d",
+                      borderColor: "rgba(126,203,170,0.55)",
+                    }}
                   >
-                    {c.season}
+                    {c.growTime}
                   </span>
                 </Link>
               </td>
