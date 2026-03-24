@@ -400,6 +400,7 @@ const CATEGORIES = [
     bg: "#f4f7fa",
     border: "#d8e0e8",
     accent: "#5a6f82",
+    categoryHref: "/others",
     items: [
       {
         label: "생산품",
@@ -445,7 +446,9 @@ export function CategorySection() {
             const Icon = cat.icon;
             const isHovered = hovered === cat.id;
             const isGardening = cat.id === "garden";
-            const showComingSoon = isHovered && !isGardening;
+            const isOtherCollection = cat.id === "other-collection";
+            const showComingSoon =
+              isHovered && !isGardening && !isOtherCollection;
             return (
               <div
                 key={cat.id}
