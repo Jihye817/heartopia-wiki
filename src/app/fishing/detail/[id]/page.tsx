@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const fish = FISHES.find((f) => f.id === id);
   if (!fish) return {};
   return {
-    title: `${fish.ko} | 물고기 도감 | Heartopia Wiki`,
+    title: `${fish.ko} | 물고기 도감`,
     description: `${fish.ko}의 어종, 그림자 크기, 위치, 성급별 판매 가격 정보를 확인할 수 있어요.`,
   };
 }

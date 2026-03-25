@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { OthersClient } from "./Client";
 
 export const metadata: Metadata = {
-  title: "기타 수집 | Heartopia Wiki",
+  title: "기타 수집",
   description:
     "사과, 돌, 나무, 버섯 등 맵에서 채집할 수 있는 생산품 정보를 확인할 수 있어요.",
 };

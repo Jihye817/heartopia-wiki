@@ -10,13 +10,13 @@ export async function generateMetadata({ params }: PageProps) {
 
   if (!product) {
     return {
-      title: "생산품 상세 | Heartopia Wiki",
+      title: "생산품 상세",
       description: "생산품 상세 정보를 확인할 수 있습니다.",
     };
   }
 
   return {
-    title: `${product.ko} | Heartopia Wiki`,
+    title: `${product.ko}`,
     description: `${product.ko}의 채집 장소·리스폰·판매가 정보입니다.`,
   };
 }
