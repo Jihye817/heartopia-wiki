@@ -171,24 +171,30 @@ function BugIcon({
       viewBox="0 0 24 24"
       fill="none"
       stroke={color}
-      strokeWidth="1.8"
+      strokeWidth="1.7"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path
-        d="M12 4c-2 0-3.5 1.5-4 3-1 0-2 .5-2.5 1.5S5 10 5 11.5c0 2 1.5 3.5 3.5 4"
-        fill={color}
-        fillOpacity="0.2"
+      <path d="M10 7 Q8.5 4.5 7 3" />
+      <circle cx="7" cy="3" r="0.7" fill={color} stroke="none" />
+      <path d="M14 7 Q15.5 4.5 17 3" />
+      <circle cx="17" cy="3" r="0.7" fill={color} stroke="none" />
+      <circle cx="12" cy="13" r="6.5" fill={color} fillOpacity="0.16" />
+      <line
+        x1="12"
+        y1="6.5"
+        x2="12"
+        y2="19.5"
+        stroke={color}
+        strokeOpacity="0.3"
+        strokeWidth="1.2"
       />
-      <path
-        d="M12 4c2 0 3.5 1.5 4 3 1 0 2 .5 2.5 1.5S19 10 19 11.5c0 2-1.5 3.5-3.5 4"
-        fill={color}
-        fillOpacity="0.2"
-      />
-      <ellipse cx="12" cy="14" rx="4" ry="3" fill={color} fillOpacity="0.25" />
-      <path d="M8 14h8" />
-      <path d="M9 17l1.5-2" />
-      <path d="M15 17l-1.5-2" />
+      <path d="M5.8 10 L3 8.5" />
+      <path d="M5.5 13 L2.5 13" />
+      <path d="M5.8 16 L3 17.5" />
+      <path d="M18.2 10 L21 8.5" />
+      <path d="M18.5 13 L21.5 13" />
+      <path d="M18.2 16 L21 17.5" />
     </svg>
   );
 }
@@ -207,23 +213,66 @@ function BirdIcon({
       viewBox="0 0 24 24"
       fill="none"
       stroke={color}
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <ellipse
+        cx="11"
+        cy="14"
+        rx="6"
+        ry="4.5"
+        fill={color}
+        fillOpacity="0.16"
+      />
+      <circle cx="17" cy="9.5" r="3" fill={color} fillOpacity="0.2" />
+      <path
+        d="M19.5 9 L22 8.5 L19.8 10.2"
+        fill={color}
+        fillOpacity="0.5"
+        stroke={color}
+        strokeWidth="1.2"
+      />
+      <circle cx="17.8" cy="8.8" r="0.6" fill={color} stroke="none" />
+      <path d="M5.5 13 Q3 13 2 15" />
+      <path d="M5.5 15 Q3 16 2.5 18" />
+    </svg>
+  );
+}
+
+function PouchIcon({
+  size = 24,
+  color = "currentColor",
+}: {
+  size?: number;
+  color?: string;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
       strokeWidth="1.8"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
+      <path d="M9 6 C9 3.5 10 2 12 2 C14 2 15 3.5 15 6" />
       <path
-        d="M16 7c.5-.5 1.5-1 3-1s2.5.5 3 1"
+        d="M6.5 8 Q5.5 8 5 9 L4 19 Q3.8 21 6 21 L18 21 Q20.2 21 20 19 L19 9 Q18.5 8 17.5 8 Z"
         fill={color}
-        fillOpacity="0.2"
+        fillOpacity="0.14"
+        stroke={color}
       />
+      <path d="M10 8 Q12 9.5 14 8" />
+      <circle cx="12" cy="7.5" r="0.7" fill={color} stroke="none" />
       <path
-        d="M16 7c-2 2-4 4-6 5-2 1-4 2-6 1.5"
-        fill={color}
-        fillOpacity="0.15"
+        d="M8 12 Q8 10.5 9.5 10.5"
+        stroke={color}
+        strokeOpacity="0.5"
+        strokeWidth="1.2"
       />
-      <path d="M8 14c-2 0-4-1-5-2.5" />
-      <ellipse cx="12" cy="14" rx="5" ry="4" fill={color} fillOpacity="0.2" />
-      <path d="M14 12l2-2 2 1" />
     </svg>
   );
 }
@@ -342,6 +391,23 @@ const CATEGORIES = [
       },
     ],
   },
+  {
+    id: "other-collection",
+    icon: PouchIcon,
+    title: "기타 수집",
+    subtitle: "Other Collection",
+    color: "#7b8fa3",
+    bg: "#f4f7fa",
+    border: "#d8e0e8",
+    accent: "#5a6f82",
+    categoryHref: "/others",
+    items: [
+      {
+        label: "생산품",
+        href: "/others/products",
+      },
+    ],
+  },
 ] as const;
 
 export function CategorySection() {
@@ -357,7 +423,7 @@ export function CategorySection() {
               style={{ background: "rgba(200,160,200,0.4)" }}
             />
             <span
-              className="text-xs font-bold uppercase tracking-widest"
+              className="text-xs font-bold tracking-widest uppercase"
               style={{ color: "#b080c0", letterSpacing: "0.12em" }}
             >
               CATEGORY
@@ -380,13 +446,15 @@ export function CategorySection() {
             const Icon = cat.icon;
             const isHovered = hovered === cat.id;
             const isGardening = cat.id === "garden";
-            const showComingSoon = isHovered && !isGardening;
+            const isOtherCollection = cat.id === "other-collection";
+            const showComingSoon =
+              isHovered && !isGardening && !isOtherCollection;
             return (
               <div
                 key={cat.id}
                 onMouseEnter={() => setHovered(cat.id)}
                 onMouseLeave={() => setHovered(null)}
-                className="group relative cursor-pointer overflow-hidden rounded-[20px] px-6 pb-6 pt-7 transition-all duration-300 ease-out"
+                className="group relative cursor-pointer overflow-hidden rounded-[20px] px-6 pt-7 pb-6 transition-all duration-300 ease-out"
                 style={{
                   background: isHovered ? cat.bg : "rgba(255,252,254,0.9)",
                   border: `1.5px solid ${
@@ -415,7 +483,7 @@ export function CategorySection() {
                 )}
 
                 <div
-                  className="absolute -bottom-2.5 -right-2.5 transition-opacity duration-300"
+                  className="absolute -right-2.5 -bottom-2.5 transition-opacity duration-300"
                   style={{
                     opacity: isHovered ? 0.08 : 0.04,
                     transform: "scale(2.5) rotate(-10deg)",
@@ -441,7 +509,7 @@ export function CategorySection() {
                     </div>
                     <div className="mb-3.5">
                       <div
-                        className="mb-0.5 text-xl font-bold leading-tight"
+                        className="mb-0.5 text-xl leading-tight font-bold"
                         style={{ color: "#4a3060" }}
                       >
                         {cat.title}
@@ -473,7 +541,7 @@ export function CategorySection() {
                     </div>
                     <div className="mb-3.5">
                       <div
-                        className="mb-0.5 text-xl font-bold leading-tight"
+                        className="mb-0.5 text-xl leading-tight font-bold"
                         style={{ color: "#4a3060" }}
                       >
                         {cat.title}

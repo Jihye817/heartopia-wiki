@@ -9,12 +9,12 @@ export async function generateMetadata({ params }: PageProps) {
   const crop = id ? CROP_DETAILS[id] : null;
   if (!crop) {
     return {
-      title: "작물 상세 | Heartopia Wiki",
+      title: "작물 상세",
       description: "작물 상세 정보를 확인할 수 있습니다.",
     };
   }
   return {
-    title: `${crop.ko} | Heartopia Wiki`,
+    title: `${crop.ko}`,
     description: `${crop.ko}의 재배·판매 정보입니다.`,
   };
 }

@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { label: "곤충 채집", href: undefined },
   { label: "새 관찰", href: undefined },
   { label: "반려동물", href: undefined },
+  { label: "기타 수집", href: "/others" },
   { label: "쿠폰", href: "/coupons" },
 ] as const;
 

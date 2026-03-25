@@ -9,11 +9,11 @@ export async function generateMetadata({ params }: PageProps) {
   const flower = id ? FLOWER_DETAILS[id] : null;
   if (!flower)
     return {
-      title: "꽃 상세 | Heartopia Wiki",
+      title: "꽃 상세",
       description: "꽃 상세 정보를 확인할 수 있습니다.",
     };
   return {
-    title: `${flower.ko} | Heartopia Wiki`,
+    title: `${flower.ko}`,
     description: `${flower.ko}의 상세 정보입니다.`,
   };
 }
