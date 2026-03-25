@@ -1,6 +1,6 @@
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-export type ProductCategory = "mushroom" | "fruit";
+export type ProductCategory = "mushroom" | "fruit" | "wood" | "stone";
 
 export interface Product {
   id: string;
@@ -17,6 +17,7 @@ export interface Product {
     thumbnail3?: string;
   };
   notes?: string;
+  stamina?: number;
 }
 
 // ── Data ─────────────────────────────────────────────────────────────────────
@@ -122,6 +123,7 @@ export const PRODUCTS: Product[] = [
     location: "거주 구역 7 ~ 12",
     respawnTime: "2분",
     sellPrice: 100,
+    stamina: 1,
   },
   {
     id: "orange",
@@ -130,5 +132,6 @@ export const PRODUCTS: Product[] = [
     location: "거주 구역 1 ~ 6",
     respawnTime: "2분",
     sellPrice: 100,
+    stamina: 1,
   },
 ];

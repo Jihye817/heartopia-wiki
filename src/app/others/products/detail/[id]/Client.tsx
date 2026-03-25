@@ -10,11 +10,15 @@ const MAP_PLACEHOLDER_SRC = "/images/others/mushrooms/mushroom_oyster.png";
 const CATEGORY_LABEL: Record<ProductCategory, string> = {
   mushroom: "버섯",
   fruit: "과일",
+  wood: "목재",
+  stone: "석재",
 };
 
 const CATEGORY_EMOJI: Record<ProductCategory, string> = {
   mushroom: "🍄",
   fruit: "🍎",
+  wood: "🪵",
+  stone: "🪨",
 };
 
 const MUSHROOM_TINT = "160, 100, 220";

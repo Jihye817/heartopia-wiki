@@ -11,11 +11,15 @@ import type { Product, ProductCategory } from "./_data/products";
 const CATEGORY_LABEL: Record<ProductCategory, string> = {
   mushroom: "버섯",
   fruit: "과일",
+  wood: "목재",
+  stone: "석재",
 };
 
 const CATEGORY_EMOJI: Record<ProductCategory, string> = {
   mushroom: "🍄",
   fruit: "🍎",
+  wood: "🪵",
+  stone: "🪨",
 };
 
 /** 버섯: 보라 계열 */
@@ -293,6 +297,8 @@ export default function ProductsPageClient({
       all: products.length,
       mushroom: products.filter((p) => p.category === "mushroom").length,
       fruit: products.filter((p) => p.category === "fruit").length,
+      wood: products.filter((p) => p.category === "wood").length,
+      stone: products.filter((p) => p.category === "stone").length,
     };
   }, [products]);
 
