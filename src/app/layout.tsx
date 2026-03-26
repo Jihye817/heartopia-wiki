@@ -12,7 +12,7 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://heartopia-wiki-guide.vercel.app"),
+  metadataBase: new URL("https://heartopia-gamewiki.com"),
   title: {
     default: "Heartopia Wiki | 두근두근타운 위키",
     template: "%s | 두근두근타운 위키",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ko_KR",
-    url: "https://heartopia-wiki-guide.vercel.app",
+    url: "https://heartopia-gamewiki.com",
     siteName: "Heartopia Wiki",
     title: "Heartopia Wiki | 두근두근타운 위키",
     description:

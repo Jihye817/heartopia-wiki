@@ -68,15 +68,24 @@ export function Footer() {
                 카테고리
               </div>
               <div className="flex flex-col gap-2">
-                {CATEGORY_LINKS.map((link) => (
-                  <Link
-                    key={link}
-                    href={CATEGORY_HREF[link] ?? "#"}
-                    className="text-xs text-[rgba(200,170,215,0.7)] no-underline transition-colors hover:text-[rgba(248,200,224,0.95)]"
-                  >
-                    {link}
-                  </Link>
-                ))}
+                {CATEGORY_LINKS.map((link) =>
+                  CATEGORY_HREF[link] ? (
+                    <Link
+                      key={link}
+                      href={CATEGORY_HREF[link]}
+                      className="text-xs text-[rgba(200,170,215,0.7)] no-underline transition-colors hover:text-[rgba(248,200,224,0.95)]"
+                    >
+                      {link}
+                    </Link>
+                  ) : (
+                    <span
+                      key={link}
+                      className="text-xs text-[rgba(200,170,215,0.7)] cursor-not-allowed"
+                    >
+                      {link}
+                    </span>
+                  )
+                )}
               </div>
             </div>
 
