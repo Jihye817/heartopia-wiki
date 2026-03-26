@@ -107,6 +107,7 @@ export const PRODUCTS: Product[] = [
     location: "거주 구역 1 ~ 12",
     respawnTime: "2분",
     sellPrice: 100,
+    thumbnail: "/images/others/fruits/blueberry.png",
   },
   {
     id: "raspberry",
@@ -115,6 +116,7 @@ export const PRODUCTS: Product[] = [
     location: "거주 구역 1 ~ 4",
     respawnTime: "2분",
     sellPrice: 100,
+    thumbnail: "/images/others/fruits/raspberry.png",
   },
   {
     id: "apple",
@@ -124,6 +126,7 @@ export const PRODUCTS: Product[] = [
     respawnTime: "2분",
     sellPrice: 100,
     stamina: 1,
+    thumbnail: "/images/others/fruits/apple.png",
   },
   {
     id: "orange",
@@ -133,5 +136,6 @@ export const PRODUCTS: Product[] = [
     respawnTime: "2분",
     sellPrice: 100,
     stamina: 1,
+    thumbnail: "/images/others/fruits/orange.png",
   },
 ];

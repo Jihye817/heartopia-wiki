@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { LayoutGrid, List, MapPin, Search, Waves } from "lucide-react";
 import type { FishDetail, FishType } from "./_data/fishes";
@@ -11,12 +12,6 @@ import type { FishDetail, FishType } from "./_data/fishes";
 const FISHING_TINT = "126, 200, 227";
 const FISHING_BORDER = "rgba(126,200,227,0.6)";
 const FISHING_BG_HOVER = "#f0faff";
-
-const FISH_TYPE_EMOJI: Record<FishType, string> = {
-  강: "🏞️",
-  호수: "💧",
-  바다: "🌊",
-};
 
 const SHADOW_SIZE_STYLE: Record<string, { bg: string; color: string; border: string }> = {
   소형: { bg: "rgba(230,210,230,0.3)", color: "#8a6898", border: "rgba(200,160,200,0.5)" },
@@ -67,7 +62,7 @@ function FishCard({ fish }: FishCardProps) {
         <span className="text-4xl">🐟</span>
       </div>
 
-      {/* Emoji */}
+      {/* Thumbnail / Emoji */}
       <div
         className="mb-4 inline-flex h-[60px] w-[60px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] text-3xl transition-transform duration-300 group-hover:scale-105"
         style={{
@@ -75,7 +70,17 @@ function FishCard({ fish }: FishCardProps) {
           borderColor: `rgba(${FISHING_TINT},0.4)`,
         }}
       >
-        <span aria-hidden>{fish.emoji}</span>
+        {fish.thumbnail ? (
+          <Image
+            src={fish.thumbnail}
+            alt={fish.ko}
+            width={60}
+            height={60}
+            className="h-4/5 w-4/5 object-contain"
+          />
+        ) : (
+          <span aria-hidden>{fish.emoji}</span>
+        )}
       </div>
 
       {/* Name */}
@@ -177,9 +182,25 @@ function FishListView({ fishes }: FishListViewProps) {
             >
               <td className="px-4 py-3.5">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl" aria-hidden>
-                    {fish.emoji}
-                  </span>
+                  <div
+                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg border-[1.5px]"
+                    style={{
+                      background: `rgba(${FISHING_TINT},0.18)`,
+                      borderColor: `rgba(${FISHING_TINT},0.4)`,
+                    }}
+                  >
+                    {fish.thumbnail ? (
+                      <Image
+                        src={fish.thumbnail}
+                        alt={fish.ko}
+                        width={32}
+                        height={32}
+                        className="h-4/5 w-4/5 object-contain"
+                      />
+                    ) : (
+                      <span className="text-base" aria-hidden>{fish.emoji}</span>
+                    )}
+                  </div>
                   <span
                     className="text-sm font-bold"
                     style={{ color: "#4a3060" }}

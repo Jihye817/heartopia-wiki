@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 import type { FishDetail } from "../../_data/fishes";
@@ -70,7 +71,7 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
           <div className="relative z-10 grid grid-cols-1 gap-8 md:grid-cols-2 md:items-start">
             {/* ── 왼쪽: 기본 정보 + 지도 ──────────────────────────── */}
             <div>
-              {/* Emoji box */}
+              {/* Thumbnail / Emoji box */}
               <div
                 className="mb-4 inline-flex h-[144px] w-[144px] flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] text-7xl"
                 style={{
@@ -78,7 +79,17 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
                   borderColor: `rgba(${FISHING_TINT},0.4)`,
                 }}
               >
-                <span aria-hidden>{fish.emoji}</span>
+                {fish.thumbnail ? (
+                  <Image
+                    src={fish.thumbnail}
+                    alt={fish.ko}
+                    width={120}
+                    height={120}
+                    className="h-4/5 w-4/5 object-contain"
+                  />
+                ) : (
+                  <span aria-hidden>{fish.emoji}</span>
+                )}
               </div>
 
               {/* Name */}
