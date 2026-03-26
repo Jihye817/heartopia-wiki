@@ -4,7 +4,7 @@ import { FLOWERS } from "./gardening/flowers/_data/flowers";
 import { PRODUCTS } from "./others/products/_data/products";
 import { FISHES } from "./fishing/_data/fishes";
 
-const BASE_URL = "https://heartopia-wiki-guide.vercel.app";
+const BASE_URL = "https://heartopia-gamewiki.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // ── 정적 라우트 ──────────────────────────────────────────────
