@@ -18,6 +18,14 @@ const FISH_TYPE_EMOJI: Record<FishType, string> = {
   바다: "🌊",
 };
 
+const SHADOW_SIZE_STYLE: Record<string, { bg: string; color: string; border: string }> = {
+  소형: { bg: "rgba(230,210,230,0.3)", color: "#8a6898", border: "rgba(200,160,200,0.5)" },
+  중형: { bg: "rgba(230,210,230,0.3)", color: "#8a6898", border: "rgba(200,160,200,0.5)" },
+  대형: { bg: "rgba(230,210,230,0.3)", color: "#8a6898", border: "rgba(200,160,200,0.5)" },
+  파랑: { bg: "rgba(186,230,253,0.4)", color: "#0284c7", border: "rgba(125,211,252,0.6)" },
+  금색: { bg: "rgba(254,243,199,0.5)", color: "#b45309", border: "rgba(252,211,77,0.6)" },
+};
+
 // ── Subcomponents ──────────────────────────────────────────────────────────────
 
 interface FishCardProps {
@@ -104,12 +112,12 @@ function FishCard({ fish }: FishCardProps) {
           <span
             className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
             style={{
-              background: `rgba(${FISHING_TINT},0.2)`,
-              color: "#4a9bbf",
-              borderColor: `rgba(${FISHING_TINT},0.45)`,
+              background: SHADOW_SIZE_STYLE[fish.shadowSize]?.bg ?? "rgba(230,210,230,0.3)",
+              color: SHADOW_SIZE_STYLE[fish.shadowSize]?.color ?? "#8a6898",
+              borderColor: SHADOW_SIZE_STYLE[fish.shadowSize]?.border ?? "rgba(200,160,200,0.5)",
             }}
           >
-            {fish.shadowSize}
+            그림자 : {fish.shadowSize}
           </span>
         </div>
         <div>
@@ -150,7 +158,7 @@ function FishListView({ fishes }: FishListViewProps) {
             className="border-b-[1.5px]"
             style={{ borderColor: `rgba(${FISHING_TINT},0.4)` }}
           >
-            {["이름", "어종", "그림자", "위치", "1성 ~ 5성 가격"].map((h) => (
+            {["이름", "레벨", "어종", "그림자", "위치", "1성 ~ 5성 가격"].map((h) => (
               <th
                 key={h}
                 className="px-4 py-3.5 text-left text-sm font-bold tracking-wider uppercase"
@@ -184,16 +192,37 @@ function FishListView({ fishes }: FishListViewProps) {
                 <span
                   className="rounded-full border px-2.5 py-1 text-sm font-bold"
                   style={{
+                    background: "rgba(189,222,255,0.3)",
+                    color: "#0284c7",
+                    borderColor: "rgba(189,222,255,0.6)",
+                  }}
+                >
+                  Lv.{fish.level}
+                </span>
+              </td>
+              <td className="px-4 py-3.5">
+                <span
+                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                  style={{
                     background: `rgba(${FISHING_TINT},0.2)`,
                     color: "#4a9bbf",
                     borderColor: `rgba(${FISHING_TINT},0.45)`,
                   }}
                 >
-                  {FISH_TYPE_EMOJI[fish.fishType]} {fish.fishType}
+                  {fish.fishType}
                 </span>
               </td>
-              <td className="px-4 py-3.5 text-sm" style={{ color: "#6b4a7a" }}>
-                {fish.shadowSize}
+              <td className="px-4 py-3.5">
+                <span
+                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                  style={{
+                    background: SHADOW_SIZE_STYLE[fish.shadowSize]?.bg ?? "rgba(230,210,230,0.3)",
+                    color: SHADOW_SIZE_STYLE[fish.shadowSize]?.color ?? "#6b4a7a",
+                    borderColor: SHADOW_SIZE_STYLE[fish.shadowSize]?.border ?? "rgba(230,210,230,0.6)",
+                  }}
+                >
+                  {fish.shadowSize}
+                </span>
               </td>
               <td className="px-4 py-3.5">
                 <span
