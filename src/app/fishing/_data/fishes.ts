@@ -5,7 +5,7 @@ export type FishType = "강" | "호수" | "바다";
 export interface Fish {
   id: string;
   emoji: string;
-  thumbnail: string;
+  thumbnail?: string;
   name: string;
   ko: string;
   desc?: string;
@@ -46,7 +46,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "freshwater-bass",
     emoji: "🐟",
-    thumbnail: "/images/fishing/freshwater-bass.png",
+    // thumbnail: "/images/fishes/freshwater-bass.png",
     name: "Freshwater Bass",
     ko: "민물배스",
     level: 1,
@@ -62,7 +62,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "sky-loach",
     emoji: "🐟",
-    thumbnail: "/images/fishing/sky-loach.png",
+    thumbnail: "/images/fishes/sky_loach.png",
     name: "Sky Loach",
     ko: "하늘종개",
     level: 1,
@@ -78,7 +78,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "barbel",
     emoji: "🐟",
-    thumbnail: "/images/fishing/barbel.png",
+    // thumbnail: "/images/fishes/barbel.png",
     name: "Barbel",
     ko: "바벨",
     level: 1,
@@ -94,7 +94,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "largemouth-bass",
     emoji: "🐟",
-    thumbnail: "/images/fishing/largemouth-bass.png",
+    // thumbnail: "/images/fishes/largemouth-bass.png",
     name: "Largemouth Bass",
     ko: "큰얼룩배스",
     level: 1,
@@ -110,7 +110,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "minnow",
     emoji: "🐟",
-    thumbnail: "/images/fishing/minnow.png",
+    // thumbnail: "/images/fishes/minnow.png",
     name: "Minnow",
     ko: "미노우",
     level: 1,
@@ -126,7 +126,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "giant-shrimp",
     emoji: "🦐",
-    thumbnail: "/images/fishing/giant-shrimp.png",
+    // thumbnail: "/images/fishes/giant-shrimp.png",
     name: "Giant Shrimp",
     ko: "왕새우",
     level: 1,
@@ -144,7 +144,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "european-frog",
     emoji: "🐸",
-    thumbnail: "/images/fishing/european-frog.png",
+    // thumbnail: "/images/fishes/european-frog.png",
     name: "European Frog",
     ko: "유럽참개구리",
     level: 1,
@@ -160,7 +160,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "european-chub",
     emoji: "🐟",
-    thumbnail: "/images/fishing/european-chub.png",
+    // thumbnail: "/images/fishes/european-chub.png",
     name: "European Chub",
     ko: "유럽처브",
     level: 1,
@@ -176,7 +176,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "tench",
     emoji: "🐟",
-    thumbnail: "/images/fishing/tench.png",
+    // thumbnail: "/images/fishes/tench.png",
     name: "Tench",
     ko: "텐치",
     level: 1,
@@ -192,7 +192,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "arctic-salmon",
     emoji: "🐟",
-    thumbnail: "/images/fishing/arctic-salmon.png",
+    // thumbnail: "/images/fishes/arctic-salmon.png",
     name: "Arctic Salmon",
     ko: "극지연어",
     level: 1,
@@ -208,7 +208,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "crucian-carp",
     emoji: "🐟",
-    thumbnail: "/images/fishing/crucian-carp.png",
+    // thumbnail: "/images/fishes/crucian-carp.png",
     name: "Crucian Carp",
     ko: "붕어",
     level: 1,
@@ -224,7 +224,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "european-bleak",
     emoji: "🐟",
-    thumbnail: "/images/fishing/european-bleak.png",
+    // thumbnail: "/images/fishes/european-bleak.png",
     name: "European Bleak",
     ko: "유럽백조어",
     level: 1,
@@ -240,7 +240,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "bleak",
     emoji: "🐟",
-    thumbnail: "/images/fishing/bleak.png",
+    // thumbnail: "/images/fishes/bleak.png",
     name: "Bleak",
     ko: "백조어",
     level: 1,
@@ -258,7 +258,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "sea-bass",
     emoji: "🐟",
-    thumbnail: "/images/fishing/sea-bass.png",
+    thumbnail: "/images/fishes/sea_bass.png",
     name: "Sea Bass",
     ko: "배스",
     level: 1,
@@ -274,7 +274,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "skipjack-tuna",
     emoji: "🐟",
-    thumbnail: "/images/fishing/skipjack-tuna.png",
+    // thumbnail: "/images/fishes/skipjack-tuna.png",
     name: "Skipjack Tuna",
     ko: "가다랑어",
     level: 1,
@@ -290,7 +290,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "hairtail",
     emoji: "🐟",
-    thumbnail: "/images/fishing/hairtail.png",
+    // thumbnail: "/images/fishes/hairtail.png",
     name: "Hairtail",
     ko: "갈치",
     level: 1,
@@ -306,7 +306,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "sea-shrimp",
     emoji: "🦐",
-    thumbnail: "/images/fishing/sea-shrimp.png",
+    // thumbnail: "/images/fishes/sea-shrimp.png",
     name: "Sea Shrimp",
     ko: "바다새우",
     level: 1,
@@ -322,7 +322,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "horse-mackerel",
     emoji: "🐟",
-    thumbnail: "/images/fishing/horse-mackerel.png",
+    // thumbnail: "/images/fishes/horse-mackerel.png",
     name: "Horse Mackerel",
     ko: "전갱이",
     level: 1,
@@ -340,7 +340,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "stone-minnow",
     emoji: "🐟",
-    thumbnail: "/images/fishing/stone-minnow.png",
+    // thumbnail: "/images/fishes/stone-minnow.png",
     name: "Stone Minnow",
     ko: "돌마자",
     level: 2,
@@ -356,7 +356,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "mud-sunfish",
     emoji: "🐟",
-    thumbnail: "/images/fishing/mud-sunfish.png",
+    // thumbnail: "/images/fishes/mud-sunfish.png",
     name: "Mud Sunfish",
     ko: "머드개복치",
     level: 2,
@@ -372,7 +372,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "sea-smelt",
     emoji: "🐟",
-    thumbnail: "/images/fishing/sea-smelt.png",
+    // thumbnail: "/images/fishes/sea-smelt.png",
     name: "Sea Smelt",
     ko: "바다빙어",
     level: 2,
@@ -388,7 +388,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "plum-bass",
     emoji: "🐟",
-    thumbnail: "/images/fishing/plum-bass.png",
+    // thumbnail: "/images/fishes/plum-bass.png",
     name: "Plum Bass",
     ko: "매화농어",
     level: 2,
@@ -406,7 +406,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "atlantic-silver-shark",
     emoji: "🦈",
-    thumbnail: "/images/fishing/atlantic-silver-shark.png",
+    // thumbnail: "/images/fishes/atlantic-silver-shark.png",
     name: "Atlantic Silver Shark",
     ko: "대서양은상어",
     level: 2,
@@ -422,7 +422,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "sea-stickleback",
     emoji: "🐟",
-    thumbnail: "/images/fishing/sea-stickleback.png",
+    // thumbnail: "/images/fishes/sea-stickleback.png",
     name: "Sea Stickleback",
     ko: "바다가시고기",
     level: 2,
@@ -438,7 +438,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "yellow-goatfish",
     emoji: "🐟",
-    thumbnail: "/images/fishing/yellow-goatfish.png",
+    // thumbnail: "/images/fishes/yellow-goatfish.png",
     name: "Yellow Goatfish",
     ko: "노랑촉수",
     level: 2,
@@ -456,7 +456,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "freshwater-zander",
     emoji: "🐟",
-    thumbnail: "/images/fishing/freshwater-zander.png",
+    // thumbnail: "/images/fishes/freshwater-zander.png",
     name: "Freshwater Zander",
     ko: "민물잰더",
     level: 3,
@@ -474,7 +474,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "mussel",
     emoji: "🐚",
-    thumbnail: "/images/fishing/mussel.png",
+    thumbnail: "/images/fishes/mussel.png",
     name: "Mussel",
     ko: "홍합",
     level: 3,
@@ -490,7 +490,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "tadpole",
     emoji: "🐸",
-    thumbnail: "/images/fishing/tadpole.png",
+    // thumbnail: "/images/fishes/tadpole.png",
     name: "Tadpole",
     ko: "올챙이",
     level: 3,
@@ -506,7 +506,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "european-crayfish",
     emoji: "🦞",
-    thumbnail: "/images/fishing/european-crayfish.png",
+    // thumbnail: "/images/fishes/european-crayfish.png",
     name: "European Crayfish",
     ko: "유럽민물가재",
     level: 3,
@@ -524,7 +524,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "yellow-scad",
     emoji: "🐟",
-    thumbnail: "/images/fishing/yellow-scad.png",
+    // thumbnail: "/images/fishes/yellow-scad.png",
     name: "Yellow Scad",
     ko: "노란전갱이",
     level: 3,
@@ -540,7 +540,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "seahorse",
     emoji: "🐟",
-    thumbnail: "/images/fishing/seahorse.png",
+    thumbnail: "/images/fishes/seahorse.png",
     name: "Seahorse",
     ko: "해마",
     level: 3,
@@ -556,7 +556,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "monkfish",
     emoji: "🐟",
-    thumbnail: "/images/fishing/monkfish.png",
+    // thumbnail: "/images/fishes/monkfish.png",
     name: "Monkfish",
     ko: "아귀",
     level: 3,
@@ -572,7 +572,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "hermit-crab",
     emoji: "🦀",
-    thumbnail: "/images/fishing/hermit-crab.png",
+    // thumbnail: "/images/fishes/hermit-crab.png",
     name: "Hermit Crab",
     ko: "소라게",
     level: 3,
@@ -588,7 +588,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "clownfish",
     emoji: "🐟",
-    thumbnail: "/images/fishing/clownfish.png",
+    thumbnail: "/images/fishes/clownfish.png",
     name: "Clownfish",
     ko: "흰동가리",
     level: 3,
@@ -606,7 +606,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "european-carp",
     emoji: "🐟",
-    thumbnail: "/images/fishing/european-carp.png",
+    // thumbnail: "/images/fishes/european-carp.png",
     name: "European Carp",
     ko: "유럽잉어",
     level: 4,
@@ -622,7 +622,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "freshwater-cod",
     emoji: "🐟",
-    thumbnail: "/images/fishing/freshwater-cod.png",
+    // thumbnail: "/images/fishes/freshwater-cod.png",
     name: "Freshwater Cod",
     ko: "민물대구",
     level: 4,
@@ -638,7 +638,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "piranha",
     emoji: "🐟",
-    thumbnail: "/images/fishing/piranha.png",
+    // thumbnail: "/images/fishes/piranha.png",
     name: "Piranha",
     ko: "레드밸리피라냐",
     level: 4,
@@ -656,7 +656,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "bigmouth-bass",
     emoji: "🐟",
-    thumbnail: "/images/fishing/bigmouth-bass.png",
+    thumbnail: "/images/fishes/bigmouth_bass.png",
     name: "Bigmouth Bass",
     ko: "큰입배스",
     level: 4,
@@ -672,7 +672,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "freshwater-crab",
     emoji: "🦀",
-    thumbnail: "/images/fishing/freshwater-crab.png",
+    // thumbnail: "/images/fishes/freshwater-crab.png",
     name: "Freshwater Crab",
     ko: "민물게",
     level: 4,
@@ -688,7 +688,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "butterfly-carp",
     emoji: "🐟",
-    thumbnail: "/images/fishing/butterfly-carp.png",
+    // thumbnail: "/images/fishes/butterfly-carp.png",
     name: "Butterfly Carp",
     ko: "나비잉어",
     level: 4,
@@ -706,7 +706,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "goby",
     emoji: "🐟",
-    thumbnail: "/images/fishing/goby.png",
+    // thumbnail: "/images/fishes/goby.png",
     name: "Goby",
     ko: "망둥어",
     level: 4,
@@ -722,7 +722,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "common-octopus",
     emoji: "🐙",
-    thumbnail: "/images/fishing/common-octopus.png",
+    // thumbnail: "/images/fishes/common-octopus.png",
     name: "Common Octopus",
     ko: "참문어",
     level: 4,
@@ -738,7 +738,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "atlantic-salmon",
     emoji: "🐟",
-    thumbnail: "/images/fishing/atlantic-salmon.png",
+    // thumbnail: "/images/fishes/atlantic-salmon.png",
     name: "Atlantic Salmon",
     ko: "대서양연어",
     level: 4,
@@ -754,7 +754,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "giant-halibut",
     emoji: "🐟",
-    thumbnail: "/images/fishing/giant-halibut.png",
+    // thumbnail: "/images/fishes/giant-halibut.png",
     name: "Giant Halibut",
     ko: "대문짝넙치",
     level: 4,
@@ -770,7 +770,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "atlantic-pygmy-octopus",
     emoji: "🐙",
-    thumbnail: "/images/fishing/atlantic-pygmy-octopus.png",
+    // thumbnail: "/images/fishes/atlantic-pygmy-octopus.png",
     name: "Atlantic Pygmy Octopus",
     ko: "대서양난쟁이문어",
     level: 4,
@@ -788,7 +788,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "freshwater-blenny",
     emoji: "🐟",
-    thumbnail: "/images/fishing/freshwater-blenny.png",
+    // thumbnail: "/images/fishes/freshwater-blenny.png",
     name: "Freshwater Blenny",
     ko: "민물배도라치",
     level: 5,
@@ -806,7 +806,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "trout",
     emoji: "🐟",
-    thumbnail: "/images/fishing/trout.png",
+    // thumbnail: "/images/fishes/trout.png",
     name: "Trout",
     ko: "송어",
     level: 5,
@@ -822,7 +822,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "rudd",
     emoji: "🐟",
-    thumbnail: "/images/fishing/rudd.png",
+    // thumbnail: "/images/fishes/rudd.png",
     name: "Rudd",
     ko: "루드",
     level: 5,
@@ -840,7 +840,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "atlantic-mackerel",
     emoji: "🐟",
-    thumbnail: "/images/fishing/atlantic-mackerel.png",
+    // thumbnail: "/images/fishes/atlantic-mackerel.png",
     name: "Atlantic Mackerel",
     ko: "대서양고등어",
     level: 5,
@@ -856,7 +856,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "european-lobster",
     emoji: "🦞",
-    thumbnail: "/images/fishing/european-lobster.png",
+    // thumbnail: "/images/fishes/european-lobster.png",
     name: "European Lobster",
     ko: "유럽가재",
     level: 5,
@@ -872,7 +872,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "european-flying-squid",
     emoji: "🦑",
-    thumbnail: "/images/fishing/european-flying-squid.png",
+    thumbnail: "/images/fishes/european_flying_squid.png",
     name: "European Flying Squid",
     ko: "유럽날오징어",
     level: 5,
@@ -890,7 +890,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "chum-salmon",
     emoji: "🐟",
-    thumbnail: "/images/fishing/chum-salmon.png",
+    // thumbnail: "/images/fishes/chum-salmon.png",
     name: "Chum Salmon",
     ko: "첨 연어",
     level: 6,
@@ -908,7 +908,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "giant-freshwater-pearl-mussel",
     emoji: "🐚",
-    thumbnail: "/images/fishing/giant-freshwater-pearl-mussel.png",
+    // thumbnail: "/images/fishes/giant-freshwater-pearl-mussel.png",
     name: "Giant Freshwater Pearl Mussel",
     ko: "큰진주조개",
     level: 6,
@@ -924,7 +924,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "sarugi",
     emoji: "🐟",
-    thumbnail: "/images/fishing/sarugi.png",
+    // thumbnail: "/images/fishes/sarugi.png",
     name: "Sarugi",
     ko: "사루기",
     level: 6,
@@ -942,7 +942,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "pufferfish",
     emoji: "🐡",
-    thumbnail: "/images/fishing/pufferfish.png",
+    // thumbnail: "/images/fishes/pufferfish.png",
     name: "Pufferfish",
     ko: "복어",
     level: 6,
@@ -958,7 +958,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "luminous-roughy",
     emoji: "🐟",
-    thumbnail: "/images/fishing/luminous-roughy.png",
+    // thumbnail: "/images/fishes/luminous-roughy.png",
     name: "Luminous Roughy",
     ko: "등불성대",
     level: 6,
@@ -974,7 +974,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "smallspotted-catshark",
     emoji: "🦈",
-    thumbnail: "/images/fishing/smallspotted-catshark.png",
+    // thumbnail: "/images/fishes/smallspotted-catshark.png",
     name: "Smallspotted Catshark",
     ko: "두툽상어",
     level: 6,
@@ -992,7 +992,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "three-spined-stickleback",
     emoji: "🐟",
-    thumbnail: "/images/fishing/three-spined-stickleback.png",
+    // thumbnail: "/images/fishes/three-spined-stickleback.png",
     name: "Three-spined Stickleback",
     ko: "큰가시고기",
     level: 7,
@@ -1010,7 +1010,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "striped-killifish",
     emoji: "🐟",
-    thumbnail: "/images/fishing/striped-killifish.png",
+    // thumbnail: "/images/fishes/striped-killifish.png",
     name: "Striped Killifish",
     ko: "줄무늬송사리",
     level: 7,
@@ -1026,7 +1026,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "sculpin",
     emoji: "🐟",
-    thumbnail: "/images/fishing/sculpin.png",
+    // thumbnail: "/images/fishes/sculpin.png",
     name: "Sculpin",
     ko: "둑중개",
     level: 7,
@@ -1044,7 +1044,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "oarfish",
     emoji: "🐟",
-    thumbnail: "/images/fishing/oarfish.png",
+    // thumbnail: "/images/fishes/oarfish.png",
     name: "Oarfish",
     ko: "산갈치",
     level: 7,
@@ -1060,7 +1060,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "european-eel",
     emoji: "🐟",
-    thumbnail: "/images/fishing/european-eel.png",
+    // thumbnail: "/images/fishes/european-eel.png",
     name: "European Eel",
     ko: "유럽장어",
     level: 7,
@@ -1076,7 +1076,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "blackspot-seabream",
     emoji: "🐟",
-    thumbnail: "/images/fishing/blackspot-seabream.png",
+    // thumbnail: "/images/fishes/blackspot-seabream.png",
     name: "Blackspot Seabream",
     ko: "검은점돔",
     level: 7,
@@ -1094,7 +1094,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "pearl-fish",
     emoji: "🐟",
-    thumbnail: "/images/fishing/pearl-fish.png",
+    // thumbnail: "/images/fishes/pearl-fish.png",
     name: "Pearl Fish",
     ko: "펄고기",
     level: 8,
@@ -1110,7 +1110,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "northern-blue-crayfish",
     emoji: "🦞",
-    thumbnail: "/images/fishing/northern-blue-crayfish.png",
+    // thumbnail: "/images/fishes/northern-blue-crayfish.png",
     name: "Northern Blue Crayfish",
     ko: "북유럽파란가재",
     level: 8,
@@ -1128,7 +1128,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "golden-king-crab",
     emoji: "🦀",
-    thumbnail: "/images/fishing/golden-king-crab.png",
+    // thumbnail: "/images/fishes/golden-king-crab.png",
     name: "Golden King Crab",
     ko: "황금 킹크랩",
     level: 8,
@@ -1144,7 +1144,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "king-crab",
     emoji: "🦀",
-    thumbnail: "/images/fishing/king-crab.png",
+    // thumbnail: "/images/fishes/king-crab.png",
     name: "King Crab",
     ko: "킹크랩",
     level: 8,
@@ -1160,7 +1160,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "cod",
     emoji: "🐟",
-    thumbnail: "/images/fishing/cod.png",
+    // thumbnail: "/images/fishes/cod.png",
     name: "Cod",
     ko: "대구",
     level: 8,
@@ -1178,7 +1178,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "huchen",
     emoji: "🐟",
-    thumbnail: "/images/fishing/huchen.png",
+    // thumbnail: "/images/fishes/huchen.png",
     name: "Huchen",
     ko: "후첸",
     level: 9,
@@ -1196,7 +1196,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "river-pike",
     emoji: "🐟",
-    thumbnail: "/images/fishing/river-pike.png",
+    // thumbnail: "/images/fishes/river-pike.png",
     name: "River Pike",
     ko: "강꼬치고기",
     level: 9,
@@ -1212,7 +1212,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "pumpkinseed",
     emoji: "🐟",
-    thumbnail: "/images/fishing/pumpkinseed.png",
+    // thumbnail: "/images/fishes/pumpkinseed.png",
     name: "Pumpkinseed",
     ko: "펌프킨시드",
     level: 9,
@@ -1230,7 +1230,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "ocean-sunfish",
     emoji: "🐟",
-    thumbnail: "/images/fishing/ocean-sunfish.png",
+    // thumbnail: "/images/fishes/ocean-sunfish.png",
     name: "Ocean Sunfish",
     ko: "개복치",
     level: 9,
@@ -1246,7 +1246,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "bluefin-tuna",
     emoji: "🐟",
-    thumbnail: "/images/fishing/bluefin-tuna.png",
+    // thumbnail: "/images/fishes/bluefin-tuna.png",
     name: "Bluefin Tuna",
     ko: "참다랑어",
     level: 9,
@@ -1262,7 +1262,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "opah",
     emoji: "🐟",
-    thumbnail: "/images/fishing/opah.png",
+    // thumbnail: "/images/fishes/opah.png",
     name: "Opah",
     ko: "붉은개복치",
     level: 9,
@@ -1280,7 +1280,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "arctic-char",
     emoji: "🐟",
-    thumbnail: "/images/fishing/arctic-char.png",
+    // thumbnail: "/images/fishes/arctic-char.png",
     name: "Arctic Char",
     ko: "북극곤들매기",
     level: 10,
@@ -1296,7 +1296,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "european-catfish",
     emoji: "🐟",
-    thumbnail: "/images/fishing/european-catfish.png",
+    // thumbnail: "/images/fishes/european-catfish.png",
     name: "European Catfish",
     ko: "유럽메기",
     level: 10,
@@ -1312,7 +1312,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "bluegill",
     emoji: "🐟",
-    thumbnail: "/images/fishing/bluegill.png",
+    // thumbnail: "/images/fishes/bluegill.png",
     name: "Bluegill",
     ko: "블루길",
     level: 10,
@@ -1330,7 +1330,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "swordfish",
     emoji: "🐟",
-    thumbnail: "/images/fishing/swordfish.png",
+    // thumbnail: "/images/fishes/swordfish.png",
     name: "Swordfish",
     ko: "황새치",
     level: 10,
@@ -1346,7 +1346,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "hammerhead-shark",
     emoji: "🦈",
-    thumbnail: "/images/fishing/hammerhead-shark.png",
+    // thumbnail: "/images/fishes/hammerhead-shark.png",
     name: "Hammerhead Shark",
     ko: "귀상어",
     level: 10,
@@ -1362,7 +1362,7 @@ export const FISHES: FishDetail[] = [
   {
     id: "mako-shark",
     emoji: "🦈",
-    thumbnail: "/images/fishing/mako-shark.png",
+    // thumbnail: "/images/fishes/mako-shark.png",
     name: "Mako Shark",
     ko: "청상아리",
     level: 10,
