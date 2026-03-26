@@ -299,13 +299,6 @@ export default function ProductDetailClient({
               >
                 🗺️ 채집 지도
               </div>
-              <p
-                className="mb-4 text-xs leading-relaxed md:text-sm"
-                style={{ color: "rgba(138,104,152,0.85)" }}
-              >
-                실제 맵 이미지가 들어갈 영역이에요. 현재는 안내용으로 버섯
-                일러스트를 표시합니다.
-              </p>
               <div
                 className="relative flex min-h-[220px] flex-1 items-center justify-center overflow-hidden rounded-xl border-[1.5px] md:min-h-[280px]"
                 style={{
@@ -314,20 +307,12 @@ export default function ProductDetailClient({
                   borderColor: "rgba(230,210,230,0.55)",
                 }}
               >
-                <div
-                  className="pointer-events-none absolute inset-0 opacity-[0.07]"
-                  style={{
-                    backgroundImage: `radial-gradient(circle at 30% 20%, rgba(${tint},0.5) 0%, transparent 45%)`,
-                  }}
-                  aria-hidden
-                />
-                <Image
-                  src={MAP_PLACEHOLDER_SRC}
-                  alt="채집 지도 플레이스홀더 (버섯 일러스트)"
-                  width={280}
-                  height={280}
-                  className="relative z-[1] max-h-[min(52vw,260px)] w-auto object-contain drop-shadow-md md:max-h-[300px]"
-                />
+                <span
+                  className="text-sm font-bold"
+                  style={{ color: "rgba(138,104,152,0.6)" }}
+                >
+                  준비중입니다
+                </span>
               </div>
             </div>
           </div>

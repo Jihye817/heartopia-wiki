@@ -332,10 +332,11 @@ const CATEGORIES = [
     bg: "#f0faff",
     border: "#c8e8f8",
     accent: "#4a9bbf",
+    categoryHref: "/fishing",
     items: [
       {
         label: "물고기 도감",
-        href: "/fishing/fish-encyclopedia",
+        href: "/fishing",
       },
     ],
   },
@@ -445,10 +446,8 @@ export function CategorySection() {
           {CATEGORIES.map((cat) => {
             const Icon = cat.icon;
             const isHovered = hovered === cat.id;
-            const isGardening = cat.id === "garden";
-            const isOtherCollection = cat.id === "other-collection";
             const showComingSoon =
-              isHovered && !isGardening && !isOtherCollection;
+              isHovered && !("categoryHref" in cat && cat.categoryHref);
             return (
               <div
                 key={cat.id}

@@ -273,12 +273,17 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
                     }}
                     aria-hidden
                   />
-                  <span
-                    className="relative z-[1] text-7xl drop-shadow-md"
-                    aria-hidden
-                  >
-                    🎣
-                  </span>
+                  <div className="relative z-[1] flex flex-col items-center gap-2">
+                    <span className="text-7xl drop-shadow-md" aria-hidden>
+                      🎣
+                    </span>
+                    <span
+                      className="text-sm font-bold"
+                      style={{ color: "rgba(138,104,152,0.6)" }}
+                    >
+                      준비중입니다
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
