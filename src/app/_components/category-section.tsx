@@ -308,19 +308,20 @@ const CATEGORIES = [
     bg: "#fff8f0",
     border: "#fde0c8",
     accent: "#d47840",
+    categoryHref: "/cooking",
     items: [
-      {
-        label: "재료 계산기",
-        href: "/cooking/ingredient-calculator",
-      },
-      {
-        label: "수익 계산기",
-        href: "/cooking/profit-calculator",
-      },
       {
         label: "레시피",
         href: "/cooking/recipes",
       },
+      // {
+      //   label: "재료 계산기 (준비중)",
+      //   href: "/cooking/ingredient-calculator",
+      // },
+      // {
+      //   label: "수익 계산기 (준비중)",
+      //   href: "/cooking/profit-calculator",
+      // },
     ],
   },
   {

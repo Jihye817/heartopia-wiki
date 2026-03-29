@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 
 const NAV_ITEMS = [
   { label: "원예", href: "/gardening" },
-  { label: "요리", href: undefined },
+  { label: "요리", href: "/cooking" },
   { label: "낚시", href: "/fishing" },
   { label: "곤충 채집", href: undefined },
   { label: "새 관찰", href: undefined },
