@@ -62,10 +62,10 @@ export const COUPONS: Coupon[] = [
     createdAt: "2026-03-23",
   },
   {
-    code: "a4k9m7q2r6",
-    expiresAt: "2026-04-01",
+    code: "m5r9q2a7k8",
+    expiresAt: "2026-06-01",
     reward: "⭐️ 소원별 x 3, 🧰 수리 키트 x 5, 🪴 작물 성장제 x 10",
-    createdAt: "2026-03-23",
+    createdAt: "2026-03-30",
   },
 ];
 
