@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getValidCoupons } from "@/data/coupons";
 import { CouponCard } from "./_components/coupon-card";
 
+export const dynamic = "force-dynamic";
+
 // ─────────────────────────────────────────────
 // Decoration
 // ─────────────────────────────────────────────
