@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { LayoutGrid, List, Search, Sparkles } from "lucide-react";
 import type { Flower } from "./_data/flowers";
+
+type SeasonFilter = "all" | "일상" | "이벤트";
 
 // ── Subcomponents ─────────────────────────────────────────────────────────────
 
@@ -100,6 +102,18 @@ function FlowerCard({ flower }: FlowerCardProps) {
         >
           {flower.stages} 종류
         </span>
+        {flower.event && (
+          <span
+            className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+            style={{
+              background: "rgba(255,220,130,0.25)",
+              color: "#9a7020",
+              borderColor: "rgba(255,220,130,0.55)",
+            }}
+          >
+            🎉 {flower.event}
+          </span>
+        )}
       </div>
     </Link>
   );
@@ -125,7 +139,7 @@ function FlowerListView({ flowers }: FlowerListViewProps) {
             className="border-b-[1.5px]"
             style={{ borderColor: "rgba(230,210,230,0.6)" }}
           >
-            {["꽃 이름", "원예 레벨", "종류"].map((h) => (
+            {["꽃 이름", "원예 레벨", "종류", "활동시기"].map((h) => (
               <th
                 key={h}
                 className="px-4 py-3.5 text-left text-sm font-bold tracking-wider uppercase"
@@ -198,6 +212,29 @@ function FlowerListView({ flowers }: FlowerListViewProps) {
                   </span>
                 </Link>
               </td>
+              <td className="p-0">
+                <Link
+                  href={`/gardening/flowers/detail/${f.id}`}
+                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
+                >
+                  {f.event ? (
+                    <span
+                      className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                      style={{
+                        background: "rgba(255,220,130,0.25)",
+                        color: "#9a7020",
+                        borderColor: "rgba(255,220,130,0.55)",
+                      }}
+                    >
+                      이벤트 : {f.event}
+                    </span>
+                  ) : (
+                    <span className="rounded-full border px-2.5 py-1 text-sm font-bold">
+                      {f.season}
+                    </span>
+                  )}
+                </Link>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -215,12 +252,35 @@ interface FlowersPageClientProps {
 export default function FlowersPageClient({ flowers }: FlowersPageClientProps) {
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [search, setSearch] = useState("");
+  const [seasonFilter, setSeasonFilter] = useState<SeasonFilter>("all");
 
-  const filteredFlowers = flowers.filter(
-    (f) =>
-      f.name.toLowerCase().includes(search.toLowerCase()) ||
-      f.ko.includes(search),
-  );
+  const tabCounts = useMemo(() => {
+    return {
+      all: flowers.length,
+      일상: flowers.filter((f) => f.season === "일상").length,
+      이벤트: flowers.filter((f) => f.season === "이벤트").length,
+    };
+  }, [flowers]);
+
+  const filteredFlowers = useMemo(() => {
+    const bySeason =
+      seasonFilter === "all"
+        ? flowers
+        : flowers.filter((f) => f.season === seasonFilter);
+
+    if (!search.trim()) return bySeason;
+
+    const query = search.trim().toLowerCase();
+    return bySeason.filter(
+      (f) => f.name.toLowerCase().includes(query) || f.ko.includes(search),
+    );
+  }, [flowers, seasonFilter, search]);
+
+  const tabs: { id: SeasonFilter; label: string; emoji: string }[] = [
+    { id: "all", label: "전체", emoji: "✨" },
+    { id: "일상", label: "일상", emoji: "🌼" },
+    { id: "이벤트", label: "이벤트", emoji: "🎉" },
+  ];
 
   return (
     <section
@@ -297,6 +357,51 @@ export default function FlowersPageClient({ flowers }: FlowersPageClientProps) {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Season Filter */}
+        <div
+          className="mb-6 flex flex-wrap gap-2"
+          role="tablist"
+          aria-label="시즌 필터"
+        >
+          {tabs.map((tab) => {
+            const isActive = seasonFilter === tab.id;
+            const count = tabCounts[tab.id];
+
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => setSeasonFilter(tab.id)}
+                className="flex items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1.5 text-xs font-bold transition-all md:text-sm"
+                style={{
+                  background: isActive ? "white" : "rgba(255,252,254,0.85)",
+                  borderColor: isActive
+                    ? "rgba(248,164,200,0.55)"
+                    : "rgba(230,210,230,0.6)",
+                  color: isActive ? "#6b4a7a" : "#8a6898",
+                  boxShadow: isActive ? "0 1px 4px rgba(0,0,0,0.05)" : "none",
+                }}
+              >
+                <span aria-hidden>{tab.emoji}</span>
+                {tab.label}
+                <span
+                  className="rounded-full px-1.5 py-0.5 text-[10px] md:text-xs"
+                  style={{
+                    background: isActive
+                      ? "rgba(248,164,200,0.25)"
+                      : "rgba(230,210,230,0.45)",
+                    color: "#6b4a7a",
+                  }}
+                >
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Toolbar */}
