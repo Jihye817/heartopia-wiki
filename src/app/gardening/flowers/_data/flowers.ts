@@ -10,6 +10,7 @@ export interface Flower {
   level: number;
   stages: number;
   season: string;
+  event?: string;
 }
 
 export interface GradeColor {
@@ -168,6 +169,17 @@ export const FLOWERS: Flower[] = [
     level: 10,
     stages: 11,
     season: "일상",
+  },
+  {
+    id: "dandelion",
+    emoji: "🌿",
+    thumbnail: "/images/flowers/dandelion_big.png",
+    name: "Dandelion",
+    ko: "민들레",
+    level: 1,
+    stages: 10,
+    season: "이벤트",
+    event: "꿈의 명암",
   },
 ];
 
@@ -1397,6 +1409,127 @@ export const FLOWER_DETAILS: Record<string, FlowerDetail> = {
             result: ci("rose", "노을빛", 5),
             a: [ci("rose", "파란색", 4), ci("rose", "보라색", 4)],
             b: [ci("rose", "파란색", 4), ci("rose", "보라색", 4)],
+          },
+        ],
+      },
+    ],
+  },
+  dandelion: {
+    id: "dandelion",
+    emoji: "🌼",
+    thumbnail: "/images/flowers/dandelion_big.png",
+    name: "Dandelion",
+    ko: "민들레",
+    desc: "작은 길 울타리 옆의 민들레. 바람에 흩날리는 어린 시절 풍경이다.",
+    level: 1,
+    stages: 10,
+    season: "이벤트",
+    event: "꿈의 명암",
+    sellMin: 0,
+    sellMax: 0,
+    growTime: "24시간",
+    seedCost: 30,
+    seedColors: ["빨간색", "노란색", "흰색"],
+    seedNPC: "블랑코",
+    grades: buildGrades([
+      {
+        color: "빨간색",
+        stars: 1,
+        image: "/images/flowers/dandelion_red.png",
+        sellPrice: 0,
+      },
+      {
+        color: "노란색",
+        stars: 1,
+        image: "/images/flowers/dandelion_yellow.png",
+        sellPrice: 0,
+      },
+      {
+        color: "흰색",
+        stars: 1,
+        image: "/images/flowers/dandelion_white.png",
+        sellPrice: 0,
+      },
+      {
+        color: "분홍색",
+        stars: 2,
+        image: "/images/flowers/dandelion_pink.png",
+        sellPrice: 0,
+      },
+      {
+        color: "주황색",
+        stars: 2,
+        image: "/images/flowers/dandelion_orange.png",
+        sellPrice: 0,
+      },
+      {
+        color: "검은색",
+        stars: 3,
+        image: "/images/flowers/dandelion_black.png",
+        sellPrice: 0,
+      },
+      {
+        color: "연분홍색",
+        stars: 3,
+        image: "/images/flowers/dandelion_ltpink.png",
+        sellPrice: 0,
+      },
+      {
+        color: "보라색",
+        stars: 4,
+        image: "/images/flowers/dandelion_purple.png",
+        sellPrice: 0,
+      },
+      {
+        color: "파란색",
+        stars: 4,
+        image: "/images/flowers/dandelion_blue.png",
+        sellPrice: 0,
+      },
+      {
+        color: "야광",
+        stars: 5,
+        image: "/images/flowers/dandelion_light.png",
+        sellPrice: 0,
+      },
+    ]),
+    cross: [
+      {
+        combinations: [
+          {
+            result: ci("dandelion", "분홍색", 2),
+            a: [ci("dandelion", "빨간색", 1)],
+            b: [ci("dandelion", "흰색", 1)],
+          },
+          {
+            result: ci("dandelion", "주황색", 2),
+            a: [ci("dandelion", "빨간색", 1)],
+            b: [ci("dandelion", "노란색", 1)],
+          },
+          {
+            result: ci("dandelion", "검은색", 3),
+            a: [ci("dandelion", "주황색", 2), ci("dandelion", "분홍색", 2)],
+            b: [ci("dandelion", "주황색", 2), ci("dandelion", "분홍색", 2)],
+          },
+          {
+            result: ci("dandelion", "연분홍색", 3),
+            a: [ci("dandelion", "주황색", 2), ci("dandelion", "분홍색", 2)],
+            b: [ci("dandelion", "주황색", 2), ci("dandelion", "분홍색", 2)],
+          },
+          {
+            result: ci("dandelion", "파란색", 4),
+            a: [ci("dandelion", "검은색", 3), ci("dandelion", "연분홍색", 3)],
+            b: [ci("dandelion", "검은색", 3), ci("dandelion", "연분홍색", 3)],
+          },
+          {
+            result: ci("dandelion", "보라색", 4),
+            a: [ci("dandelion", "검은색", 3), ci("dandelion", "연분홍색", 3)],
+            b: [ci("dandelion", "검은색", 3), ci("dandelion", "연분홍색", 3)],
+          },
+          {
+            result: ci("dandelion", "야광", 5),
+            a: [ci("dandelion", "파란색", 4), ci("dandelion", "보라색", 4)],
+            b: [ci("dandelion", "파란색", 4), ci("dandelion", "보라색", 4)],
           },
         ],
       },
