@@ -212,7 +212,7 @@ export const BIRDS: BirdDetail[] = [
     id: "greater-flamingo",
     emoji: "🦩",
     name: "Greater Flamingo",
-    thumbnail: "/images/birds/grater_flamingo",
+    thumbnail: "/images/birds/greater_flamingo",
     ko: "큰홍학",
     level: 1,
     habitat: "물가",
