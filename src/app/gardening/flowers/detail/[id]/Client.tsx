@@ -406,6 +406,14 @@ export default function FlowerDetailClient({
                           >
                             {g.sellPrice ?? flower.sellMin} G
                           </span>
+                          {flower.season === "이벤트" && g.eventPrice != null && (
+                            <div
+                              className="mt-0.5 text-xs font-bold tabular-nums md:text-sm"
+                              style={{ color: "#7c3aed" }}
+                            >
+                              Ⓔ {g.eventPrice}
+                            </div>
+                          )}
                         </td>
                       </tr>
                     );
