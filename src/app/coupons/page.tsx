@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getValidCoupons } from "@/data/coupons";
 import { CouponCard } from "./_components/coupon-card";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/coupons" },
+};
 
 export const dynamic = "force-dynamic";
 

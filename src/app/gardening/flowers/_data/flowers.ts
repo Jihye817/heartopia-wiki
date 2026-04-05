@@ -22,6 +22,7 @@ export interface GradeColor {
   /** 성급별 꽃 이미지 경로 */
   image?: string;
   sellPrice?: number;
+  eventPrice?: number;
 }
 
 export interface CrossItem {
@@ -222,13 +223,15 @@ function buildGrades(
     stars: number;
     image: string;
     sellPrice?: number;
+    eventPrice?: number;
   }>,
 ): GradeColor[] {
-  return items.map(({ color, stars, image, sellPrice }) => ({
+  return items.map(({ color, stars, image, sellPrice, eventPrice }) => ({
     stars,
     color,
     image,
     sellPrice,
+    eventPrice,
     ...GRADE_COLORS[color],
   }));
 }
@@ -1437,60 +1440,70 @@ export const FLOWER_DETAILS: Record<string, FlowerDetail> = {
         stars: 1,
         image: "/images/flowers/dandelion_red.png",
         sellPrice: 0,
+        eventPrice: 0,
       },
       {
         color: "노란색",
         stars: 1,
         image: "/images/flowers/dandelion_yellow.png",
         sellPrice: 0,
+        eventPrice: 0,
       },
       {
         color: "흰색",
         stars: 1,
         image: "/images/flowers/dandelion_white.png",
         sellPrice: 0,
+        eventPrice: 0,
       },
       {
         color: "분홍색",
         stars: 2,
         image: "/images/flowers/dandelion_pink.png",
         sellPrice: 0,
+        eventPrice: 0,
       },
       {
         color: "주황색",
         stars: 2,
         image: "/images/flowers/dandelion_orange.png",
         sellPrice: 0,
+        eventPrice: 0,
       },
       {
         color: "검은색",
         stars: 3,
         image: "/images/flowers/dandelion_black.png",
         sellPrice: 0,
+        eventPrice: 0,
       },
       {
         color: "연분홍색",
         stars: 3,
         image: "/images/flowers/dandelion_ltpink.png",
         sellPrice: 0,
+        eventPrice: 0,
       },
       {
         color: "보라색",
         stars: 4,
         image: "/images/flowers/dandelion_purple.png",
         sellPrice: 0,
+        eventPrice: 0,
       },
       {
         color: "파란색",
         stars: 4,
         image: "/images/flowers/dandelion_blue.png",
         sellPrice: 0,
+        eventPrice: 0,
       },
       {
         color: "야광",
         stars: 5,
         image: "/images/flowers/dandelion_light.png",
         sellPrice: 0,
+        eventPrice: 0,
       },
     ]),
     cross: [

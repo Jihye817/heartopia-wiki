@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "요리",
   description:
     "두근두근타운 요리 레시피, 재료 계산기, 수익 계산기 정보를 확인할 수 있어요.",
+  alternates: { canonical: "/cooking" },
 };
 
 // ─────────────────────────────────────────────
