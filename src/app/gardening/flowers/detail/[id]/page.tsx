@@ -11,10 +11,12 @@ export async function generateMetadata({ params }: PageProps) {
     return {
       title: "꽃 상세",
       description: "꽃 상세 정보를 확인할 수 있습니다.",
+      alternates: { canonical: `/gardening/flowers/detail/${id}` },
     };
   return {
     title: `${flower.ko}`,
     description: `${flower.ko}의 상세 정보입니다.`,
+    alternates: { canonical: `/gardening/flowers/detail/${id}` },
   };
 }
 

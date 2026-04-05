@@ -222,6 +222,7 @@ function buildGrades(
     stars: number;
     image: string;
     sellPrice?: number;
+    eventPrice?: number;
   }>,
 ): GradeColor[] {
   return items.map(({ color, stars, image, sellPrice }) => ({

@@ -14,6 +14,7 @@ const MORE_LINKS = ["쿠폰", "문의"] as const;
 const CATEGORY_HREF: Record<string, string> = {
   원예: "/gardening",
   낚시: "/fishing",
+  "새 관찰": "/birds",
   "기타 수집": "/others",
 };
 const MORE_HREF: Record<string, string> = {

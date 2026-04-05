@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "원예",
   description:
     "꽃 교배와 작물 재배 정보를 확인할 수 있어요. 꽃 도감, 작물 도감, 교배·재배 팁을 한눈에 보세요.",
+  alternates: { canonical: "/gardening" },
 };
 
 // ─────────────────────────────────────────────

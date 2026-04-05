@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import { HeroSection } from "./_components/hero-section";
 import { CategorySection } from "./_components/category-section";
 import { CouponSection } from "./_components/coupon-section";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default function Home() {
   return (

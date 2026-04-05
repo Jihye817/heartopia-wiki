@@ -366,10 +366,11 @@ const CATEGORIES = [
     bg: "#f8f0ff",
     border: "#e0d0f8",
     accent: "#8a6bbf",
+    categoryHref: "/birds",
     items: [
       {
         label: "새 도감",
-        href: "/birds/bird-encyclopedia",
+        href: "/birds",
       },
     ],
   },
