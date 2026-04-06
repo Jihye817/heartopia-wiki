@@ -189,7 +189,7 @@ function BugListView({ bugs }: BugListViewProps) {
               <th
                 key={h}
                 className="px-4 py-3.5 text-left text-sm font-bold tracking-wider uppercase"
-                style={{ color: "#7aaa40" }}
+                style={{ color: "#b080c0" }}
               >
                 {h}
               </th>
@@ -367,14 +367,14 @@ export default function BugsClient({ bugs }: BugsClientProps) {
         {/* Breadcrumb */}
         <nav
           className="mb-4 flex flex-wrap items-center gap-1.5 text-xs font-bold tracking-wide md:mb-8 md:text-sm"
-          style={{ color: "#7aaa40" }}
+          style={{ color: "#b080c0" }}
           aria-label="breadcrumb"
         >
           <Link href="/" className="transition-colors hover:opacity-80">
             🏠 홈
           </Link>
-          <span style={{ color: "rgba(180,220,140,0.5)" }}>›</span>
-          <span style={{ color: "#4a6a20" }}>곤충 도감</span>
+          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
+          <span style={{ color: "#6b4a7a" }}>곤충 도감</span>
         </nav>
 
         {/* Header */}
@@ -383,13 +383,13 @@ export default function BugsClient({ bugs }: BugsClientProps) {
             <div>
               <h1
                 className="m-0 text-[clamp(20px,4vw,28px)] font-bold tracking-tight md:text-[clamp(24px,4vw,34px)]"
-                style={{ color: "#4a6a20", letterSpacing: "-0.02em" }}
+                style={{ color: "#6b4a7a", letterSpacing: "-0.02em" }}
               >
                 곤충 도감
               </h1>
               <p
                 className="mt-1 text-xs md:text-sm"
-                style={{ color: "#689f38" }}
+                style={{ color: "#8a6898" }}
               >
                 두근두근타운 곤충 종류
               </p>
@@ -398,7 +398,7 @@ export default function BugsClient({ bugs }: BugsClientProps) {
             {/* View Toggle */}
             <div
               className="flex gap-1 rounded-xl p-1"
-              style={{ background: "rgba(197,225,165,0.3)" }}
+              style={{ background: "rgba(230,210,230,0.3)" }}
               role="tablist"
               aria-label="보기 방식"
             >
@@ -415,7 +415,7 @@ export default function BugsClient({ bugs }: BugsClientProps) {
                   className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all md:px-3.5 md:text-sm"
                   style={{
                     background: viewMode === mode ? "white" : "transparent",
-                    color: viewMode === mode ? "#4a6a20" : "#689f38",
+                    color: viewMode === mode ? "#6b4a7a" : "#8a6898",
                     boxShadow:
                       viewMode === mode ? "0 1px 3px rgba(0,0,0,0.06)" : "none",
                   }}
@@ -449,7 +449,7 @@ export default function BugsClient({ bugs }: BugsClientProps) {
                   borderColor: isActive
                     ? `rgba(${BUG_TINT},0.55)`
                     : "rgba(197,225,165,0.6)",
-                  color: isActive ? "#4a6a20" : "#689f38",
+                  color: isActive ? "#6b4a7a" : "#8a6898",
                   boxShadow: isActive ? "0 1px 4px rgba(0,0,0,0.05)" : "none",
                 }}
               >
@@ -459,8 +459,8 @@ export default function BugsClient({ bugs }: BugsClientProps) {
                   style={{
                     background: isActive
                       ? `rgba(${BUG_TINT},0.25)`
-                      : "rgba(197,225,165,0.45)",
-                    color: "#4a6a20",
+                      : "rgba(230,210,230,0.45)",
+                    color: "#6b4a7a",
                   }}
                 >
                   {tabCounts[tab.id]}
@@ -476,7 +476,7 @@ export default function BugsClient({ bugs }: BugsClientProps) {
             <Search
               size={14}
               className="absolute top-1/2 left-3 -translate-y-1/2"
-              style={{ color: "#689f38" }}
+              style={{ color: "#8a6898" }}
               strokeWidth={2.2}
               aria-hidden
             />
@@ -490,7 +490,7 @@ export default function BugsClient({ bugs }: BugsClientProps) {
               style={{
                 background: "rgba(240,248,230,0.5)",
                 borderColor: "rgba(197,225,165,0.6)",
-                color: "#3a5010",
+                color: "#4a3060",
               }}
             />
           </div>
@@ -513,7 +513,7 @@ export default function BugsClient({ bugs }: BugsClientProps) {
             <div className="mb-3 text-4xl" aria-hidden>
               🔍
             </div>
-            <p className="text-xs md:text-sm" style={{ color: "#689f38" }}>
+            <p className="text-xs md:text-sm" style={{ color: "#8a6898" }}>
               검색 결과가 없어요
             </p>
           </div>
