@@ -5,6 +5,7 @@ import { PRODUCTS } from "./others/products/_data/products";
 import { FISHES } from "./fishing/_data/fishes";
 import { FOODS } from "./cooking/_data/foods";
 import { BIRDS } from "./birds/_data/birds";
+import { BUGS } from "./bugs/_data/bugs";
 
 const BASE_URL = "https://heartopia-gamewiki.com";
 
@@ -20,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/cooking`, priority: 0.8 },
     { url: `${BASE_URL}/cooking/recipes`, priority: 0.8 },
     { url: `${BASE_URL}/birds`, priority: 0.8 },
+    { url: `${BASE_URL}/bugs`, priority: 0.8 },
     { url: `${BASE_URL}/others`, priority: 0.7 },
     { url: `${BASE_URL}/others/products`, priority: 0.8 },
   ];
@@ -55,6 +57,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
+  const bugRoutes: MetadataRoute.Sitemap = BUGS.map((b) => ({
+    url: `${BASE_URL}/bugs/detail/${b.id}`,
+    priority: 0.6,
+  }));
+
   return [
     ...staticRoutes,
     ...cropRoutes,
@@ -63,5 +70,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...fishRoutes,
     ...foodRoutes,
     ...birdRoutes,
+    ...bugRoutes,
   ];
 }

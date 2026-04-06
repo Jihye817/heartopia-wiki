@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { getLatestCoupons } from "@/data/coupons";
+import { getValidCoupons } from "@/data/coupons";
 
 function CopyIcon({ size = 14 }: { size?: number }) {
   return (
@@ -147,7 +147,7 @@ export function CouponSection() {
           />
 
           <div className="py-2">
-            {getLatestCoupons().map((coupon, idx) => (
+            {getValidCoupons().slice(0, 5).map((coupon, idx) => (
               <div key={coupon.code}>
                 {idx > 0 && (
                   <div

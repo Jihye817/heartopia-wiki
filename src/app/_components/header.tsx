@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   { label: "원예", href: "/gardening" },
   { label: "요리", href: "/cooking" },
   { label: "낚시", href: "/fishing" },
-  { label: "곤충 채집", href: undefined },
+  { label: "곤충 채집", href: "/bugs" },
   { label: "새 관찰", href: "/birds" },
   { label: "반려동물", href: undefined },
   { label: "기타 수집", href: "/others" },
