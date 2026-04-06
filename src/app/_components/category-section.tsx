@@ -350,10 +350,11 @@ const CATEGORIES = [
     bg: "#f1f8e9",
     border: "#c5e1a5",
     accent: "#689f38",
+    categoryHref: "/bugs",
     items: [
       {
         label: "곤충 도감",
-        href: "/bugs/bug-encyclopedia",
+        href: "/bugs",
       },
     ],
   },
