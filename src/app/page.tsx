@@ -4,7 +4,7 @@ import { CategorySection } from "./_components/category-section";
 import { CouponSection } from "./_components/coupon-section";
 
 export const metadata: Metadata = {
-  alternates: { canonical: "/" },
+  alternates: { canonical: "https://heartopia-gamewiki.com" },
 };
 
 export default function Home() {
