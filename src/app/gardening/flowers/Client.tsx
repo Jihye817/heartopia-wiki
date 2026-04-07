@@ -3,15 +3,20 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { LayoutGrid, List, Search, Sparkles } from "lucide-react";
-import type { Flower } from "./_data/flowers";
+import { LayoutGrid, List, Search } from "lucide-react";
+import type { FlowerListItem } from "./_data/flowers";
 
-type SeasonFilter = "all" | "일상" | "이벤트";
+type SeasonFilter = "all" | "always" | "event";
+
+const AVAILABILITY_LABEL: Record<string, string> = {
+  always: "일상",
+  event: "이벤트",
+};
 
 // ── Subcomponents ─────────────────────────────────────────────────────────────
 
 interface FlowerCardProps {
-  flower: Flower;
+  flower: FlowerListItem;
 }
 
 function FlowerCard({ flower }: FlowerCardProps) {
@@ -38,71 +43,50 @@ function FlowerCard({ flower }: FlowerCardProps) {
         e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.04)";
       }}
     >
-      <div
-        className="absolute -right-2.5 -bottom-2.5 text-[#f8a4c8] opacity-[0.06] transition-opacity duration-300 group-hover:opacity-[0.1]"
-        style={{
-          transform: "scale(2) rotate(-10deg)",
-          transformOrigin: "bottom right",
-        }}
-        aria-hidden
-      >
-        <span className="text-4xl">🌸</span>
+      {/* 썸네일 */}
+      <div className="mb-4 flex justify-center">
+        <div
+          className="inline-flex h-[110px] w-[110px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] p-4 transition-transform duration-300 group-hover:scale-105"
+          style={{
+            background: "rgba(248,164,200,0.15)",
+            borderColor: "rgba(248,164,200,0.35)",
+          }}
+        >
+          <Image
+            src={flower.thumbnail}
+            alt=""
+            width={110}
+            height={110}
+            className="object-contain"
+          />
+        </div>
       </div>
 
-      <div
-        className="mb-4 inline-flex h-[60px] w-[60px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] p-2 transition-transform duration-300 group-hover:scale-105"
-        style={{
-          background: "rgba(248,164,200,0.15)",
-          borderColor: "rgba(248,164,200,0.35)",
-        }}
-      >
-        <Image
-          src={flower.thumbnail}
-          alt=""
-          width={60}
-          height={60}
-          className="object-contain"
-        />
-      </div>
-
-      <div className="mb-3.5">
+      {/* 꽃 이름 */}
+      <div className="mb-3 text-center">
         <div
           className="text-lg leading-tight font-bold md:text-xl"
           style={{ color: "#4a3060" }}
         >
-          {flower.ko}
+          {flower.name}
         </div>
       </div>
 
-      <div
-        className="mb-3.5 h-px"
-        style={{
-          background: "linear-gradient(to right, #ffd6e8, transparent)",
-        }}
-      />
-
-      <div className="flex flex-wrap gap-1.5">
-        <span
-          className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-          style={{
-            background: "rgba(189,222,255,0.3)",
-            color: "#0284c7",
-            borderColor: "rgba(189,222,255,0.6)",
-          }}
-        >
-          원예 Lv.{flower.level}
-        </span>
-        <span
-          className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-          style={{
-            background: "rgba(248,164,200,0.2)",
-            color: "#c06898",
-            borderColor: "rgba(248,164,200,0.4)",
-          }}
-        >
-          {flower.stages} 종류
-        </span>
-        {flower.event && (
+      {/* 뱃지 */}
+      <div className="mb-3.5 flex flex-wrap justify-center gap-1.5">
+        {flower.level !== null && (
+          <span
+            className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+            style={{
+              background: "rgba(189,222,255,0.3)",
+              color: "#0284c7",
+              borderColor: "rgba(189,222,255,0.6)",
+            }}
+          >
+            원예 Lv.{flower.level}
+          </span>
+        )}
+        {flower.availability === "event" ? (
           <span
             className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
             style={{
@@ -111,16 +95,63 @@ function FlowerCard({ flower }: FlowerCardProps) {
               borderColor: "rgba(255,220,130,0.55)",
             }}
           >
-            🎉 {flower.event}
+            {flower.event ?? "이벤트"}
+          </span>
+        ) : (
+          <span
+            className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+            style={{
+              background: "rgba(220,252,231,0.4)",
+              color: "#16a34a",
+              borderColor: "rgba(134,239,172,0.5)",
+            }}
+          >
+            일상
           </span>
         )}
       </div>
+
+      {/* 성급별 가격 */}
+      {flower.flower_grades.length > 0 && (
+        <>
+          <div
+            className="mb-3 h-px"
+            style={{ background: "rgba(230,210,230,0.6)" }}
+          />
+          <div className="grid grid-cols-5 gap-1">
+            {flower.flower_grades.map((g) => (
+              <div
+                key={g.stars}
+                className="flex flex-col items-center rounded-lg border py-1.5"
+                style={{
+                  background: "rgba(245,245,247,0.7)",
+                  borderColor: "rgba(209,213,219,0.5)",
+                }}
+              >
+                <span className="text-xs font-bold text-amber-500">
+                  {g.stars}★
+                </span>
+                <div
+                  className="my-1 h-px w-4"
+                  style={{ background: "rgba(209,213,219,0.6)" }}
+                />
+                <span
+                  className="text-xs font-bold tabular-nums"
+                  style={{ color: "#6b7280" }}
+                >
+                  {g.sell_price ?? "-"}
+                </span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </Link>
   );
 }
 
 interface FlowerListViewProps {
-  flowers: Flower[];
+  flowers: FlowerListItem[];
 }
 
 function FlowerListView({ flowers }: FlowerListViewProps) {
@@ -139,15 +170,17 @@ function FlowerListView({ flowers }: FlowerListViewProps) {
             className="border-b-[1.5px]"
             style={{ borderColor: "rgba(230,210,230,0.6)" }}
           >
-            {["꽃 이름", "원예 레벨", "종류", "활동시기"].map((h) => (
-              <th
-                key={h}
-                className="px-4 py-3.5 text-left text-sm font-bold tracking-wider uppercase"
-                style={{ color: "#b080c0" }}
-              >
-                {h}
-              </th>
-            ))}
+            {["꽃 이름", "원예 레벨", "종류", "활동시기", "판매 가격"].map(
+              (h) => (
+                <th
+                  key={h}
+                  className="px-4 py-3.5 text-left text-sm font-bold tracking-wider uppercase"
+                  style={{ color: "#b080c0" }}
+                >
+                  {h}
+                </th>
+              ),
+            )}
           </tr>
         </thead>
         <tbody>
@@ -174,7 +207,7 @@ function FlowerListView({ flowers }: FlowerListViewProps) {
                     className="text-sm font-bold"
                     style={{ color: "#4a3060" }}
                   >
-                    {f.ko}
+                    {f.name}
                   </span>
                 </Link>
               </td>
@@ -183,16 +216,18 @@ function FlowerListView({ flowers }: FlowerListViewProps) {
                   href={`/gardening/flowers/detail/${f.id}`}
                   className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
-                  <span
-                    className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                    style={{
-                      background: "rgba(189,222,255,0.3)",
-                      color: "#0284c7",
-                      borderColor: "rgba(189,222,255,0.6)",
-                    }}
-                  >
-                    Lv.{f.level}
-                  </span>
+                  {f.level !== null && (
+                    <span
+                      className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                      style={{
+                        background: "rgba(189,222,255,0.3)",
+                        color: "#0284c7",
+                        borderColor: "rgba(189,222,255,0.6)",
+                      }}
+                    >
+                      Lv.{f.level}
+                    </span>
+                  )}
                 </Link>
               </td>
               <td className="p-0">
@@ -229,8 +264,34 @@ function FlowerListView({ flowers }: FlowerListViewProps) {
                       이벤트 : {f.event}
                     </span>
                   ) : (
-                    <span className="rounded-full border px-2.5 py-1 text-sm font-bold">
-                      {f.season}
+                    <span
+                      className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                      style={{
+                        background: "rgba(220,252,231,0.4)",
+                        color: "#16a34a",
+                        borderColor: "rgba(134,239,172,0.5)",
+                      }}
+                    >
+                      {AVAILABILITY_LABEL[f.availability] ?? f.availability}
+                    </span>
+                  )}
+                </Link>
+              </td>
+              <td className="p-0">
+                <Link
+                  href={`/gardening/flowers/detail/${f.id}`}
+                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
+                >
+                  {f.sell_min || f.sell_max ? (
+                    <span
+                      className="text-sm font-bold tabular-nums"
+                      style={{ color: "#b45309" }}
+                    >
+                      {f.sell_min} ~ {f.sell_max}G
+                    </span>
+                  ) : (
+                    <span className="text-sm font-bold" style={{ color: "#c4b0cc" }}>
+                      -
                     </span>
                   )}
                 </Link>
@@ -246,40 +307,68 @@ function FlowerListView({ flowers }: FlowerListViewProps) {
 // ── Main Page Client ──────────────────────────────────────────────────────────
 
 interface FlowersPageClientProps {
-  flowers: Flower[];
+  flowers: FlowerListItem[];
 }
 
 export default function FlowersPageClient({ flowers }: FlowersPageClientProps) {
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [search, setSearch] = useState("");
   const [seasonFilter, setSeasonFilter] = useState<SeasonFilter>("all");
+  const [eventFilter, setEventFilter] = useState<string | null>(null);
+  const [levelFilter, setLevelFilter] = useState<number | null>(null);
+
+  const levels = useMemo(() => {
+    return Array.from(
+      new Set(
+        flowers.map((f) => f.level).filter((l): l is number => l !== null),
+      ),
+    ).sort((a, b) => a - b);
+  }, [flowers]);
 
   const tabCounts = useMemo(() => {
     return {
       all: flowers.length,
-      일상: flowers.filter((f) => f.season === "일상").length,
-      이벤트: flowers.filter((f) => f.season === "이벤트").length,
+      always: flowers.filter((f) => f.availability === "always").length,
+      event: flowers.filter((f) => f.availability === "event").length,
     };
   }, [flowers]);
 
+  const eventNames = useMemo(() => {
+    const names = flowers
+      .filter((f) => f.availability === "event" && f.event)
+      .map((f) => f.event as string);
+    return Array.from(new Set(names)).sort();
+  }, [flowers]);
+
   const filteredFlowers = useMemo(() => {
-    const bySeason =
+    let result =
       seasonFilter === "all"
         ? flowers
-        : flowers.filter((f) => f.season === seasonFilter);
+        : flowers.filter((f) => f.availability === seasonFilter);
 
-    if (!search.trim()) return bySeason;
+    if (seasonFilter === "event" && eventFilter) {
+      result = result.filter((f) => f.event === eventFilter);
+    }
+
+    if (levelFilter !== null) {
+      result = result.filter((f) => f.level === levelFilter);
+    }
+
+    if (!search.trim()) return result;
 
     const query = search.trim().toLowerCase();
-    return bySeason.filter(
-      (f) => f.name.toLowerCase().includes(query) || f.ko.includes(search),
-    );
-  }, [flowers, seasonFilter, search]);
+    return result.filter((f) => f.name.toLowerCase().includes(query));
+  }, [flowers, seasonFilter, eventFilter, levelFilter, search]);
+
+  function handleAvailabilityChange(tab: SeasonFilter) {
+    setSeasonFilter(tab);
+    setEventFilter(null);
+  }
 
   const tabs: { id: SeasonFilter; label: string; emoji: string }[] = [
     { id: "all", label: "전체", emoji: "✨" },
-    { id: "일상", label: "일상", emoji: "🌼" },
-    { id: "이벤트", label: "이벤트", emoji: "🎉" },
+    { id: "always", label: "일상", emoji: "🌼" },
+    { id: "event", label: "이벤트", emoji: "🎉" },
   ];
 
   return (
@@ -359,86 +448,133 @@ export default function FlowersPageClient({ flowers }: FlowersPageClientProps) {
           </div>
         </div>
 
-        {/* Season Filter */}
-        <div
-          className="mb-6 flex flex-wrap gap-2"
-          role="tablist"
-          aria-label="시즌 필터"
-        >
-          {tabs.map((tab) => {
-            const isActive = seasonFilter === tab.id;
-            const count = tabCounts[tab.id];
+        {/* Filter + Search 통합 행 */}
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          {/* 왼쪽: 탭 버튼 */}
+          <div
+            className="flex flex-wrap gap-2"
+            role="tablist"
+            aria-label="시즌 필터"
+          >
+            {tabs.map((tab) => {
+              const isActive = seasonFilter === tab.id;
+              const count = tabCounts[tab.id];
 
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => setSeasonFilter(tab.id)}
-                className="flex items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1.5 text-xs font-bold transition-all md:text-sm"
-                style={{
-                  background: isActive ? "white" : "rgba(255,252,254,0.85)",
-                  borderColor: isActive
-                    ? "rgba(248,164,200,0.55)"
-                    : "rgba(230,210,230,0.6)",
-                  color: isActive ? "#6b4a7a" : "#8a6898",
-                  boxShadow: isActive ? "0 1px 4px rgba(0,0,0,0.05)" : "none",
-                }}
-              >
-                <span aria-hidden>{tab.emoji}</span>
-                {tab.label}
-                <span
-                  className="rounded-full px-1.5 py-0.5 text-[10px] md:text-xs"
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => handleAvailabilityChange(tab.id)}
+                  className="flex cursor-pointer items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1.5 text-xs font-bold transition-all md:text-sm"
                   style={{
                     background: isActive
-                      ? "rgba(248,164,200,0.25)"
-                      : "rgba(230,210,230,0.45)",
-                    color: "#6b4a7a",
+                      ? "rgba(248,164,200,0.22)"
+                      : "rgba(255,252,254,0.85)",
+                    borderColor: isActive
+                      ? "rgba(232,115,155,0.55)"
+                      : "rgba(230,210,230,0.6)",
+                    color: isActive ? "#9b2563" : "#8a6898",
+                    boxShadow: isActive
+                      ? "0 2px 8px rgba(232,115,155,0.18)"
+                      : "none",
                   }}
                 >
-                  {count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+                  <span aria-hidden>{tab.emoji}</span>
+                  {tab.label}
+                  <span
+                    className="rounded-full px-1.5 py-0.5 text-[10px] md:text-xs"
+                    style={{
+                      background: isActive
+                        ? "rgba(232,115,155,0.2)"
+                        : "rgba(230,210,230,0.45)",
+                      color: isActive ? "#9b2563" : "#8a6898",
+                    }}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
 
-        {/* Toolbar */}
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
-          <div className="relative max-w-xs flex-1">
-            <Search
-              size={14}
-              className="absolute top-1/2 left-3 -translate-y-1/2"
-              style={{ color: "#8a6898" }}
-              strokeWidth={2.2}
-              aria-hidden
-            />
-            <input
-              type="search"
-              placeholder="꽃 이름 검색..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              aria-label="꽃 이름 검색"
-              className="w-full rounded-xl border-[1.5px] py-2 pr-4 pl-9 text-xs transition-all outline-none placeholder:opacity-70 focus:border-[#e8739b] md:py-2.5 md:text-sm"
+            {/* 이벤트 selectbox — 이벤트 탭 선택 시 인라인으로 표시 */}
+            {seasonFilter === "event" && eventNames.length > 0 && (
+              <select
+                value={eventFilter ?? ""}
+                onChange={(e) => setEventFilter(e.target.value || null)}
+                aria-label="이벤트 필터"
+                className="cursor-pointer rounded-full border-[1.5px] py-1.5 pr-8 pl-3 text-xs font-bold transition-all outline-none md:text-sm"
+                style={{
+                  background: "white",
+                  borderColor: "rgba(255,200,80,0.6)",
+                  color: "#9a7020",
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
+                  appearance: "none",
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239a7020' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 10px center",
+                }}
+              >
+                <option value="">🎉 전체 이벤트</option>
+                {eventNames.map((name) => (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+
+          {/* 오른쪽: 레벨 셀렉트 + 검색 */}
+          <div className="ml-auto flex items-center gap-2">
+            <select
+              value={levelFilter ?? ""}
+              onChange={(e) =>
+                setLevelFilter(e.target.value ? Number(e.target.value) : null)
+              }
+              aria-label="레벨 필터"
+              className="rounded-xl border-[1.5px] py-2 pr-8 pl-3 text-xs font-bold transition-all outline-none md:py-2.5 md:text-sm"
               style={{
                 background: "rgba(255,240,246,0.5)",
                 borderColor: "rgba(230,210,230,0.6)",
-                color: "#4a3060",
+                color: levelFilter !== null ? "#0284c7" : "#8a6898",
+                appearance: "none",
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a6898' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "right 10px center",
               }}
-            />
+            >
+              <option value="">전체 레벨</option>
+              {levels.map((lv) => (
+                <option key={lv} value={lv}>
+                  원예 Lv.{lv}
+                </option>
+              ))}
+            </select>
+            <div className="relative w-44 md:w-56">
+              <Search
+                size={14}
+                className="absolute top-1/2 left-3 -translate-y-1/2"
+                style={{ color: "#8a6898" }}
+                strokeWidth={2.2}
+                aria-hidden
+              />
+              <input
+                type="search"
+                placeholder="꽃 이름 검색..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                aria-label="꽃 이름 검색"
+                className="w-full rounded-xl border-[1.5px] py-2 pr-4 pl-9 text-xs transition-all outline-none placeholder:opacity-70 focus:border-[#e8739b] md:py-2.5 md:text-sm"
+                style={{
+                  background: "rgba(255,240,246,0.5)",
+                  borderColor: "rgba(230,210,230,0.6)",
+                  color: "#4a3060",
+                }}
+              />
+            </div>
           </div>
-          <span
-            className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-bold md:text-sm"
-            style={{
-              background: "rgba(248,164,200,0.15)",
-              borderColor: "rgba(248,164,200,0.4)",
-              color: "#c06898",
-            }}
-          >
-            <Sparkles size={12} aria-hidden />
-            {filteredFlowers.length}종
-          </span>
         </div>
 
         {/* Content */}
