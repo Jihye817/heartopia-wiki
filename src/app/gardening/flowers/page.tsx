@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { FLOWERS } from "./_data/flowers";
+import { getFlowers } from "./_data/flowers";
 import FlowersPageClient from "./Client";
 
 export const metadata: Metadata = {
@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/gardening/flowers" },
 };
 
-export default function FlowersPage() {
-  return <FlowersPageClient flowers={FLOWERS} />;
+export default async function FlowersPage() {
+  const flowers = await getFlowers();
+  return <FlowersPageClient flowers={flowers} />;
 }

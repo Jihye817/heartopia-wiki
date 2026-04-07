@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { CROPS } from "./gardening/crops/_data/crops";
-import { FLOWERS } from "./gardening/flowers/_data/flowers";
+import { getFlowers } from "./gardening/flowers/_data/flowers";
 import { PRODUCTS } from "./others/products/_data/products";
 import { FISHES } from "./fishing/_data/fishes";
 import { FOODS } from "./cooking/_data/foods";
@@ -9,7 +9,8 @@ import { BUGS } from "./bugs/_data/bugs";
 
 const BASE_URL = "https://heartopia-gamewiki.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const flowers = await getFlowers();
   // ── 정적 라우트 ──────────────────────────────────────────────
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE_URL, priority: 1.0 },
@@ -32,7 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  const flowerRoutes: MetadataRoute.Sitemap = FLOWERS.map((f) => ({
+  const flowerRoutes: MetadataRoute.Sitemap = flowers.map((f) => ({
     url: `${BASE_URL}/gardening/flowers/detail/${f.id}`,
     priority: 0.6,
   }));
