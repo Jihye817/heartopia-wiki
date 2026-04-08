@@ -3,14 +3,13 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin } from "lucide-react";
+import { Eye, MapPin } from "lucide-react";
 import type { BugDetail } from "../../_data/bugs";
 
 // ── Constants ──────────────────────────────────────────────────────────────────
 
 const BUG_TINT = "139, 195, 74";
 const BUG_BORDER = "#c5e1a5";
-
 
 function starsOf(n: number) {
   return "★".repeat(n) + "☆".repeat(Math.max(0, 5 - n));
@@ -24,6 +23,7 @@ interface BugDetailClientProps {
 
 export default function BugDetailClient({ bug }: BugDetailClientProps) {
   const [hideImage, setHideImage] = useState(false);
+  const [peeking, setPeeking] = useState(false);
 
   useEffect(() => {
     setHideImage(sessionStorage.getItem("bugs_hideImage") === "true");
@@ -38,25 +38,25 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
         {/* Breadcrumb */}
         <nav
           className="mb-4 flex flex-wrap items-center gap-1.5 text-xs font-bold tracking-wide md:mb-8 md:text-sm"
-          style={{ color: "#7aaa40" }}
+          style={{ color: "#b080c0" }}
           aria-label="breadcrumb"
         >
           <Link href="/" className="transition-colors hover:opacity-80">
             🏠 홈
           </Link>
-          <span style={{ color: "rgba(180,220,140,0.5)" }}>›</span>
+          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
           <Link href="/bugs" className="transition-colors hover:opacity-80">
             곤충 도감
           </Link>
-          <span style={{ color: "rgba(180,220,140,0.5)" }}>›</span>
-          <span style={{ color: "#4a6a20" }}>{bug.name}</span>
+          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
+          <span style={{ color: "#6b4a7a" }}>{bug.name}</span>
         </nav>
 
         {/* Back */}
         <Link
           href="/bugs"
           className="mb-2 inline-flex items-center gap-1.5 text-xs font-bold transition-all hover:gap-2.5 md:mb-4 md:text-sm"
-          style={{ color: "#7aaa40" }}
+          style={{ color: "#b080c0" }}
         >
           ← 곤충 목록으로
         </Link>
@@ -74,23 +74,46 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
             {/* ── 왼쪽: 기본 정보 + 지도 ──────────────────────────── */}
             <div>
               {/* Thumbnail / Emoji box */}
-              <div
-                className="mb-4 inline-flex h-[144px] w-[144px] flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] text-7xl"
-                style={{
-                  background: `rgba(${BUG_TINT},0.18)`,
-                  borderColor: `rgba(${BUG_TINT},0.4)`,
-                }}
-              >
-                {!hideImage && bug.thumbnail ? (
-                  <Image
-                    src={bug.thumbnail}
-                    alt={bug.name}
-                    width={120}
-                    height={120}
-                    className="h-4/5 w-4/5 object-contain"
-                  />
-                ) : (
-                  <span aria-hidden>{bug.emoji}</span>
+              <div className="mb-4 flex items-end gap-2">
+                <div
+                  className="inline-flex h-[144px] w-[144px] flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] text-7xl"
+                  style={{
+                    background: `rgba(${BUG_TINT},0.18)`,
+                    borderColor: `rgba(${BUG_TINT},0.4)`,
+                  }}
+                >
+                  {(!hideImage || peeking) && bug.thumbnail ? (
+                    <Image
+                      src={bug.thumbnail}
+                      alt={bug.name}
+                      width={120}
+                      height={120}
+                      className="h-4/5 w-4/5 object-contain"
+                    />
+                  ) : (
+                    <span aria-hidden>{bug.emoji}</span>
+                  )}
+                </div>
+                {hideImage && bug.thumbnail && (
+                  <button
+                    type="button"
+                    aria-label="이미지 잠깐 보기"
+                    onMouseDown={() => setPeeking(true)}
+                    onMouseUp={() => setPeeking(false)}
+                    onMouseLeave={() => setPeeking(false)}
+                    onTouchStart={() => setPeeking(true)}
+                    onTouchEnd={() => setPeeking(false)}
+                    className="mb-1 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl border-[1.5px] transition-all select-none"
+                    style={{
+                      background: peeking
+                        ? `rgba(${BUG_TINT},0.25)`
+                        : `rgba(${BUG_TINT},0.12)`,
+                      borderColor: `rgba(${BUG_TINT},0.45)`,
+                      color: "#689f38",
+                    }}
+                  >
+                    <Eye size={16} strokeWidth={2.2} />
+                  </button>
                 )}
               </div>
 
@@ -168,48 +191,48 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
                   />
                   <span
                     className="text-xs font-bold tracking-widest uppercase md:text-sm"
-                    style={{ color: "#689f38" }}
+                    style={{ color: "#8a6898" }}
                   >
                     상세 정보
                   </span>
                 </div>
 
-                {/* 서식지 */}
+                {/* 서식지 + 위치 (2칸 그리드) */}
                 <div
-                  className="border-b-[1.5px] p-4"
+                  className="grid grid-cols-2 border-b-[1.5px]"
                   style={{ borderColor: "rgba(197,225,165,0.6)" }}
                 >
-                  <p
-                    className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
-                    style={{ color: "#7aaa40" }}
+                  <div
+                    className="border-r-[1.5px] p-4"
+                    style={{ borderColor: "rgba(197,225,165,0.6)" }}
                   >
-                    서식지
-                  </p>
-                  <p
-                    className="text-sm font-bold md:text-base"
-                    style={{ color: "#4a3060" }}
-                  >
-                    {bug.habitat || "-"}
-                  </p>
-                </div>
-
-                {/* 위치 (전체 너비) */}
-                <div
-                  className="border-b-[1.5px] p-4"
-                  style={{ borderColor: "rgba(197,225,165,0.6)" }}
-                >
-                  <p
-                    className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
-                    style={{ color: "#7aaa40" }}
-                  >
-                    위치
-                  </p>
-                  <p
-                    className="text-sm font-bold md:text-base"
-                    style={{ color: "#4a3060" }}
-                  >
-                    {bug.location || "-"}
-                  </p>
+                    <p
+                      className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
+                      style={{ color: "#8a6898" }}
+                    >
+                      서식지
+                    </p>
+                    <p
+                      className="text-sm font-bold md:text-base"
+                      style={{ color: "#4a3060" }}
+                    >
+                      {bug.habitat || "-"}
+                    </p>
+                  </div>
+                  <div className="p-4">
+                    <p
+                      className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
+                      style={{ color: "#8a6898" }}
+                    >
+                      위치
+                    </p>
+                    <p
+                      className="text-sm font-bold md:text-base"
+                      style={{ color: "#4a3060" }}
+                    >
+                      {bug.location || "-"}
+                    </p>
+                  </div>
                 </div>
 
                 {/* 시간 + 날씨 (2칸 그리드) */}
@@ -225,7 +248,7 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
                   >
                     <p
                       className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#7aaa40" }}
+                      style={{ color: "#8a6898" }}
                     >
                       시간
                     </p>
@@ -239,7 +262,7 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
                   <div className="p-4">
                     <p
                       className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#7aaa40" }}
+                      style={{ color: "#8a6898" }}
                     >
                       날씨
                     </p>
@@ -257,7 +280,7 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
                   <div className="px-4 py-3">
                     <p
                       className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#7aaa40" }}
+                      style={{ color: "#8a6898" }}
                     >
                       특이사항
                     </p>
@@ -281,7 +304,7 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
               >
                 <div
                   className="mb-3 flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase md:text-sm"
-                  style={{ color: "#7aaa40" }}
+                  style={{ color: "#b080c0" }}
                 >
                   <MapPin size={13} strokeWidth={2.2} aria-hidden />
                   채집 포인트
@@ -307,7 +330,7 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
                     </span>
                     <span
                       className="text-sm font-bold"
-                      style={{ color: "rgba(104,159,56,0.6)" }}
+                      style={{ color: "rgba(138,104,152,0.6)" }}
                     >
                       준비중입니다
                     </span>
@@ -326,7 +349,7 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
             >
               <div
                 className="mb-3 flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase md:text-sm"
-                style={{ color: "#7aaa40" }}
+                style={{ color: "#b080c0" }}
               >
                 ⭐ 성급별 판매가
               </div>
@@ -340,7 +363,7 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
                       <th
                         key={h}
                         className="px-2 pb-2.5 text-left text-xs font-bold tracking-wider uppercase md:text-sm"
-                        style={{ color: "#689f38" }}
+                        style={{ color: "#8a6898" }}
                       >
                         {h}
                       </th>

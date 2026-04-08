@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Camera, CameraOff, LayoutGrid, List, MapPin, Search } from "lucide-react";
+import { Eye, EyeOff, LayoutGrid, List, MapPin, Search } from "lucide-react";
 import type { BugListItem } from "./_data/bugs";
 
 // ── Constants ──────────────────────────────────────────────────────────────────
@@ -398,7 +398,7 @@ export default function BugsClient({ bugs }: BugsClientProps) {
                   border: hideImage ? "1.5px solid rgba(139,195,74,0.5)" : "1.5px solid transparent",
                 }}
               >
-                {hideImage ? <CameraOff size={16} strokeWidth={2.2} /> : <Camera size={16} strokeWidth={2.2} />}
+                {hideImage ? <EyeOff size={16} strokeWidth={2.2} /> : <Eye size={16} strokeWidth={2.2} />}
               </button>
 
             {/* View Toggle */}
