@@ -75,6 +75,10 @@ function TagIcon({ size = 14 }: { size?: number }) {
   );
 }
 
+function isNew(createdAt: string): boolean {
+  return (Date.now() - new Date(createdAt).getTime()) / 86_400_000 <= 7;
+}
+
 function formatExpiresAt(dateStr: string): string {
   const [y, m, d] = dateStr.split("-");
   return `~ ${y}.${m}.${d}`;
@@ -173,15 +177,27 @@ export function CouponSection({ coupons }: CouponSectionProps) {
                       <TagIcon size={14} />
                     </div>
                     <div>
-                      <div
-                        className="text-[17px] font-extrabold tracking-wider"
-                        style={{
-                          color: "#6b4a7a",
-                          letterSpacing: "0.08em",
-                          fontFamily: "var(--font-mono), 'Courier New', monospace",
-                        }}
-                      >
-                        {coupon.code}
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="text-[17px] font-extrabold tracking-wider"
+                          style={{
+                            color: "#6b4a7a",
+                            letterSpacing: "0.08em",
+                            fontFamily: "var(--font-mono), 'Courier New', monospace",
+                          }}
+                        >
+                          {coupon.code}
+                        </div>
+                        {isNew(coupon.created_at) && (
+                          <span
+                            className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-extrabold tracking-widest text-white"
+                            style={{
+                              background: "linear-gradient(90deg, #f8a4c8, #c9a7eb)",
+                            }}
+                          >
+                            NEW
+                          </span>
+                        )}
                       </div>
                       <div className="mt-1 text-[13px] font-medium leading-relaxed" style={{ color: "#8a6898" }}>
                         {coupon.reward}

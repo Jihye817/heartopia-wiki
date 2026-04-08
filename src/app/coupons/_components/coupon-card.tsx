@@ -10,6 +10,10 @@ function daysLeft(iso: string): number {
   return Math.ceil((new Date(iso).getTime() - Date.now()) / 86_400_000);
 }
 
+function isNew(createdAt: string): boolean {
+  return (Date.now() - new Date(createdAt).getTime()) / 86_400_000 <= 7;
+}
+
 interface ExpiryBadgeProps {
   expiresAt: string;
 }
@@ -107,15 +111,27 @@ export function CouponCard({ coupon }: CouponCardProps) {
       <div className="px-4 py-3 md:px-6 md:py-4">
         {/* 모바일: 세로 스택 / 데스크톱: 가로 정렬 */}
         <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between md:gap-3">
-          <span
-            className="min-w-0 truncate text-lg font-extrabold tracking-widest"
-            style={{
-              color: "#6b4a7a",
-              fontFamily: "var(--font-mono), 'Courier New', monospace",
-            }}
-          >
-            {coupon.code}
-          </span>
+          <div className="flex min-w-0 items-center gap-2">
+            <span
+              className="min-w-0 truncate text-lg font-extrabold tracking-widest"
+              style={{
+                color: "#6b4a7a",
+                fontFamily: "var(--font-mono), 'Courier New', monospace",
+              }}
+            >
+              {coupon.code}
+            </span>
+            {isNew(coupon.created_at) && (
+              <span
+                className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-extrabold tracking-widest text-white"
+                style={{
+                  background: "linear-gradient(90deg, #f8a4c8, #c9a7eb)",
+                }}
+              >
+                NEW
+              </span>
+            )}
+          </div>
           <div className="flex shrink-0 flex-wrap items-center gap-2 self-end md:gap-3 md:self-auto">
             <ExpiryBadge expiresAt={coupon.expires_at} />
             <button

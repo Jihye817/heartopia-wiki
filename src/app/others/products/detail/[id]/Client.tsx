@@ -65,29 +65,29 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         {/* Breadcrumb */}
         <nav
           className="mb-4 flex flex-wrap items-center gap-1.5 text-xs font-bold tracking-wide md:mb-8 md:text-sm"
-          style={{ color: BRAND_LIGHT }}
+          style={{ color: "#b080c0" }}
           aria-label="breadcrumb"
         >
           <Link href="/" className="transition-colors hover:opacity-80">
             🏠 홈
           </Link>
-          <span style={{ color: `rgba(${BRAND_TINT},0.5)` }}>›</span>
+          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
           <Link href="/others" className="transition-colors hover:opacity-80">
             기타 수집
           </Link>
-          <span style={{ color: `rgba(${BRAND_TINT},0.5)` }}>›</span>
+          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
           <Link href="/others/products" className="transition-colors hover:opacity-80">
             생산품 도감
           </Link>
-          <span style={{ color: `rgba(${BRAND_TINT},0.5)` }}>›</span>
-          <span style={{ color: BRAND_ACCENT }}>{product.name}</span>
+          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
+          <span style={{ color: "#6b4a7a" }}>{product.name}</span>
         </nav>
 
         {/* Back */}
         <Link
           href="/others/products"
           className="mb-2 inline-flex items-center gap-1.5 text-xs font-bold transition-all hover:gap-2.5 md:mb-4 md:text-sm"
-          style={{ color: BRAND_LIGHT }}
+          style={{ color: "#b080c0" }}
         >
           ← 생산품 목록으로
         </Link>
@@ -174,7 +174,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   />
                   <span
                     className="text-xs font-bold tracking-widest uppercase md:text-sm"
-                    style={{ color: BRAND_LIGHT }}
+                    style={{ color: "#8a6898" }}
                   >
                     상세 정보
                   </span>
@@ -187,7 +187,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 >
                   <p
                     className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
-                    style={{ color: BRAND_LIGHT }}
+                    style={{ color: "#8a6898" }}
                   >
                     채집 장소
                   </p>
@@ -211,7 +211,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   >
                     <p
                       className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: BRAND_LIGHT }}
+                      style={{ color: "#8a6898" }}
                     >
                       리스폰 시간
                     </p>
@@ -222,7 +222,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   <div className="p-4">
                     <p
                       className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: BRAND_LIGHT }}
+                      style={{ color: "#8a6898" }}
                     >
                       판매 가격
                     </p>
@@ -245,12 +245,12 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   >
                     <p
                       className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: BRAND_LIGHT }}
+                      style={{ color: "#8a6898" }}
                     >
-                      스태미나
+                      필요 스태미나
                     </p>
                     <p className="text-sm font-bold md:text-base" style={{ color: "#4a3060" }}>
-                      +{product.stamina}
+                      {product.stamina}
                     </p>
                   </div>
                 )}
@@ -260,7 +260,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   <div className="px-4 py-3">
                     <p
                       className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: BRAND_LIGHT }}
+                      style={{ color: "#8a6898" }}
                     >
                       특이사항
                     </p>
@@ -295,7 +295,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     />
                     <span
                       className="text-xs font-bold md:text-sm"
-                      style={{ color: BRAND_LIGHT }}
+                      style={{ color: "#8a6898" }}
                     >
                       이상한 {product.name}
                     </span>
@@ -332,7 +332,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 >
                   <div
                     className="mb-3 flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase md:text-sm"
-                    style={{ color: BRAND_LIGHT }}
+                    style={{ color: "#b080c0" }}
                   >
                     🗺️ 채집 지도
                   </div>

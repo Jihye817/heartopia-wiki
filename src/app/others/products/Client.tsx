@@ -38,7 +38,6 @@ const CATEGORY_TINT: Record<ProductCategory, string> = {
   stone: "150, 150, 170",
 };
 
-
 // ── Subcomponents ──────────────────────────────────────────────────────────────
 
 function ProductCard({ product }: { product: Product }) {
@@ -182,7 +181,10 @@ function ProductListView({ products }: { products: Product[] }) {
     >
       <table className="w-full min-w-[540px]">
         <thead>
-          <tr className="border-b-[1.5px]" style={{ borderColor: BRAND_BORDER }}>
+          <tr
+            className="border-b-[1.5px]"
+            style={{ borderColor: BRAND_BORDER }}
+          >
             {["이름", "분류", "채집 장소", "리스폰", "판매 가격"].map((h) => (
               <th
                 key={h}
@@ -201,13 +203,14 @@ function ProductListView({ products }: { products: Product[] }) {
             return (
               <tr
                 key={product.id}
-                className="border-b last:border-0 transition-colors"
+                className="border-b transition-colors last:border-0"
                 style={{ borderColor: `rgba(${BRAND_TINT},0.25)` }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLElement).style.background = BRAND_BG;
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.background = "transparent";
+                  (e.currentTarget as HTMLElement).style.background =
+                    "transparent";
                 }}
               >
                 <td className="p-0">
@@ -236,7 +239,10 @@ function ProductListView({ products }: { products: Product[] }) {
                         </span>
                       )}
                     </div>
-                    <span className="text-sm font-bold" style={{ color: "#4a3060" }}>
+                    <span
+                      className="text-sm font-bold"
+                      style={{ color: "#4a3060" }}
+                    >
                       {product.name}
                     </span>
                   </Link>
@@ -306,7 +312,10 @@ function ProductListView({ products }: { products: Product[] }) {
                         {product.sell_price.toLocaleString()} G
                       </span>
                     ) : (
-                      <span className="text-sm font-bold" style={{ color: "#c4b0cc" }}>
+                      <span
+                        className="text-sm font-bold"
+                        style={{ color: "#c4b0cc" }}
+                      >
                         -
                       </span>
                     )}
@@ -329,7 +338,9 @@ interface ProductsPageClientProps {
   products: Product[];
 }
 
-export default function ProductsPageClient({ products }: ProductsPageClientProps) {
+export default function ProductsPageClient({
+  products,
+}: ProductsPageClientProps) {
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
@@ -373,18 +384,18 @@ export default function ProductsPageClient({ products }: ProductsPageClientProps
         {/* Breadcrumb */}
         <nav
           className="mb-4 flex flex-wrap items-center gap-1.5 text-xs font-bold tracking-wide md:mb-8 md:text-sm"
-          style={{ color: BRAND_LIGHT }}
+          style={{ color: "#b080c0" }}
           aria-label="breadcrumb"
         >
           <Link href="/" className="transition-colors hover:opacity-80">
             🏠 홈
           </Link>
-          <span style={{ color: "rgba(123,143,163,0.5)" }}>›</span>
+          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
           <Link href="/others" className="transition-colors hover:opacity-80">
             기타 수집
           </Link>
-          <span style={{ color: "rgba(123,143,163,0.5)" }}>›</span>
-          <span style={{ color: BRAND_ACCENT }}>생산품 도감</span>
+          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
+          <span style={{ color: "#6b4a7a" }}>생산품 도감</span>
         </nav>
 
         {/* Header */}
@@ -393,11 +404,14 @@ export default function ProductsPageClient({ products }: ProductsPageClientProps
             <div>
               <h1
                 className="m-0 text-[clamp(20px,4vw,28px)] font-bold tracking-tight md:text-[clamp(24px,4vw,34px)]"
-                style={{ color: BRAND_ACCENT, letterSpacing: "-0.02em" }}
+                style={{ color: "#6b4a7a", letterSpacing: "-0.02em" }}
               >
                 생산품 도감
               </h1>
-              <p className="mt-1 text-xs md:text-sm" style={{ color: BRAND_LIGHT }}>
+              <p
+                className="mt-1 text-xs md:text-sm"
+                style={{ color: "#8a6898" }}
+              >
                 맵에서 채집할 수 있는 버섯·과일·나무·돌 정보
               </p>
             </div>
@@ -438,7 +452,11 @@ export default function ProductsPageClient({ products }: ProductsPageClientProps
         {/* Filter + Search */}
         <div className="mb-4 flex flex-wrap items-center gap-3">
           {/* 왼쪽: 카테고리 탭 */}
-          <div className="flex flex-wrap gap-2" role="tablist" aria-label="카테고리 필터">
+          <div
+            className="flex flex-wrap gap-2"
+            role="tablist"
+            aria-label="카테고리 필터"
+          >
             {tabs.map((tab) => {
               const isActive = categoryFilter === tab.id;
               const count = tabCounts[tab.id];
@@ -457,7 +475,7 @@ export default function ProductsPageClient({ products }: ProductsPageClientProps
                     borderColor: isActive
                       ? `rgba(${BRAND_TINT},0.6)`
                       : `rgba(${BRAND_TINT},0.3)`,
-                    color: isActive ? BRAND_ACCENT : BRAND_LIGHT,
+                    color: isActive ? BRAND_ACCENT : "#8a6898",
                     boxShadow: isActive
                       ? `0 2px 8px rgba(${BRAND_TINT},0.2)`
                       : "none",
@@ -471,7 +489,7 @@ export default function ProductsPageClient({ products }: ProductsPageClientProps
                       background: isActive
                         ? `rgba(${BRAND_TINT},0.25)`
                         : `rgba(${BRAND_TINT},0.15)`,
-                      color: isActive ? BRAND_ACCENT : BRAND_LIGHT,
+                      color: isActive ? BRAND_ACCENT : "#8a6898",
                     }}
                   >
                     {count}
