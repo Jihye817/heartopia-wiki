@@ -1,16 +1,16 @@
 import type { MetadataRoute } from "next";
-import { CROPS } from "./gardening/crops/_data/crops";
+import { getCrops } from "./gardening/crops/_data/crops";
 import { getFlowers } from "./gardening/flowers/_data/flowers";
-import { PRODUCTS } from "./others/products/_data/products";
-import { FISHES } from "./fishing/_data/fishes";
-import { FOODS } from "./cooking/_data/foods";
-import { BIRDS } from "./birds/_data/birds";
-import { BUGS } from "./bugs/_data/bugs";
+import { getProducts } from "./others/products/_data/products";
+import { getFishes } from "./fishing/_data/fishes";
+import { getFoods } from "./cooking/_data/foods";
+import { getBirds } from "./birds/_data/birds";
+import { getBugs } from "./bugs/_data/bugs";
 
 const BASE_URL = "https://heartopia-gamewiki.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const flowers = await getFlowers();
+  const [flowers, crops, foods, fishes, bugs, birds, products] = await Promise.all([getFlowers(), getCrops(), getFoods(), getFishes(), getBugs(), getBirds(), getProducts()]);
   // ── 정적 라우트 ──────────────────────────────────────────────
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE_URL, priority: 1.0 },
@@ -28,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   // ── 동적 라우트 ──────────────────────────────────────────────
-  const cropRoutes: MetadataRoute.Sitemap = CROPS.map((c) => ({
+  const cropRoutes: MetadataRoute.Sitemap = crops.map((c) => ({
     url: `${BASE_URL}/gardening/crops/detail/${c.id}`,
     priority: 0.6,
   }));
@@ -38,27 +38,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const productRoutes: MetadataRoute.Sitemap = PRODUCTS.map((p) => ({
+  const productRoutes: MetadataRoute.Sitemap = products.map((p) => ({
     url: `${BASE_URL}/others/products/detail/${p.id}`,
     priority: 0.6,
   }));
 
-  const fishRoutes: MetadataRoute.Sitemap = FISHES.map((f) => ({
+  const fishRoutes: MetadataRoute.Sitemap = fishes.map((f) => ({
     url: `${BASE_URL}/fishing/detail/${f.id}`,
     priority: 0.6,
   }));
 
-  const foodRoutes: MetadataRoute.Sitemap = FOODS.map((f) => ({
+  const foodRoutes: MetadataRoute.Sitemap = foods.map((f) => ({
     url: `${BASE_URL}/cooking/recipes/detail/${f.id}`,
     priority: 0.6,
   }));
 
-  const birdRoutes: MetadataRoute.Sitemap = BIRDS.map((b) => ({
+  const birdRoutes: MetadataRoute.Sitemap = birds.map((b) => ({
     url: `${BASE_URL}/birds/detail/${b.id}`,
     priority: 0.6,
   }));
 
-  const bugRoutes: MetadataRoute.Sitemap = BUGS.map((b) => ({
+  const bugRoutes: MetadataRoute.Sitemap = bugs.map((b) => ({
     url: `${BASE_URL}/bugs/detail/${b.id}`,
     priority: 0.6,
   }));

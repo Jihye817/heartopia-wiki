@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
@@ -9,6 +10,7 @@ import type { BugDetail } from "../../_data/bugs";
 
 const BUG_TINT = "139, 195, 74";
 const BUG_BORDER = "#c5e1a5";
+
 
 function starsOf(n: number) {
   return "★".repeat(n) + "☆".repeat(Math.max(0, 5 - n));
@@ -21,6 +23,12 @@ interface BugDetailClientProps {
 }
 
 export default function BugDetailClient({ bug }: BugDetailClientProps) {
+  const [hideImage, setHideImage] = useState(false);
+
+  useEffect(() => {
+    setHideImage(sessionStorage.getItem("bugs_hideImage") === "true");
+  }, []);
+
   return (
     <section
       className="px-6 pt-8 pb-16"
@@ -41,7 +49,7 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
             곤충 도감
           </Link>
           <span style={{ color: "rgba(180,220,140,0.5)" }}>›</span>
-          <span style={{ color: "#4a6a20" }}>{bug.ko}</span>
+          <span style={{ color: "#4a6a20" }}>{bug.name}</span>
         </nav>
 
         {/* Back */}
@@ -73,10 +81,10 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
                   borderColor: `rgba(${BUG_TINT},0.4)`,
                 }}
               >
-                {bug.thumbnail ? (
+                {!hideImage && bug.thumbnail ? (
                   <Image
                     src={bug.thumbnail}
-                    alt={bug.ko}
+                    alt={bug.name}
                     width={120}
                     height={120}
                     className="h-4/5 w-4/5 object-contain"
@@ -91,7 +99,7 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
                 className="m-0 mb-3 text-[clamp(20px,4vw,28px)] leading-tight font-bold tracking-tight md:text-[clamp(24px,4vw,34px)]"
                 style={{ color: "#4a3060" }}
               >
-                {bug.ko}
+                {bug.name}
               </h1>
 
               {/* Divider */}
@@ -104,26 +112,41 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
 
               {/* Badges */}
               <div className="mb-4 flex flex-wrap gap-1.5">
-                <span
-                  className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                  style={{
-                    background: "rgba(189,225,150,0.3)",
-                    color: "#689f38",
-                    borderColor: "rgba(189,225,150,0.6)",
-                  }}
-                >
-                  채집 Lv.{bug.level}
-                </span>
-                <span
-                  className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                  style={{
-                    background: `rgba(${BUG_TINT},0.2)`,
-                    color: "#5a8a28",
-                    borderColor: `rgba(${BUG_TINT},0.45)`,
-                  }}
-                >
-                  {bug.habitat}
-                </span>
+                {bug.level > 0 && (
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+                    style={{
+                      background: "rgba(189,225,150,0.3)",
+                      color: "#689f38",
+                      borderColor: "rgba(189,225,150,0.6)",
+                    }}
+                  >
+                    채집 Lv.{bug.level}
+                  </span>
+                )}
+                {bug.availability === "event" ? (
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+                    style={{
+                      background: "rgba(255,220,130,0.25)",
+                      color: "#9a7020",
+                      borderColor: "rgba(255,220,130,0.55)",
+                    }}
+                  >
+                    이벤트
+                  </span>
+                ) : (
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+                    style={{
+                      background: "rgba(220,252,231,0.4)",
+                      color: "#16a34a",
+                      borderColor: "rgba(134,239,172,0.5)",
+                    }}
+                  >
+                    일상
+                  </span>
+                )}
               </div>
 
               {/* 상세 정보 표 */}
@@ -151,6 +174,25 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
                   </span>
                 </div>
 
+                {/* 서식지 */}
+                <div
+                  className="border-b-[1.5px] p-4"
+                  style={{ borderColor: "rgba(197,225,165,0.6)" }}
+                >
+                  <p
+                    className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
+                    style={{ color: "#7aaa40" }}
+                  >
+                    서식지
+                  </p>
+                  <p
+                    className="text-sm font-bold md:text-base"
+                    style={{ color: "#4a3060" }}
+                  >
+                    {bug.habitat || "-"}
+                  </p>
+                </div>
+
                 {/* 위치 (전체 너비) */}
                 <div
                   className="border-b-[1.5px] p-4"
@@ -170,42 +212,44 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
                   </p>
                 </div>
 
-                {/* 시간 */}
+                {/* 시간 + 날씨 (2칸 그리드) */}
                 <div
-                  className="border-b-[1.5px] px-4 py-3"
+                  className={
+                    bug.desc ? "grid grid-cols-2 border-b-[1.5px]" : "grid grid-cols-2"
+                  }
                   style={{ borderColor: "rgba(197,225,165,0.6)" }}
                 >
-                  <p
-                    className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                    style={{ color: "#7aaa40" }}
+                  <div
+                    className="border-r-[1.5px] p-4"
+                    style={{ borderColor: "rgba(197,225,165,0.6)" }}
                   >
-                    시간
-                  </p>
-                  <p
-                    className="text-sm font-bold md:text-base"
-                    style={{ color: "#4a3060" }}
-                  >
-                    {bug.times.length > 0 ? bug.times.join(", ") : "-"}
-                  </p>
-                </div>
-
-                {/* 날씨 */}
-                <div
-                  className={bug.desc ? "border-b-[1.5px] px-4 py-3" : "px-4 py-3"}
-                  style={{ borderColor: "rgba(197,225,165,0.6)" }}
-                >
-                  <p
-                    className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                    style={{ color: "#7aaa40" }}
-                  >
-                    날씨
-                  </p>
-                  <p
-                    className="text-sm font-bold md:text-base"
-                    style={{ color: "#4a3060" }}
-                  >
-                    {bug.weathers.length > 0 ? bug.weathers.join(", ") : "-"}
-                  </p>
+                    <p
+                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
+                      style={{ color: "#7aaa40" }}
+                    >
+                      시간
+                    </p>
+                    <p
+                      className="text-sm font-bold md:text-base"
+                      style={{ color: "#4a3060" }}
+                    >
+                      {bug.times.length > 0 ? bug.times.join(", ") : "-"}
+                    </p>
+                  </div>
+                  <div className="p-4">
+                    <p
+                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
+                      style={{ color: "#7aaa40" }}
+                    >
+                      날씨
+                    </p>
+                    <p
+                      className="text-sm font-bold md:text-base"
+                      style={{ color: "#4a3060" }}
+                    >
+                      {bug.weathers.length > 0 ? bug.weathers.join(", ") : "-"}
+                    </p>
+                  </div>
                 </div>
 
                 {/* 특이사항 (있을 때만) */}

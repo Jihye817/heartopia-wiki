@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { FISHES } from "./_data/fishes";
+import { getFishes } from "./_data/fishes";
 import FishingClient from "./Client";
 
 export const metadata: Metadata = {
@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/fishing" },
 };
 
-export default function FishingPage() {
-  return <FishingClient fishes={FISHES} />;
+export default async function FishingPage() {
+  const fishes = await getFishes();
+  return <FishingClient fishes={fishes} />;
 }

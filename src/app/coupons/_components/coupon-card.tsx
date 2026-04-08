@@ -108,16 +108,16 @@ export function CouponCard({ coupon }: CouponCardProps) {
         {/* 모바일: 세로 스택 / 데스크톱: 가로 정렬 */}
         <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between md:gap-3">
           <span
-            className="min-w-0 truncate text-lg font-bold tracking-widest"
+            className="min-w-0 truncate text-lg font-extrabold tracking-widest"
             style={{
               color: "#6b4a7a",
-              fontFamily: "'Courier New', monospace",
+              fontFamily: "var(--font-mono), 'Courier New', monospace",
             }}
           >
             {coupon.code}
           </span>
           <div className="flex shrink-0 flex-wrap items-center gap-2 self-end md:gap-3 md:self-auto">
-            <ExpiryBadge expiresAt={coupon.expiresAt} />
+            <ExpiryBadge expiresAt={coupon.expires_at} />
             <button
               type="button"
               onClick={handleCopy}

@@ -3,33 +3,22 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { LayoutGrid, List, MapPin, Search, Bird } from "lucide-react";
-import type { BirdDetail } from "./_data/birds";
+import { LayoutGrid, List, MapPin, Search } from "lucide-react";
+import type { BirdListItem } from "./_data/birds";
 
 // ── Constants ──────────────────────────────────────────────────────────────────
 
-/** 새 관찰 테마 색상 (category-section.tsx birds 참고) */
 const BIRD_TINT = "184, 159, 220";
 const BIRD_BORDER = "rgba(184,159,220,0.6)";
 const BIRD_BG_HOVER = "#f8f0ff";
 
-const RARITY_STYLE: Record<string, { bg: string; color: string; border: string }> = {
-  일반: { bg: "rgba(230,210,230,0.3)", color: "#8a6898", border: "rgba(200,160,200,0.5)" },
-  희귀: { bg: "rgba(186,230,253,0.4)", color: "#0284c7", border: "rgba(125,211,252,0.6)" },
-  전설: { bg: "rgba(254,243,199,0.5)", color: "#b45309", border: "rgba(252,211,77,0.6)" },
-};
-
 // ── Subcomponents ──────────────────────────────────────────────────────────────
 
-interface BirdCardProps {
-  bird: BirdDetail;
-}
-
-function BirdCard({ bird }: BirdCardProps) {
+function BirdCard({ bird }: { bird: BirdListItem }) {
   return (
     <Link
       href={`/birds/detail/${bird.id}`}
-      className="group relative block overflow-hidden rounded-[20px] px-6 pt-7 pb-6 no-underline transition-all duration-300 ease-out"
+      className="group relative block cursor-pointer overflow-hidden rounded-[20px] px-6 pt-7 pb-6 no-underline transition-all duration-300 ease-out"
       style={{
         background: "rgba(255,252,254,0.9)",
         border: `1.5px solid rgba(${BIRD_TINT},0.32)`,
@@ -48,104 +37,126 @@ function BirdCard({ bird }: BirdCardProps) {
         e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.04)";
       }}
     >
-      {/* BG decoration */}
-      <div
-        className="absolute -right-2.5 -bottom-2.5 opacity-[0.06] transition-opacity duration-300 group-hover:opacity-[0.11]"
-        style={{
-          transform: "scale(2) rotate(-10deg)",
-          transformOrigin: "bottom right",
-        }}
-        aria-hidden
-      >
-        <span className="text-4xl">🐦</span>
+      {/* 썸네일 */}
+      <div className="mb-4 flex justify-center">
+        <div
+          className="inline-flex h-[110px] w-[110px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] p-4 text-5xl transition-transform duration-300 group-hover:scale-105"
+          style={{
+            background: `rgba(${BIRD_TINT},0.15)`,
+            borderColor: `rgba(${BIRD_TINT},0.35)`,
+          }}
+        >
+          {bird.thumbnail ? (
+            <Image
+              src={bird.thumbnail}
+              alt=""
+              width={110}
+              height={110}
+              className="h-full w-full object-contain"
+            />
+          ) : (
+            <span aria-hidden>{bird.emoji || "🐦"}</span>
+          )}
+        </div>
       </div>
 
-      {/* Thumbnail / Emoji */}
-      <div
-        className="mb-4 inline-flex h-[60px] w-[60px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] text-3xl transition-transform duration-300 group-hover:scale-105"
-        style={{
-          background: `rgba(${BIRD_TINT},0.18)`,
-          borderColor: `rgba(${BIRD_TINT},0.4)`,
-        }}
-      >
-        {bird.thumbnail ? (
-          <Image
-            src={bird.thumbnail}
-            alt={bird.ko}
-            width={60}
-            height={60}
-            className="h-4/5 w-4/5 object-contain"
-          />
-        ) : (
-          <span aria-hidden>{bird.emoji}</span>
-        )}
-      </div>
-
-      {/* Name */}
-      <div className="mb-3.5">
+      {/* 이름 */}
+      <div className="mb-3 text-center">
         <div
           className="text-lg leading-tight font-bold md:text-xl"
           style={{ color: "#4a3060" }}
         >
-          {bird.ko}
+          {bird.name}
         </div>
       </div>
 
-      {/* Divider */}
-      <div
-        className="mb-3.5 h-px"
-        style={{
-          background: `linear-gradient(to right, ${BIRD_BORDER}, transparent)`,
-        }}
-      />
-
-      {/* Badges */}
-      <div className="flex flex-col gap-1.5">
-        <div className="flex flex-wrap gap-1.5">
+      {/* 뱃지 */}
+      <div className="mb-3.5 flex flex-wrap justify-center gap-1.5">
+        <span
+          className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+          style={{
+            background: "rgba(189,200,255,0.3)",
+            color: "#6b4abf",
+            borderColor: "rgba(189,200,255,0.6)",
+          }}
+        >
+          관찰 Lv.{bird.level}
+        </span>
+        <span
+          className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+          style={{
+            background: `rgba(${BIRD_TINT},0.2)`,
+            color: "#8a6bbf",
+            borderColor: `rgba(${BIRD_TINT},0.45)`,
+          }}
+        >
+          {bird.habitat}
+        </span>
+        {bird.availability === "event" ? (
           <span
             className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
             style={{
-              background: "rgba(189,200,255,0.3)",
-              color: "#6b4abf",
-              borderColor: "rgba(189,200,255,0.6)",
+              background: "rgba(255,220,130,0.25)",
+              color: "#9a7020",
+              borderColor: "rgba(255,220,130,0.55)",
             }}
           >
-            관찰 Lv.{bird.level}
+            이벤트
           </span>
+        ) : (
           <span
             className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
             style={{
-              background: RARITY_STYLE[bird.rarity]?.bg ?? "rgba(230,210,230,0.3)",
-              color: RARITY_STYLE[bird.rarity]?.color ?? "#8a6898",
-              borderColor: RARITY_STYLE[bird.rarity]?.border ?? "rgba(200,160,200,0.5)",
+              background: "rgba(220,252,231,0.4)",
+              color: "#16a34a",
+              borderColor: "rgba(134,239,172,0.5)",
             }}
           >
-            {bird.rarity}
+            일상
           </span>
-        </div>
-        <div>
-          <span
-            className="flex w-fit items-center gap-1 rounded-lg border px-2 py-1 text-xs font-bold md:text-[13px]"
-            style={{
-              background: "rgba(255,245,235,0.9)",
-              borderColor: "rgba(210,170,120,0.5)",
-              color: "#8a6020",
-            }}
-          >
-            <MapPin size={11} strokeWidth={2.2} aria-hidden />
-            {bird.location || "-"}
-          </span>
-        </div>
+        )}
       </div>
+
+      {/* 성급별 가격 */}
+      {bird.bird_grades.length > 0 && (
+        <>
+          <div
+            className="mb-3 h-px"
+            style={{ background: `rgba(${BIRD_TINT},0.4)` }}
+          />
+          <div className="grid grid-cols-5 gap-1">
+            {bird.bird_grades.map((g) => (
+              <div
+                key={g.stars}
+                className="flex flex-col items-center rounded-lg border py-1.5"
+                style={{
+                  background: "rgba(245,245,247,0.7)",
+                  borderColor: "rgba(209,213,219,0.5)",
+                }}
+              >
+                <span className="text-xs font-bold text-amber-500">
+                  {g.stars}★
+                </span>
+                <div
+                  className="my-1 h-px w-4"
+                  style={{ background: "rgba(209,213,219,0.6)" }}
+                />
+                <span
+                  className="text-xs font-bold tabular-nums"
+                  style={{ color: "#6b7280" }}
+                >
+                  {g.sellPrice || "-"}
+                </span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </Link>
   );
 }
 
-interface BirdListViewProps {
-  birds: BirdDetail[];
-}
-
-function BirdListView({ birds }: BirdListViewProps) {
+function BirdListView({ birds }: { birds: BirdListItem[] }) {
   return (
     <div
       className="overflow-x-auto rounded-[20px] border-[1.5px]"
@@ -155,33 +166,39 @@ function BirdListView({ birds }: BirdListViewProps) {
         boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
       }}
     >
-      <table className="w-full min-w-[580px]">
+      <table className="w-full min-w-[620px]">
         <thead>
           <tr
             className="border-b-[1.5px]"
             style={{ borderColor: `rgba(${BIRD_TINT},0.4)` }}
           >
-            {["이름", "레벨", "서식지", "희귀도", "위치", "거리", "1성 ~ 5성 가격"].map((h) => (
-              <th
-                key={h}
-                className="px-4 py-3.5 text-left text-sm font-bold tracking-wider uppercase"
-                style={{ color: "#b080c0" }}
-              >
-                {h}
-              </th>
-            ))}
+            {["이름", "레벨", "서식지", "위치", "거리", "판매 가격"].map(
+              (h) => (
+                <th
+                  key={h}
+                  className="px-4 py-3.5 text-left text-sm font-bold tracking-wider uppercase"
+                  style={{ color: "#b080c0" }}
+                >
+                  {h}
+                </th>
+              ),
+            )}
           </tr>
         </thead>
         <tbody>
           {birds.map((bird) => (
             <tr
               key={bird.id}
-              className="border-b border-[rgba(184,159,220,0.3)] transition-colors last:border-0 hover:bg-[#f8f0ff]/50"
+              className="border-b transition-colors last:border-0 hover:bg-[#f8f0ff]/50"
+              style={{ borderColor: `rgba(${BIRD_TINT},0.3)` }}
             >
-              <td className="px-4 py-3.5">
-                <div className="flex items-center gap-2">
+              <td className="p-0">
+                <Link
+                  href={`/birds/detail/${bird.id}`}
+                  className="flex items-center px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
+                >
                   <div
-                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg border-[1.5px]"
+                    className="mr-2.5 inline-flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-lg border-[1.5px]"
                     style={{
                       background: `rgba(${BIRD_TINT},0.18)`,
                       borderColor: `rgba(${BIRD_TINT},0.4)`,
@@ -190,96 +207,115 @@ function BirdListView({ birds }: BirdListViewProps) {
                     {bird.thumbnail ? (
                       <Image
                         src={bird.thumbnail}
-                        alt={bird.ko}
-                        width={32}
-                        height={32}
+                        alt=""
+                        width={28}
+                        height={28}
                         className="h-4/5 w-4/5 object-contain"
                       />
                     ) : (
-                      <span className="text-base" aria-hidden>{bird.emoji}</span>
+                      <span className="text-sm" aria-hidden>
+                        {bird.emoji || "🐦"}
+                      </span>
                     )}
                   </div>
                   <span
                     className="text-sm font-bold"
                     style={{ color: "#4a3060" }}
                   >
-                    {bird.ko}
+                    {bird.name}
                   </span>
-                </div>
+                </Link>
               </td>
-              <td className="px-4 py-3.5">
-                <span
-                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                  style={{
-                    background: "rgba(189,200,255,0.3)",
-                    color: "#6b4abf",
-                    borderColor: "rgba(189,200,255,0.6)",
-                  }}
+              <td className="p-0">
+                <Link
+                  href={`/birds/detail/${bird.id}`}
+                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
-                  Lv.{bird.level}
-                </span>
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                    style={{
+                      background: "rgba(189,200,255,0.3)",
+                      color: "#6b4abf",
+                      borderColor: "rgba(189,200,255,0.6)",
+                    }}
+                  >
+                    Lv.{bird.level}
+                  </span>
+                </Link>
               </td>
-              <td className="px-4 py-3.5">
-                <span
-                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                  style={{
-                    background: `rgba(${BIRD_TINT},0.2)`,
-                    color: "#8a6bbf",
-                    borderColor: `rgba(${BIRD_TINT},0.45)`,
-                  }}
+              <td className="p-0">
+                <Link
+                  href={`/birds/detail/${bird.id}`}
+                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
-                  {bird.habitat}
-                </span>
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                    style={{
+                      background: `rgba(${BIRD_TINT},0.2)`,
+                      color: "#8a6bbf",
+                      borderColor: `rgba(${BIRD_TINT},0.45)`,
+                    }}
+                  >
+                    {bird.habitat}
+                  </span>
+                </Link>
               </td>
-              <td className="px-4 py-3.5">
-                <span
-                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                  style={{
-                    background: RARITY_STYLE[bird.rarity]?.bg ?? "rgba(230,210,230,0.3)",
-                    color: RARITY_STYLE[bird.rarity]?.color ?? "#6b4a7a",
-                    borderColor: RARITY_STYLE[bird.rarity]?.border ?? "rgba(230,210,230,0.6)",
-                  }}
+              <td className="p-0">
+                <Link
+                  href={`/birds/detail/${bird.id}`}
+                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
-                  {bird.rarity}
-                </span>
+                  <span
+                    className="flex w-fit items-center gap-1 rounded-lg border px-2 py-1 text-xs font-bold md:text-[13px]"
+                    style={{
+                      background: "rgba(255,245,235,0.9)",
+                      borderColor: "rgba(210,170,120,0.5)",
+                      color: "#8a6020",
+                    }}
+                  >
+                    <MapPin size={11} strokeWidth={2.2} aria-hidden />
+                    {bird.location || "-"}
+                  </span>
+                </Link>
               </td>
-              <td className="px-4 py-3.5">
-                <span
-                  className="flex w-fit items-center gap-1 rounded-lg border px-2 py-1 text-xs font-bold md:text-[13px]"
-                  style={{
-                    background: "rgba(255,245,235,0.9)",
-                    borderColor: "rgba(210,170,120,0.5)",
-                    color: "#8a6020",
-                  }}
+              <td className="p-0">
+                <Link
+                  href={`/birds/detail/${bird.id}`}
+                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
-                  <MapPin size={11} strokeWidth={2.2} aria-hidden />
-                  {bird.location || "-"}
-                </span>
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                    style={{
+                      background: `rgba(${BIRD_TINT},0.15)`,
+                      color: "#6b4a7a",
+                      borderColor: `rgba(${BIRD_TINT},0.4)`,
+                    }}
+                  >
+                    {bird.distance ?? "-"}
+                  </span>
+                </Link>
               </td>
-              <td className="px-4 py-3.5">
-                <span
-                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                  style={{
-                    background: `rgba(${BIRD_TINT},0.15)`,
-                    color: "#6b4a7a",
-                    borderColor: `rgba(${BIRD_TINT},0.4)`,
-                  }}
+              <td className="p-0">
+                <Link
+                  href={`/birds/detail/${bird.id}`}
+                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
-                  {bird.distance}
-                </span>
-              </td>
-              <td className="px-4 py-3.5">
-                <span
-                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                  style={{
-                    background: "rgba(255,248,230,0.9)",
-                    borderColor: "rgba(210,170,100,0.45)",
-                    color: "#7a5a10",
-                  }}
-                >
-                  {bird.sellMin.toLocaleString()}~
-                  {bird.sellMax.toLocaleString()}G
-                </span>
+                  {bird.sellMin || bird.sellMax ? (
+                    <span
+                      className="text-sm font-bold tabular-nums"
+                      style={{ color: "#b45309" }}
+                    >
+                      {bird.sellMin} ~ {bird.sellMax} G
+                    </span>
+                  ) : (
+                    <span
+                      className="text-sm font-bold"
+                      style={{ color: "#c4b0cc" }}
+                    >
+                      -
+                    </span>
+                  )}
+                </Link>
               </td>
             </tr>
           ))}
@@ -291,53 +327,53 @@ function BirdListView({ birds }: BirdListViewProps) {
 
 // ── Main ───────────────────────────────────────────────────────────────────────
 
-type CategoryFilter = "all" | "일반" | "이벤트" | "새들의 복귀";
+type AvailFilter = "전체" | "일상" | "새들의 복귀 사건" | "이벤트";
 
 interface BirdsClientProps {
-  birds: BirdDetail[];
+  birds: BirdListItem[];
 }
 
 export default function BirdsClient({ birds }: BirdsClientProps) {
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
+  const [availFilter, setAvailFilter] = useState<AvailFilter>("전체");
+  const [levelFilter, setLevelFilter] = useState<number | null>(null);
 
-  const tabCounts = useMemo(
-    () => ({
-      all: birds.length,
-      일반: birds.filter((b) => b.habitat !== "새들의 복귀").length,
-      이벤트: 0,
-      "새들의 복귀": birds.filter((b) => b.habitat === "새들의 복귀").length,
-    }),
-    [birds],
-  );
+  const levels = useMemo(() => {
+    return Array.from(
+      new Set(
+        birds
+          .map((b) => b.level)
+          .filter((l): l is number => l !== null && l > 0),
+      ),
+    ).sort((a, b) => a - b);
+  }, [birds]);
+
+  const tabCounts = useMemo(() => ({
+    전체: birds.length,
+    일상: birds.filter((b) => b.availability === "always").length,
+    "새들의 복귀 사건": birds.filter((b) => b.availability === "새들의 복귀 사건").length,
+    이벤트: birds.filter((b) => b.availability === "event").length,
+  }), [birds]);
 
   const filtered = useMemo(() => {
-    const byCategory =
-      categoryFilter === "all"
-        ? birds
-        : categoryFilter === "새들의 복귀"
-          ? birds.filter((b) => b.habitat === "새들의 복귀")
-          : categoryFilter === "이벤트"
-            ? birds.filter(() => false)
-            : birds.filter((b) => b.habitat !== "새들의 복귀");
+    let result = birds;
+    if (availFilter === "일상") result = result.filter((b) => b.availability === "always");
+    else if (availFilter === "새들의 복귀 사건") result = result.filter((b) => b.availability === "새들의 복귀 사건");
+    else if (availFilter === "이벤트") result = result.filter((b) => b.availability === "event");
+    if (levelFilter !== null) result = result.filter((b) => b.level === levelFilter);
+    if (search.trim()) {
+      const q = search.trim().toLowerCase();
+      result = result.filter((b) => b.name.toLowerCase().includes(q));
+    }
+    return result;
+  }, [birds, availFilter, levelFilter, search]);
 
-    if (!search.trim()) return byCategory;
-
-    const q = search.trim().toLowerCase();
-    return byCategory.filter(
-      (b) =>
-        b.ko.toLowerCase().includes(q) ||
-        b.name.toLowerCase().includes(q) ||
-        b.location.toLowerCase().includes(q),
-    );
-  }, [birds, categoryFilter, search]);
-
-  const tabs: { id: CategoryFilter; label: string }[] = [
-    { id: "all", label: "전체" },
-    { id: "일반", label: "일반" },
-    { id: "이벤트", label: "이벤트" },
-    { id: "새들의 복귀", label: "새들의 복귀" },
+  const availTabs: { id: AvailFilter; label: string; emoji: string }[] = [
+    { id: "전체", label: "전체", emoji: "✨" },
+    { id: "일상", label: "일상", emoji: "🌿" },
+    { id: "새들의 복귀 사건", label: "새들의 복귀 사건", emoji: "🐦" },
+    { id: "이벤트", label: "이벤트", emoji: "🎉" },
   ];
 
   return (
@@ -410,83 +446,105 @@ export default function BirdsClient({ birds }: BirdsClientProps) {
           </div>
         </div>
 
-        {/* Filter Tabs */}
-        <div
-          className="mb-6 flex flex-wrap gap-2"
-          role="tablist"
-          aria-label="분류 필터"
-        >
-          {tabs.map((tab) => {
-            const isActive = categoryFilter === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => setCategoryFilter(tab.id)}
-                className="flex items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1.5 text-xs font-bold transition-all md:text-sm"
-                style={{
-                  background: isActive ? "white" : "rgba(255,252,254,0.85)",
-                  borderColor: isActive
-                    ? `rgba(${BIRD_TINT},0.55)`
-                    : "rgba(230,210,230,0.6)",
-                  color: isActive ? "#6b4a7a" : "#8a6898",
-                  boxShadow: isActive ? "0 1px 4px rgba(0,0,0,0.05)" : "none",
-                }}
-              >
-                {tab.label}
-                <span
-                  className="rounded-full px-1.5 py-0.5 text-[10px] md:text-xs"
+        {/* Filter + Search 통합 행 */}
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          {/* 왼쪽: 가용 탭 */}
+          <div className="flex flex-wrap gap-2" role="tablist" aria-label="가용 필터">
+            {availTabs.map((tab) => {
+              const isActive = availFilter === tab.id;
+              const count = tabCounts[tab.id];
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => setAvailFilter(tab.id)}
+                  className="flex cursor-pointer items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1.5 text-xs font-bold transition-all md:text-sm"
                   style={{
                     background: isActive
-                      ? `rgba(${BIRD_TINT},0.25)`
-                      : "rgba(230,210,230,0.45)",
-                    color: "#6b4a7a",
+                      ? `rgba(${BIRD_TINT},0.2)`
+                      : "rgba(255,252,254,0.85)",
+                    borderColor: isActive
+                      ? `rgba(${BIRD_TINT},0.6)`
+                      : `rgba(${BIRD_TINT},0.3)`,
+                    color: isActive ? "#8a6bbf" : "#8a6898",
+                    boxShadow: isActive
+                      ? `0 2px 8px rgba(${BIRD_TINT},0.25)`
+                      : "none",
                   }}
                 >
-                  {tabCounts[tab.id]}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+                  <span aria-hidden>{tab.emoji}</span>
+                  {tab.label}
+                  <span
+                    className="rounded-full px-1.5 py-0.5 text-[10px] md:text-xs"
+                    style={{
+                      background: isActive
+                        ? `rgba(${BIRD_TINT},0.25)`
+                        : "rgba(230,210,230,0.45)",
+                      color: isActive ? "#8a6bbf" : "#8a6898",
+                    }}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
 
-        {/* Search + Count */}
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
-          <div className="relative max-w-xs min-w-[200px] flex-1">
-            <Search
-              size={14}
-              className="absolute top-1/2 left-3 -translate-y-1/2"
-              style={{ color: "#8a6898" }}
-              strokeWidth={2.2}
-              aria-hidden
-            />
-            <input
-              type="search"
-              placeholder="이름·장소 검색..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              aria-label="새 이름 또는 장소 검색"
-              className="w-full rounded-xl border-[1.5px] py-2 pr-4 pl-9 text-xs transition-all outline-none placeholder:opacity-70 focus:border-[#b89fdc] md:py-2.5 md:text-sm"
+          {/* 오른쪽: 레벨 셀렉트 + 검색 */}
+          <div className="ml-auto flex items-center gap-2">
+
+            {/* 레벨 셀렉트 */}
+            <select
+              value={levelFilter ?? ""}
+              onChange={(e) =>
+                setLevelFilter(e.target.value ? Number(e.target.value) : null)
+              }
+              aria-label="레벨 필터"
+              className="rounded-xl border-[1.5px] py-2 pr-8 pl-3 text-xs font-bold transition-all outline-none md:py-2.5 md:text-sm"
               style={{
                 background: "rgba(248,240,255,0.5)",
-                borderColor: "rgba(230,210,230,0.6)",
-                color: "#4a3060",
+                borderColor: `rgba(${BIRD_TINT},0.4)`,
+                color: levelFilter !== null ? "#8a6bbf" : "#8a6898",
+                appearance: "none",
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a6898' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "right 10px center",
               }}
-            />
+            >
+              <option value="">전체 레벨</option>
+              {levels.map((lv) => (
+                <option key={lv} value={lv}>
+                  관찰 Lv.{lv}
+                </option>
+              ))}
+            </select>
+
+            {/* 검색 */}
+            <div className="relative w-40 md:w-52">
+              <Search
+                size={14}
+                className="absolute top-1/2 left-3 -translate-y-1/2"
+                style={{ color: "#8a6898" }}
+                strokeWidth={2.2}
+                aria-hidden
+              />
+              <input
+                type="search"
+                placeholder="이름 검색..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                aria-label="새 이름 검색"
+                className="w-full rounded-xl border-[1.5px] py-2 pr-4 pl-9 text-xs transition-all outline-none placeholder:opacity-70 focus:border-[#b89fdc] md:py-2.5 md:text-sm"
+                style={{
+                  background: "rgba(248,240,255,0.5)",
+                  borderColor: `rgba(${BIRD_TINT},0.4)`,
+                  color: "#4a3060",
+                }}
+              />
+            </div>
           </div>
-          <span
-            className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-bold md:text-sm"
-            style={{
-              background: `rgba(${BIRD_TINT},0.15)`,
-              borderColor: `rgba(${BIRD_TINT},0.4)`,
-              color: "#8a6bbf",
-            }}
-          >
-            <Bird size={12} aria-hidden />
-            {filtered.length}종
-          </span>
         </div>
 
         {/* Content */}

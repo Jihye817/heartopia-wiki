@@ -1,35 +1,26 @@
 import { notFound } from "next/navigation";
-import { PRODUCTS } from "../../_data/products";
+import type { Metadata } from "next";
+import { getProductDetail } from "../../_data/products";
 import ProductDetailClient from "./Client";
 
-type PageProps = { params: Promise<{ id: string }> };
+interface Props {
+  params: Promise<{ id: string }>;
+}
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const product = PRODUCTS.find((item) => item.id === id);
-
-  if (!product) {
-    return {
-      title: "생산품 상세",
-      description: "생산품 상세 정보를 확인할 수 있습니다.",
-      alternates: { canonical: `/others/products/detail/${id}` },
-    };
-  }
-
+  const product = id ? await getProductDetail(id) : null;
+  if (!product) return {};
   return {
-    title: `${product.ko}`,
-    description: `${product.ko}의 채집 장소·리스폰·판매가 정보입니다.`,
+    title: `${product.name} | 생산품 도감`,
+    description: `${product.name}의 채집 장소, 리스폰 시간, 판매 가격 정보를 확인할 수 있어요.`,
     alternates: { canonical: `/others/products/detail/${id}` },
   };
 }
 
-export default async function ProductDetailPage({ params }: PageProps) {
+export default async function ProductDetailPage({ params }: Props) {
   const { id } = await params;
-  const product = PRODUCTS.find((item) => item.id === id);
-
-  if (!product) {
-    notFound();
-  }
-
+  const product = id ? await getProductDetail(id) : null;
+  if (!product) notFound();
   return <ProductDetailClient product={product} />;
 }

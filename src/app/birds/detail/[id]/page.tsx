@@ -1,34 +1,26 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { BIRDS } from "../../_data/birds";
+import { getBirdDetail } from "../../_data/birds";
 import BirdDetailClient from "./Client";
 
-type PageProps = { params: Promise<{ id: string }> };
-
-export async function generateStaticParams() {
-  return BIRDS.map((bird) => ({ id: bird.id }));
+interface Props {
+  params: Promise<{ id: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const bird = BIRDS.find((b) => b.id === id);
-  if (!bird) {
-    return {
-      title: "새 상세",
-      description: "새 상세 정보를 확인할 수 있습니다.",
-      alternates: { canonical: `/birds/detail/${id}` },
-    };
-  }
+  const bird = id ? await getBirdDetail(id) : null;
+  if (!bird) return {};
   return {
-    title: `${bird.ko} | 새 도감`,
-    description: `${bird.ko}의 서식지, 관찰 레벨, 위치, 성급별 판매 가격 정보를 확인할 수 있어요.`,
+    title: `${bird.name} | 새 도감`,
+    description: `${bird.name}의 서식지, 위치, 거리, 시간, 날씨, 성급별 판매 가격 정보를 확인할 수 있어요.`,
     alternates: { canonical: `/birds/detail/${id}` },
   };
 }
 
-export default async function BirdDetailPage({ params }: PageProps) {
+export default async function BirdDetailPage({ params }: Props) {
   const { id } = await params;
-  const bird = BIRDS.find((b) => b.id === id);
+  const bird = id ? await getBirdDetail(id) : null;
   if (!bird) notFound();
   return <BirdDetailClient bird={bird} />;
 }

@@ -6,7 +6,6 @@ import type { CropDetail } from "../../_data/crops";
 
 const CROP_BORDER = "#b3e5cc";
 const CROP_TINT = "126, 203, 170";
-const CROP_BG_HOVER_TINT = `rgba(${CROP_TINT},0.22)`;
 
 interface CropDetailClientProps {
   crop: CropDetail;
@@ -46,7 +45,7 @@ export default function CropDetailClient({ crop }: CropDetailClientProps) {
             작물 도감
           </Link>
           <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
-          <span style={{ color: "#6b4a7a" }}>{crop.ko}</span>
+          <span style={{ color: "#6b4a7a" }}>{crop.name}</span>
         </nav>
 
         <Link
@@ -70,13 +69,13 @@ export default function CropDetailClient({ crop }: CropDetailClientProps) {
               <div
                 className="mb-4 inline-flex h-[144px] w-[144px] flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] p-3"
                 style={{
-                  background: CROP_BG_HOVER_TINT,
+                  background: `rgba(${CROP_TINT},0.15)`,
                   borderColor: `rgba(${CROP_TINT},0.42)`,
                 }}
               >
                 <Image
                   src={crop.thumbnail}
-                  alt={crop.ko}
+                  alt={crop.name}
                   width={120}
                   height={120}
                   className="h-full w-full object-contain"
@@ -87,7 +86,7 @@ export default function CropDetailClient({ crop }: CropDetailClientProps) {
                 className="m-0 mb-3 text-[clamp(20px,4vw,28px)] leading-tight font-bold tracking-tight md:text-[clamp(24px,4vw,34px)]"
                 style={{ color: "#4a3060" }}
               >
-                {crop.ko}
+                {crop.name}
               </h1>
               <div
                 className="mb-4 h-px"
@@ -97,64 +96,46 @@ export default function CropDetailClient({ crop }: CropDetailClientProps) {
               />
 
               <div className="mb-4 flex flex-wrap gap-1.5">
-                <span
-                  className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                  style={{
-                    background: "rgba(189,222,255,0.3)",
-                    color: "#0284c7",
-                    borderColor: "rgba(189,222,255,0.6)",
-                  }}
-                >
-                  원예 Lv.{crop.level}
-                </span>
-                <span
-                  className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                  style={{
-                    background: "rgba(254,215,170,0.3)",
-                    color: "#b45309",
-                    borderColor: "rgba(251,191,36,0.4)",
-                  }}
-                >
-                  활동시기 : {crop.season}
-                </span>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {[
-                  ["성장 기간", crop.growTime],
-                  ["판매 가격", `💰 ${crop.sellMin} - ${crop.sellMax}G`],
-                ].map(([label, value]) => (
-                  <div
-                    key={String(label)}
-                    className="rounded-2xl border-[1.5px] px-3.5 py-2.5"
+                {crop.level !== null && (
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
                     style={{
-                      background: "rgba(255,240,246,0.5)",
-                      borderColor: "rgba(230,210,230,0.6)",
+                      background: "rgba(189,222,255,0.3)",
+                      color: "#0284c7",
+                      borderColor: "rgba(189,222,255,0.6)",
                     }}
                   >
-                    <div
-                      className="mb-0.5 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#8a6898" }}
-                    >
-                      {label}
-                    </div>
-                    <div
-                      className="text-sm font-bold md:text-base"
-                      style={{ color: "#6b4a7a" }}
-                    >
-                      {value}
-                    </div>
-                  </div>
-                ))}
+                    원예 Lv.{crop.level}
+                  </span>
+                )}
+                {crop.availability === "event" ? (
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+                    style={{
+                      background: "rgba(255,220,130,0.25)",
+                      color: "#9a7020",
+                      borderColor: "rgba(255,220,130,0.55)",
+                    }}
+                  >
+                    이벤트 : {crop.event ?? "이벤트"}
+                  </span>
+                ) : (
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+                    style={{
+                      background: "rgba(220,252,231,0.4)",
+                      color: "#16a34a",
+                      borderColor: "rgba(134,239,172,0.5)",
+                    }}
+                  >
+                    일상
+                  </span>
+                )}
               </div>
 
+              {/* 상세 정보 표 */}
               <div
-                className="my-5 h-px w-full"
-                style={{ background: "rgba(230,210,230,0.6)" }}
-              />
-
-              <div
-                className="overflow-hidden rounded-2xl border-[1.5px]"
+                className="mb-5 overflow-hidden rounded-2xl border-[1.5px]"
                 style={{
                   background: "rgba(255,252,254,0.95)",
                   borderColor: "rgba(230,210,230,0.6)",
@@ -166,14 +147,51 @@ export default function CropDetailClient({ crop }: CropDetailClientProps) {
                 >
                   <div
                     className="h-[7px] w-[7px] rounded-full"
-                    style={{ background: "#c06898" }}
+                    style={{ background: "#7dceb0" }}
                   />
                   <span
                     className="text-xs font-bold tracking-widest uppercase md:text-sm"
                     style={{ color: "#8a6898" }}
                   >
-                    씨앗 정보
+                    상세 정보
                   </span>
+                </div>
+
+                <div className="grid grid-cols-2">
+                  <div
+                    className="border-r-[1.5px] border-b-[1.5px] p-4"
+                    style={{ borderColor: "rgba(230,210,230,0.6)" }}
+                  >
+                    <p
+                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
+                      style={{ color: "#8a6898" }}
+                    >
+                      성장 기간
+                    </p>
+                    <p
+                      className="text-sm font-bold md:text-base"
+                      style={{ color: "#4a3060" }}
+                    >
+                      {crop.grow_time}
+                    </p>
+                  </div>
+                  <div
+                    className="border-b-[1.5px] p-4"
+                    style={{ borderColor: "rgba(230,210,230,0.6)" }}
+                  >
+                    <p
+                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
+                      style={{ color: "#8a6898" }}
+                    >
+                      판매 가격
+                    </p>
+                    <p
+                      className="text-sm font-bold md:text-base"
+                      style={{ color: "#b45309" }}
+                    >
+                      💰 {crop.sell_min} ~ {crop.sell_max}G
+                    </p>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2">
@@ -182,54 +200,30 @@ export default function CropDetailClient({ crop }: CropDetailClientProps) {
                     style={{ borderColor: "rgba(230,210,230,0.6)" }}
                   >
                     <p
-                      className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
+                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
                       style={{ color: "#8a6898" }}
                     >
-                      구매 가격
+                      씨앗 가격
                     </p>
-                    <div className="flex items-baseline gap-1">
-                      <span
-                        className="text-xl leading-none font-bold tabular-nums md:text-2xl"
-                        style={{ color: "#b45309" }}
-                      >
-                        {crop.seedCost}
-                      </span>
-                      <span
-                        className="text-base font-semibold"
-                        style={{ color: "#8a6898" }}
-                      >
-                        G
-                      </span>
-                    </div>
                     <p
-                      className="mt-1 text-xs md:text-sm"
-                      style={{ color: "rgba(138,104,152,0.6)" }}
+                      className="text-sm font-bold md:text-base"
+                      style={{ color: "#b45309" }}
                     >
-                      씨앗 1개당
+                      {crop.seed_cost}G
                     </p>
                   </div>
-
-                  <div
-                    className="p-4"
-                    style={{ borderColor: "rgba(230,210,230,0.6)" }}
-                  >
+                  <div className="p-4">
                     <p
-                      className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
+                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
                       style={{ color: "#8a6898" }}
                     >
                       구매 NPC
                     </p>
                     <p
-                      className="text-base leading-none font-bold md:text-lg"
+                      className="text-sm font-bold md:text-base"
                       style={{ color: "#4a3060" }}
                     >
-                      {crop.seedNPC}
-                    </p>
-                    <p
-                      className="mt-1 text-xs md:text-sm"
-                      style={{ color: "rgba(138,104,152,0.6)" }}
-                    >
-                      원예 상점 판매
+                      {crop.seed_npc}
                     </p>
                   </div>
                 </div>
@@ -291,7 +285,7 @@ export default function CropDetailClient({ crop }: CropDetailClientProps) {
                           className="text-xs font-bold tabular-nums md:text-sm"
                           style={{ color: "#b45309" }}
                         >
-                          {g.sellPrice} G
+                          {g.sell_price ?? "-"} G
                         </span>
                       </td>
                     </tr>

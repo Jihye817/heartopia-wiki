@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "./_components/header";
 import { Footer } from "./_components/footer";
@@ -8,6 +9,12 @@ import { Analytics } from "@vercel/analytics/next";
 const pretendard = localFont({
   src: "../fonts/PretendardVariable.woff2",
   variable: "--font-pretendard",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -67,7 +74,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={pretendard.variable}>
+    <html lang="ko" className={`${pretendard.variable} ${jetbrainsMono.variable}`}>
       <body className="antialiased">
         <div
           className="flex min-h-screen flex-col"
