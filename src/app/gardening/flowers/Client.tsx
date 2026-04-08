@@ -287,7 +287,7 @@ function FlowerListView({ flowers }: FlowerListViewProps) {
                       className="text-sm font-bold tabular-nums"
                       style={{ color: "#b45309" }}
                     >
-                      {f.sell_min} ~ {f.sell_max}G
+                      {f.sell_min} ~ {f.sell_max} G
                     </span>
                   ) : (
                     <span className="text-sm font-bold" style={{ color: "#c4b0cc" }}>

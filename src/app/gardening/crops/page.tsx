@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CROPS } from "./_data/crops";
+import { getCrops } from "./_data/crops";
 import CropsPageClient from "./Client";
 
 export const metadata: Metadata = {
@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/gardening/crops" },
 };
 
-export default function CropsPage() {
-  return <CropsPageClient crops={CROPS} />;
+export default async function CropsPage() {
+  const crops = await getCrops();
+  return <CropsPageClient crops={crops} />;
 }

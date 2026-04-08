@@ -1,19 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { LayoutGrid, List, Search, UtensilsCrossed } from "lucide-react";
-import { FOODS } from "../_data/foods";
-import type { FoodDetail } from "../_data/foods";
+import { LayoutGrid, List, Search } from "lucide-react";
+import type { FoodListItem } from "../_data/foods";
 
+type SeasonFilter = "all" | "always" | "event";
+
+const AVAILABILITY_LABEL: Record<string, string> = {
+  always: "일상",
+  event: "이벤트",
+};
+
+const FOOD_TINT = "245, 168, 120";
 const FOOD_BORDER = "#f5c4a0";
 const FOOD_BG_HOVER = "#fff5ee";
-const FOOD_TINT = "245, 168, 120";
 
 // ── Subcomponents ─────────────────────────────────────────────────────────────
 
-function FoodCard({ food }: { food: FoodDetail }) {
+function FoodCard({ food }: { food: FoodListItem }) {
   return (
     <Link
       href={`/cooking/recipes/detail/${food.id}`}
@@ -36,38 +42,31 @@ function FoodCard({ food }: { food: FoodDetail }) {
         e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.04)";
       }}
     >
-      <div
-        className="absolute -right-2.5 -bottom-2.5 opacity-[0.07] transition-opacity duration-300 group-hover:opacity-[0.12]"
-        style={{
-          transform: "scale(2) rotate(-10deg)",
-          transformOrigin: "bottom right",
-        }}
-        aria-hidden
-      >
-        <span className="text-4xl">🥗</span>
+      {/* 썸네일 */}
+      <div className="mb-4 flex justify-center">
+        <div
+          className="inline-flex h-[110px] w-[110px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] p-4 text-6xl transition-transform duration-300 group-hover:scale-105"
+          style={{
+            background: `rgba(${FOOD_TINT},0.15)`,
+            borderColor: `rgba(${FOOD_TINT},0.35)`,
+          }}
+        >
+          {food.thumbnail ? (
+            <Image
+              src={food.thumbnail}
+              alt=""
+              width={110}
+              height={110}
+              className="object-contain"
+            />
+          ) : (
+            <span aria-hidden>{food.emoji || "🥗"}</span>
+          )}
+        </div>
       </div>
 
-      <div
-        className="mb-4 inline-flex h-[60px] w-[60px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] p-2 transition-transform duration-300 group-hover:scale-105"
-        style={{
-          background: `rgba(${FOOD_TINT},0.22)`,
-          borderColor: `rgba(${FOOD_TINT},0.42)`,
-        }}
-      >
-        {food.thumbnail ? (
-          <Image
-            src={food.thumbnail}
-            alt=""
-            width={60}
-            height={60}
-            className="object-contain"
-          />
-        ) : (
-          <span className="text-3xl">{food.emoji}</span>
-        )}
-      </div>
-
-      <div className="mb-3.5">
+      {/* 요리 이름 */}
+      <div className="mb-3 text-center">
         <div
           className="text-lg leading-tight font-bold md:text-xl"
           style={{ color: "#4a3060" }}
@@ -76,16 +75,10 @@ function FoodCard({ food }: { food: FoodDetail }) {
         </div>
       </div>
 
-      <div
-        className="mb-3.5 h-px"
-        style={{
-          background: `linear-gradient(to right, ${FOOD_BORDER}, transparent)`,
-        }}
-      />
-
-      <div className="flex flex-wrap gap-1.5">
+      {/* 뱃지 */}
+      <div className="mb-3.5 flex flex-wrap justify-center gap-1.5">
         <span
-          className="rounded-full border px-2.5 py-1 text-xs font-bold"
+          className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
           style={{
             background: "rgba(189,222,255,0.3)",
             color: "#0284c7",
@@ -94,22 +87,71 @@ function FoodCard({ food }: { food: FoodDetail }) {
         >
           요리 Lv.{food.level}
         </span>
-        <span
-          className="rounded-full border px-2.5 py-1 text-xs font-bold"
-          style={{
-            background: `rgba(${FOOD_TINT},0.18)`,
-            color: "#d47840",
-            borderColor: `rgba(${FOOD_TINT},0.45)`,
-          }}
-        >
-          💰 {food.sellMin.toLocaleString()} ~ {food.sellMax.toLocaleString()}
-        </span>
+        {food.availability === "event" ? (
+          <span
+            className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+            style={{
+              background: "rgba(255,220,130,0.25)",
+              color: "#9a7020",
+              borderColor: "rgba(255,220,130,0.55)",
+            }}
+          >
+            {food.event ?? "이벤트"}
+          </span>
+        ) : (
+          <span
+            className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+            style={{
+              background: "rgba(220,252,231,0.4)",
+              color: "#16a34a",
+              borderColor: "rgba(134,239,172,0.5)",
+            }}
+          >
+            일상
+          </span>
+        )}
       </div>
+
+      {/* 성급별 가격 */}
+      {food.food_grades.length > 0 && (
+        <>
+          <div
+            className="mb-3 h-px"
+            style={{ background: `rgba(${FOOD_TINT},0.4)` }}
+          />
+          <div className="grid grid-cols-5 gap-1">
+            {food.food_grades.map((g) => (
+              <div
+                key={g.stars}
+                className="flex flex-col items-center rounded-lg border py-1.5"
+                style={{
+                  background: "rgba(245,245,247,0.7)",
+                  borderColor: "rgba(209,213,219,0.5)",
+                }}
+              >
+                <span className="text-xs font-bold text-amber-500">
+                  {g.stars}★
+                </span>
+                <div
+                  className="my-1 h-px w-4"
+                  style={{ background: "rgba(209,213,219,0.6)" }}
+                />
+                <span
+                  className="text-xs font-bold tabular-nums"
+                  style={{ color: "#6b7280" }}
+                >
+                  {g.sellPrice || "-"}
+                </span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </Link>
   );
 }
 
-function FoodListView({ foods }: { foods: FoodDetail[] }) {
+function FoodListView({ foods }: { foods: FoodListItem[] }) {
   return (
     <div
       className="overflow-x-auto rounded-[20px] border-[1.5px]"
@@ -125,7 +167,7 @@ function FoodListView({ foods }: { foods: FoodDetail[] }) {
             className="border-b-[1.5px]"
             style={{ borderColor: `rgba(${FOOD_TINT},0.4)` }}
           >
-            {["요리 이름", "요리 레벨", "가격 범위"].map((h) => (
+            {["요리 이름", "요리 레벨", "활동시기", "판매 가격"].map((h) => (
               <th
                 key={h}
                 className="px-4 py-3.5 text-left text-sm font-bold tracking-wider uppercase"
@@ -140,12 +182,12 @@ function FoodListView({ foods }: { foods: FoodDetail[] }) {
           {foods.map((food) => (
             <tr
               key={food.id}
-              className="border-b last:border-0"
+              className="border-b transition-colors last:border-0 hover:bg-[#fff5ee]/50"
               style={{ borderColor: `rgba(${FOOD_TINT},0.25)` }}
             >
               <td className="p-0">
                 <Link
-                  href={`/cooking/recipes/${food.id}`}
+                  href={`/cooking/recipes/detail/${food.id}`}
                   className="flex items-center px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
                   <span className="mr-2.5 flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-lg">
@@ -171,7 +213,7 @@ function FoodListView({ foods }: { foods: FoodDetail[] }) {
               </td>
               <td className="p-0">
                 <Link
-                  href={`/cooking/recipes/${food.id}`}
+                  href={`/cooking/recipes/detail/${food.id}`}
                   className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
                   <span
@@ -188,20 +230,55 @@ function FoodListView({ foods }: { foods: FoodDetail[] }) {
               </td>
               <td className="p-0">
                 <Link
-                  href={`/cooking/recipes/${food.id}`}
+                  href={`/cooking/recipes/detail/${food.id}`}
                   className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
-                  <span
-                    className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                    style={{
-                      background: `rgba(${FOOD_TINT},0.18)`,
-                      color: "#d47840",
-                      borderColor: `rgba(${FOOD_TINT},0.45)`,
-                    }}
-                  >
-                    {food.sellMin.toLocaleString()} ~{" "}
-                    {food.sellMax.toLocaleString()}
-                  </span>
+                  {food.event ? (
+                    <span
+                      className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                      style={{
+                        background: "rgba(255,220,130,0.25)",
+                        color: "#9a7020",
+                        borderColor: "rgba(255,220,130,0.55)",
+                      }}
+                    >
+                      이벤트 : {food.event}
+                    </span>
+                  ) : (
+                    <span
+                      className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                      style={{
+                        background: "rgba(220,252,231,0.4)",
+                        color: "#16a34a",
+                        borderColor: "rgba(134,239,172,0.5)",
+                      }}
+                    >
+                      {AVAILABILITY_LABEL[food.availability] ??
+                        food.availability}
+                    </span>
+                  )}
+                </Link>
+              </td>
+              <td className="p-0">
+                <Link
+                  href={`/cooking/recipes/detail/${food.id}`}
+                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
+                >
+                  {food.sellMin || food.sellMax ? (
+                    <span
+                      className="text-sm font-bold tabular-nums"
+                      style={{ color: "#b45309" }}
+                    >
+                      {food.sellMin} ~ {food.sellMax} G
+                    </span>
+                  ) : (
+                    <span
+                      className="text-sm font-bold"
+                      style={{ color: "#c4b0cc" }}
+                    >
+                      -
+                    </span>
+                  )}
                 </Link>
               </td>
             </tr>
@@ -214,15 +291,66 @@ function FoodListView({ foods }: { foods: FoodDetail[] }) {
 
 // ── Main Page Client ──────────────────────────────────────────────────────────
 
-export default function FoodsPageClient() {
+interface FoodsPageClientProps {
+  foods: FoodListItem[];
+}
+
+export default function FoodsPageClient({ foods }: FoodsPageClientProps) {
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [search, setSearch] = useState("");
+  const [seasonFilter, setSeasonFilter] = useState<SeasonFilter>("all");
+  const [eventFilter, setEventFilter] = useState<string | null>(null);
+  const [levelFilter, setLevelFilter] = useState<number | null>(null);
 
-  const filteredFoods = FOODS.filter(
-    (f) =>
-      f.name.toLowerCase().includes(search.toLowerCase()) ||
-      f.ko.includes(search),
+  const levels = useMemo(() => {
+    return Array.from(new Set(foods.map((f) => f.level))).sort((a, b) => a - b);
+  }, [foods]);
+
+  const tabCounts = useMemo(
+    () => ({
+      all: foods.length,
+      always: foods.filter((f) => f.availability === "always").length,
+      event: foods.filter((f) => f.availability === "event").length,
+    }),
+    [foods],
   );
+
+  const eventNames = useMemo(() => {
+    const names = foods
+      .filter((f) => f.availability === "event" && f.event)
+      .map((f) => f.event as string);
+    return Array.from(new Set(names)).sort();
+  }, [foods]);
+
+  const filteredFoods = useMemo(() => {
+    let result =
+      seasonFilter === "all"
+        ? foods
+        : foods.filter((f) => f.availability === seasonFilter);
+
+    if (seasonFilter === "event" && eventFilter) {
+      result = result.filter((f) => f.event === eventFilter);
+    }
+
+    if (levelFilter !== null) {
+      result = result.filter((f) => f.level === levelFilter);
+    }
+
+    if (!search.trim()) return result;
+    const query = search.trim().toLowerCase();
+    return result.filter((f) => f.ko.toLowerCase().includes(query));
+  }, [foods, seasonFilter, eventFilter, levelFilter, search]);
+
+  function handleAvailabilityChange(tab: SeasonFilter) {
+    setSeasonFilter(tab);
+    setEventFilter(null);
+  }
+
+  const tabs: { id: SeasonFilter; label: string; emoji: string }[] = [
+    { id: "all", label: "전체", emoji: "✨" },
+    { id: "always", label: "일상", emoji: "🍳" },
+    { id: "event", label: "이벤트", emoji: "🎉" },
+  ];
 
   return (
     <section
@@ -230,6 +358,7 @@ export default function FoodsPageClient() {
       style={{ background: "rgba(255,252,248,1)" }}
     >
       <div className="mx-auto max-w-[1100px]">
+        {/* Breadcrumb */}
         <nav
           className="mb-4 flex items-center gap-1.5 text-xs font-bold tracking-wide md:mb-8 md:text-sm"
           style={{ color: "#b080c0" }}
@@ -246,6 +375,7 @@ export default function FoodsPageClient() {
           <span style={{ color: "#6b4a7a" }}>요리 도감</span>
         </nav>
 
+        {/* Header */}
         <div className="mb-11">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -263,6 +393,7 @@ export default function FoodsPageClient() {
               </p>
             </div>
 
+            {/* View Toggle */}
             <div
               className="flex gap-1 rounded-xl p-1"
               style={{ background: "rgba(230,210,230,0.3)" }}
@@ -295,42 +426,135 @@ export default function FoodsPageClient() {
           </div>
         </div>
 
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
-          <div className="relative max-w-xs flex-1">
-            <Search
-              size={14}
-              className="absolute top-1/2 left-3 -translate-y-1/2"
-              style={{ color: "#8a6898" }}
-              strokeWidth={2.2}
-              aria-hidden
-            />
-            <input
-              type="search"
-              placeholder="요리 이름 검색..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              aria-label="요리 이름 검색"
-              className="w-full rounded-xl border-[1.5px] py-2 pr-4 pl-9 text-xs transition-all outline-none placeholder:opacity-70 focus:border-[#f5a060] md:py-2.5 md:text-sm"
+        {/* Filter + Search 통합 행 */}
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          {/* 왼쪽: 탭 버튼 */}
+          <div
+            className="flex flex-wrap gap-2"
+            role="tablist"
+            aria-label="시즌 필터"
+          >
+            {tabs.map((tab) => {
+              const isActive = seasonFilter === tab.id;
+              const count = tabCounts[tab.id];
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => handleAvailabilityChange(tab.id)}
+                  className="flex cursor-pointer items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1.5 text-xs font-bold transition-all md:text-sm"
+                  style={{
+                    background: isActive
+                      ? `rgba(${FOOD_TINT},0.2)`
+                      : "rgba(255,252,254,0.85)",
+                    borderColor: isActive
+                      ? `rgba(${FOOD_TINT},0.6)`
+                      : `rgba(${FOOD_TINT},0.3)`,
+                    color: isActive ? "#d47840" : "#8a6898",
+                    boxShadow: isActive
+                      ? `0 2px 8px rgba(${FOOD_TINT},0.25)`
+                      : "none",
+                  }}
+                >
+                  <span aria-hidden>{tab.emoji}</span>
+                  {tab.label}
+                  <span
+                    className="rounded-full px-1.5 py-0.5 text-[10px] md:text-xs"
+                    style={{
+                      background: isActive
+                        ? `rgba(${FOOD_TINT},0.25)`
+                        : "rgba(230,210,230,0.45)",
+                      color: isActive ? "#d47840" : "#8a6898",
+                    }}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+
+            {/* 이벤트 selectbox */}
+            {seasonFilter === "event" && eventNames.length > 0 && (
+              <select
+                value={eventFilter ?? ""}
+                onChange={(e) => setEventFilter(e.target.value || null)}
+                aria-label="이벤트 필터"
+                className="cursor-pointer rounded-full border-[1.5px] py-1.5 pr-8 pl-3 text-xs font-bold transition-all outline-none md:text-sm"
+                style={{
+                  background: "white",
+                  borderColor: "rgba(255,200,80,0.6)",
+                  color: "#9a7020",
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
+                  appearance: "none",
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239a7020' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 10px center",
+                }}
+              >
+                <option value="">🎉 전체 이벤트</option>
+                {eventNames.map((name) => (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+
+          {/* 오른쪽: 레벨 셀렉트 + 검색 */}
+          <div className="ml-auto flex items-center gap-2">
+            <select
+              value={levelFilter ?? ""}
+              onChange={(e) =>
+                setLevelFilter(e.target.value ? Number(e.target.value) : null)
+              }
+              aria-label="레벨 필터"
+              className="rounded-xl border-[1.5px] py-2 pr-8 pl-3 text-xs font-bold transition-all outline-none md:py-2.5 md:text-sm"
               style={{
                 background: "rgba(255,248,240,0.5)",
-                borderColor: "rgba(230,210,200,0.6)",
-                color: "#4a3060",
+                borderColor: `rgba(${FOOD_TINT},0.4)`,
+                color: levelFilter !== null ? "#0284c7" : "#8a6898",
+                appearance: "none",
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a6898' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "right 10px center",
               }}
-            />
+            >
+              <option value="">전체 레벨</option>
+              {levels.map((lv) => (
+                <option key={lv} value={lv}>
+                  요리 Lv.{lv}
+                </option>
+              ))}
+            </select>
+            <div className="relative w-44 md:w-56">
+              <Search
+                size={14}
+                className="absolute top-1/2 left-3 -translate-y-1/2"
+                style={{ color: "#8a6898" }}
+                strokeWidth={2.2}
+                aria-hidden
+              />
+              <input
+                type="search"
+                placeholder="요리 이름 검색..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                aria-label="요리 이름 검색"
+                className="w-full rounded-xl border-[1.5px] py-2 pr-4 pl-9 text-xs transition-all outline-none placeholder:opacity-70 focus:border-[#f5a060] md:py-2.5 md:text-sm"
+                style={{
+                  background: "rgba(255,248,240,0.5)",
+                  borderColor: `rgba(${FOOD_TINT},0.4)`,
+                  color: "#4a3060",
+                }}
+              />
+            </div>
           </div>
-          <span
-            className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-bold md:text-sm"
-            style={{
-              background: `rgba(${FOOD_TINT},0.15)`,
-              borderColor: `rgba(${FOOD_TINT},0.4)`,
-              color: "#d47840",
-            }}
-          >
-            <UtensilsCrossed size={12} aria-hidden />
-            {filteredFoods.length}종
-          </span>
         </div>
 
+        {/* Content */}
         {filteredFoods.length === 0 ? (
           <div className="py-16 text-center">
             <div className="mb-3 text-4xl" aria-hidden>

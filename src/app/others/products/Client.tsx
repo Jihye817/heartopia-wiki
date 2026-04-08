@@ -3,16 +3,25 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { LayoutGrid, List, MapPin, Package, Search } from "lucide-react";
+import { LayoutGrid, List, MapPin, Search } from "lucide-react";
 import type { Product, ProductCategory } from "./_data/products";
 
-// ── Category visuals (도감 톤에 맞춘 버섯/과일 구분) ───────────────────────────
+// ── Brand colors (기타 수집 계열) ──────────────────────────────────────────────
+// category-section.tsx: color "#7b8fa3", accent "#5a6f82", bg "#f4f7fa", border "#d8e0e8"
+
+const BRAND_TINT = "123, 143, 163";
+const BRAND_ACCENT = "#5a6f82";
+const BRAND_LIGHT = "#7b8fa3";
+const BRAND_BG = "#f4f7fa";
+const BRAND_BORDER = "rgba(216, 224, 232, 0.6)";
+
+// ── Category colors (뱃지·썸네일은 카테고리별 유지) ──────────────────────────
 
 const CATEGORY_LABEL: Record<ProductCategory, string> = {
   mushroom: "버섯",
   fruit: "과일",
-  wood: "목재",
-  stone: "석재",
+  wood: "나무",
+  stone: "돌",
 };
 
 const CATEGORY_EMOJI: Record<ProductCategory, string> = {
@@ -22,251 +31,295 @@ const CATEGORY_EMOJI: Record<ProductCategory, string> = {
   stone: "🪨",
 };
 
-/** 버섯: 보라 계열 */
-const MUSHROOM_TINT = "160, 100, 220";
-const MUSHROOM_BORDER = "rgba(160,100,220,0.38)";
-const MUSHROOM_BG_HOVER = "rgba(250,245,255,0.95)";
-
-/** 과일: 플로럴 핑크에 가까운 코랄 */
-const FRUIT_TINT = "232, 120, 140";
-const FRUIT_BORDER = "rgba(232,120,140,0.4)";
-const FRUIT_BG_HOVER = "rgba(255,248,250,0.95)";
-
-const getCategoryStyles = (category: ProductCategory) => {
-  if (category === "mushroom") {
-    return {
-      tint: MUSHROOM_TINT,
-      border: MUSHROOM_BORDER,
-      hoverBg: MUSHROOM_BG_HOVER,
-      accentBorder: "#c4b5e8",
-    };
-  }
-  return {
-    tint: FRUIT_TINT,
-    border: FRUIT_BORDER,
-    hoverBg: FRUIT_BG_HOVER,
-    accentBorder: "#fbcfe8",
-  };
+const CATEGORY_TINT: Record<ProductCategory, string> = {
+  mushroom: "160, 100, 220",
+  fruit: "232, 120, 140",
+  wood: "100, 160, 80",
+  stone: "150, 150, 170",
 };
 
-// ── Subcomponents ─────────────────────────────────────────────────────────────
+// ── Subcomponents ──────────────────────────────────────────────────────────────
 
-interface ProductCardProps {
-  product: Product;
-}
-
-function ProductCard({ product }: ProductCardProps) {
-  const styles = getCategoryStyles(product.category);
-  const emoji = CATEGORY_EMOJI[product.category];
-  const detailHref = `/others/products/detail/${product.id}`;
+function ProductCard({ product }: { product: Product }) {
+  const catTint = CATEGORY_TINT[product.category] ?? "150, 150, 150";
+  const emoji = CATEGORY_EMOJI[product.category] ?? "📦";
 
   return (
     <Link
-      href={detailHref}
+      href={`/others/products/detail/${product.id}`}
       className="group relative block cursor-pointer overflow-hidden rounded-[20px] px-6 pt-7 pb-6 no-underline transition-all duration-300 ease-out"
       style={{
         background: "rgba(255,252,254,0.9)",
-        border: `1.5px solid rgba(${styles.tint},0.32)`,
+        border: `1.5px solid rgba(${BRAND_TINT},0.32)`,
         boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.background = styles.hoverBg;
-        e.currentTarget.style.borderColor = styles.border;
+        e.currentTarget.style.background = BRAND_BG;
+        e.currentTarget.style.borderColor = `rgba(${BRAND_TINT},0.6)`;
         e.currentTarget.style.transform = "translateY(-4px)";
-        e.currentTarget.style.boxShadow = `0 12px 32px rgba(0,0,0,0.06), 0 0 0 2px ${styles.border}`;
+        e.currentTarget.style.boxShadow = `0 12px 32px rgba(0,0,0,0.06), 0 0 0 2px rgba(${BRAND_TINT},0.38)`;
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.background = "rgba(255,252,254,0.9)";
-        e.currentTarget.style.borderColor = `rgba(${styles.tint},0.32)`;
+        e.currentTarget.style.borderColor = `rgba(${BRAND_TINT},0.32)`;
         e.currentTarget.style.transform = "translateY(0)";
         e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.04)";
       }}
     >
-      <div
-        className="absolute -right-2.5 -bottom-2.5 opacity-[0.06] transition-opacity duration-300 group-hover:opacity-[0.11]"
-        style={{
-          transform: "scale(2) rotate(-10deg)",
-          transformOrigin: "bottom right",
-        }}
-        aria-hidden
-      >
-        <span className="text-4xl">{emoji}</span>
+      {/* 썸네일 */}
+      <div className="mb-4 flex justify-center">
+        <div
+          className="inline-flex h-[110px] w-[110px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] p-4 text-5xl transition-transform duration-300 group-hover:scale-105"
+          style={{
+            background: `rgba(${BRAND_TINT},0.15)`,
+            borderColor: `rgba(${BRAND_TINT},0.35)`,
+          }}
+        >
+          {product.thumbnail ? (
+            <Image
+              src={product.thumbnail}
+              alt=""
+              width={110}
+              height={110}
+              className="h-full w-full object-contain"
+            />
+          ) : (
+            <span aria-hidden>{emoji}</span>
+          )}
+        </div>
       </div>
 
-      <div
-        className="mb-4 inline-flex h-[60px] w-[60px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] p-2 text-3xl transition-transform duration-300 group-hover:scale-105"
-        style={{
-          background: `rgba(${styles.tint},0.18)`,
-          borderColor: `rgba(${styles.tint},0.4)`,
-        }}
-      >
-        {product.thumbnail ? (
-          <Image
-            src={product.thumbnail}
-            alt=""
-            width={60}
-            height={60}
-            className="object-contain"
-          />
-        ) : (
-          <span aria-hidden>{emoji}</span>
-        )}
-      </div>
-
-      <div className="mb-3.5">
+      {/* 이름 */}
+      <div className="mb-3 text-center">
         <div
           className="text-lg leading-tight font-bold md:text-xl"
           style={{ color: "#4a3060" }}
         >
-          {product.ko}
+          {product.name}
         </div>
       </div>
 
-      <div
-        className="mb-3.5 h-px"
-        style={{
-          background: `linear-gradient(to right, ${styles.accentBorder}, transparent)`,
-        }}
-      />
-
-      <div className="flex flex-wrap gap-1.5">
+      {/* 뱃지 */}
+      <div className="mb-3.5 flex flex-wrap justify-center gap-1.5">
         <span
           className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
           style={{
-            background: "rgba(189,222,255,0.3)",
-            color: "#0284c7",
-            borderColor: "rgba(189,222,255,0.6)",
+            background: `rgba(${catTint},0.2)`,
+            color: "#6b4a7a",
+            borderColor: `rgba(${catTint},0.45)`,
           }}
         >
           {CATEGORY_LABEL[product.category]}
         </span>
-        <span
-          className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-          style={{
-            background: `rgba(${styles.tint},0.2)`,
-            color: "#6b4a7a",
-            borderColor: `rgba(${styles.tint},0.45)`,
-          }}
-        >
-          {product.respawnTime}
-        </span>
+        {product.respawn_time && (
+          <span
+            className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+            style={{
+              background: `rgba(${BRAND_TINT},0.15)`,
+              color: BRAND_ACCENT,
+              borderColor: `rgba(${BRAND_TINT},0.35)`,
+            }}
+          >
+            {product.respawn_time}
+          </span>
+        )}
       </div>
 
-      <div className="mt-3 flex items-center gap-1.5">
-        <span
-          className="flex items-center gap-1 rounded-lg border px-2 py-1 text-xs font-bold md:text-[13px]"
-          style={{
-            background: "rgba(255,245,235,0.9)",
-            borderColor: "rgba(210,170,120,0.5)",
-            color: "#8a6020",
-          }}
-        >
-          <MapPin size={11} strokeWidth={2.2} aria-hidden />
-          {product.location}
-        </span>
-      </div>
+      {/* 판매가 */}
+      {product.sell_price != null && (
+        <>
+          <div
+            className="mb-3 h-px"
+            style={{ background: `rgba(${BRAND_TINT},0.35)` }}
+          />
+          <div
+            className="flex items-center justify-center rounded-lg border py-1.5"
+            style={{
+              background: "rgba(245,245,247,0.7)",
+              borderColor: "rgba(209,213,219,0.5)",
+            }}
+          >
+            <span
+              className="text-sm font-bold tabular-nums"
+              style={{ color: "#6b7280" }}
+            >
+              💰 {product.sell_price.toLocaleString()} G
+            </span>
+          </div>
+        </>
+      )}
+
+      {/* 위치 */}
+      {product.location && (
+        <div className="mt-3 flex justify-center">
+          <span
+            className="flex items-center gap-1 rounded-lg border px-2 py-1 text-xs font-bold md:text-[13px]"
+            style={{
+              background: "rgba(255,245,235,0.9)",
+              borderColor: "rgba(210,170,120,0.5)",
+              color: "#8a6020",
+            }}
+          >
+            <MapPin size={11} strokeWidth={2.2} aria-hidden />
+            {product.location}
+          </span>
+        </div>
+      )}
     </Link>
   );
 }
 
-interface ProductListViewProps {
-  products: Product[];
-}
-
-function ProductListView({ products }: ProductListViewProps) {
+function ProductListView({ products }: { products: Product[] }) {
   return (
     <div
       className="overflow-x-auto rounded-[20px] border-[1.5px]"
       style={{
         background: "rgba(255,252,254,0.9)",
-        borderColor: "rgba(230,210,230,0.6)",
+        borderColor: BRAND_BORDER,
         boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
       }}
     >
-      <table className="w-full min-w-[520px]">
+      <table className="w-full min-w-[540px]">
         <thead>
           <tr
             className="border-b-[1.5px]"
-            style={{ borderColor: "rgba(230,210,230,0.6)" }}
+            style={{ borderColor: BRAND_BORDER }}
           >
-            {["이름", "채집 장소", "리스폰", "분류"].map((headerLabel) => (
+            {["이름", "분류", "채집 장소", "리스폰", "판매 가격"].map((h) => (
               <th
-                key={headerLabel}
+                key={h}
                 className="px-4 py-3.5 text-left text-sm font-bold tracking-wider uppercase"
-                style={{ color: "#b080c0" }}
+                style={{ color: BRAND_LIGHT }}
               >
-                {headerLabel}
+                {h}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
           {products.map((product) => {
-            const styles = getCategoryStyles(product.category);
-            const emoji = CATEGORY_EMOJI[product.category];
-
-            const detailHref = `/others/products/detail/${product.id}`;
-
+            const catTint = CATEGORY_TINT[product.category] ?? "150, 150, 150";
+            const emoji = CATEGORY_EMOJI[product.category] ?? "📦";
             return (
               <tr
                 key={product.id}
-                className="border-b border-[rgba(230,210,230,0.4)] transition-colors last:border-0 hover:bg-[#fff0f6]/50"
+                className="border-b transition-colors last:border-0"
+                style={{ borderColor: `rgba(${BRAND_TINT},0.25)` }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = BRAND_BG;
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background =
+                    "transparent";
+                }}
               >
-                <td className="px-4 py-3.5">
+                <td className="p-0">
                   <Link
-                    href={detailHref}
-                    className="flex max-w-fit items-center gap-2.5 rounded-lg no-underline outline-offset-2 transition-colors hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#b080c0]/40"
+                    href={`/others/products/detail/${product.id}`}
+                    className="flex items-center px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                   >
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-lg text-lg">
+                    <div
+                      className="mr-2.5 inline-flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-lg border-[1.5px]"
+                      style={{
+                        background: `rgba(${catTint},0.18)`,
+                        borderColor: `rgba(${catTint},0.4)`,
+                      }}
+                    >
                       {product.thumbnail ? (
                         <Image
                           src={product.thumbnail}
                           alt=""
                           width={28}
                           height={28}
-                          className="object-contain"
+                          className="h-4/5 w-4/5 object-contain"
                         />
                       ) : (
-                        <span aria-hidden>{emoji}</span>
+                        <span className="text-sm" aria-hidden>
+                          {emoji}
+                        </span>
                       )}
-                    </span>
+                    </div>
                     <span
                       className="text-sm font-bold"
                       style={{ color: "#4a3060" }}
                     >
-                      {product.ko}
+                      {product.name}
                     </span>
                   </Link>
                 </td>
-                <td
-                  className="px-4 py-3.5 text-sm"
-                  style={{ color: "#6b4a7a" }}
-                >
-                  {product.location}
-                </td>
-                <td className="px-4 py-3.5">
-                  <span
-                    className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                    style={{
-                      background: `rgba(${styles.tint},0.2)`,
-                      color: "#6b4a7a",
-                      borderColor: `rgba(${styles.tint},0.45)`,
-                    }}
+                <td className="p-0">
+                  <Link
+                    href={`/others/products/detail/${product.id}`}
+                    className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                   >
-                    {product.respawnTime}
-                  </span>
+                    <span
+                      className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                      style={{
+                        background: `rgba(${catTint},0.2)`,
+                        color: "#6b4a7a",
+                        borderColor: `rgba(${catTint},0.45)`,
+                      }}
+                    >
+                      {CATEGORY_LABEL[product.category]}
+                    </span>
+                  </Link>
                 </td>
-                <td className="px-4 py-3.5">
-                  <span
-                    className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                    style={{
-                      background: "rgba(189,222,255,0.3)",
-                      color: "#0284c7",
-                      borderColor: "rgba(189,222,255,0.6)",
-                    }}
+                <td className="p-0">
+                  <Link
+                    href={`/others/products/detail/${product.id}`}
+                    className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                   >
-                    {CATEGORY_LABEL[product.category]}
-                  </span>
+                    <span
+                      className="flex w-fit items-center gap-1 rounded-lg border px-2 py-1 text-xs font-bold md:text-[13px]"
+                      style={{
+                        background: "rgba(255,245,235,0.9)",
+                        borderColor: "rgba(210,170,120,0.5)",
+                        color: "#8a6020",
+                      }}
+                    >
+                      <MapPin size={11} strokeWidth={2.2} aria-hidden />
+                      {product.location || "-"}
+                    </span>
+                  </Link>
+                </td>
+                <td className="p-0">
+                  <Link
+                    href={`/others/products/detail/${product.id}`}
+                    className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
+                  >
+                    <span
+                      className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                      style={{
+                        background: `rgba(${BRAND_TINT},0.15)`,
+                        color: BRAND_ACCENT,
+                        borderColor: `rgba(${BRAND_TINT},0.35)`,
+                      }}
+                    >
+                      {product.respawn_time || "-"}
+                    </span>
+                  </Link>
+                </td>
+                <td className="p-0">
+                  <Link
+                    href={`/others/products/detail/${product.id}`}
+                    className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
+                  >
+                    {product.sell_price != null ? (
+                      <span
+                        className="text-sm font-bold tabular-nums"
+                        style={{ color: "#b45309" }}
+                      >
+                        {product.sell_price.toLocaleString()} G
+                      </span>
+                    ) : (
+                      <span
+                        className="text-sm font-bold"
+                        style={{ color: "#c4b0cc" }}
+                      >
+                        -
+                      </span>
+                    )}
+                  </Link>
                 </td>
               </tr>
             );
@@ -277,7 +330,7 @@ function ProductListView({ products }: ProductListViewProps) {
   );
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────────
+// ── Main ───────────────────────────────────────────────────────────────────────
 
 type CategoryFilter = "all" | ProductCategory;
 
@@ -292,40 +345,34 @@ export default function ProductsPageClient({
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
 
-  const tabCounts = useMemo(() => {
-    return {
+  const tabCounts = useMemo(
+    () => ({
       all: products.length,
       mushroom: products.filter((p) => p.category === "mushroom").length,
       fruit: products.filter((p) => p.category === "fruit").length,
       wood: products.filter((p) => p.category === "wood").length,
       stone: products.filter((p) => p.category === "stone").length,
-    };
-  }, [products]);
+    }),
+    [products],
+  );
 
-  const filteredProducts = useMemo(() => {
-    const byCategory =
-      categoryFilter === "all"
-        ? products
-        : products.filter((p) => p.category === categoryFilter);
-
-    if (!search.trim()) {
-      return byCategory;
+  const filtered = useMemo(() => {
+    let result = products;
+    if (categoryFilter !== "all")
+      result = result.filter((p) => p.category === categoryFilter);
+    if (search.trim()) {
+      const q = search.trim().toLowerCase();
+      result = result.filter((p) => p.name.toLowerCase().includes(q));
     }
-
-    const query = search.trim().toLowerCase();
-
-    return byCategory.filter(
-      (p) =>
-        p.ko.toLowerCase().includes(query) ||
-        p.location.toLowerCase().includes(query) ||
-        p.id.toLowerCase().includes(query),
-    );
+    return result;
   }, [products, categoryFilter, search]);
 
   const tabs: { id: CategoryFilter; label: string; emoji: string }[] = [
     { id: "all", label: "전체", emoji: "✨" },
     { id: "mushroom", label: "버섯", emoji: "🍄" },
     { id: "fruit", label: "과일", emoji: "🍎" },
+    { id: "wood", label: "나무", emoji: "🪵" },
+    { id: "stone", label: "돌", emoji: "🪨" },
   ];
 
   return (
@@ -334,6 +381,7 @@ export default function ProductsPageClient({
       style={{ background: "rgba(255,252,248,1)" }}
     >
       <div className="mx-auto max-w-[1100px]">
+        {/* Breadcrumb */}
         <nav
           className="mb-4 flex flex-wrap items-center gap-1.5 text-xs font-bold tracking-wide md:mb-8 md:text-sm"
           style={{ color: "#b080c0" }}
@@ -350,6 +398,7 @@ export default function ProductsPageClient({
           <span style={{ color: "#6b4a7a" }}>생산품 도감</span>
         </nav>
 
+        {/* Header */}
         <div className="mb-11">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -363,13 +412,14 @@ export default function ProductsPageClient({
                 className="mt-1 text-xs md:text-sm"
                 style={{ color: "#8a6898" }}
               >
-                맵에서 채집할 수 있는 버섯·과일 정보
+                맵에서 채집할 수 있는 버섯·과일·나무·돌 정보
               </p>
             </div>
 
+            {/* View Toggle */}
             <div
               className="flex gap-1 rounded-xl p-1"
-              style={{ background: "rgba(230,210,230,0.3)" }}
+              style={{ background: `rgba(${BRAND_TINT},0.15)` }}
               role="tablist"
               aria-label="보기 방식"
             >
@@ -386,7 +436,7 @@ export default function ProductsPageClient({
                   className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all md:px-3.5 md:text-sm"
                   style={{
                     background: viewMode === mode ? "white" : "transparent",
-                    color: viewMode === mode ? "#6b4a7a" : "#8a6898",
+                    color: viewMode === mode ? BRAND_ACCENT : BRAND_LIGHT,
                     boxShadow:
                       viewMode === mode ? "0 1px 3px rgba(0,0,0,0.06)" : "none",
                   }}
@@ -399,92 +449,90 @@ export default function ProductsPageClient({
           </div>
         </div>
 
-        <div
-          className="mb-6 flex flex-wrap gap-2"
-          role="tablist"
-          aria-label="카테고리 필터"
-        >
-          {tabs.map((tab) => {
-            const isActive = categoryFilter === tab.id;
-            const count = tabCounts[tab.id];
-
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => setCategoryFilter(tab.id)}
-                className="flex items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1.5 text-xs font-bold transition-all md:text-sm"
-                style={{
-                  background: isActive ? "white" : "rgba(255,252,254,0.85)",
-                  borderColor: isActive
-                    ? "rgba(248,164,200,0.55)"
-                    : "rgba(230,210,230,0.6)",
-                  color: isActive ? "#6b4a7a" : "#8a6898",
-                  boxShadow: isActive ? "0 1px 4px rgba(0,0,0,0.05)" : "none",
-                }}
-              >
-                <span aria-hidden>{tab.emoji}</span>
-                {tab.label}
-                <span
-                  className="rounded-full px-1.5 py-0.5 text-[10px] md:text-xs"
+        {/* Filter + Search */}
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          {/* 왼쪽: 카테고리 탭 */}
+          <div
+            className="flex flex-wrap gap-2"
+            role="tablist"
+            aria-label="카테고리 필터"
+          >
+            {tabs.map((tab) => {
+              const isActive = categoryFilter === tab.id;
+              const count = tabCounts[tab.id];
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => setCategoryFilter(tab.id)}
+                  className="flex cursor-pointer items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1.5 text-xs font-bold transition-all md:text-sm"
                   style={{
                     background: isActive
-                      ? "rgba(248,164,200,0.25)"
-                      : "rgba(230,210,230,0.45)",
-                    color: "#6b4a7a",
+                      ? `rgba(${BRAND_TINT},0.2)`
+                      : "rgba(255,252,254,0.85)",
+                    borderColor: isActive
+                      ? `rgba(${BRAND_TINT},0.6)`
+                      : `rgba(${BRAND_TINT},0.3)`,
+                    color: isActive ? BRAND_ACCENT : "#8a6898",
+                    boxShadow: isActive
+                      ? `0 2px 8px rgba(${BRAND_TINT},0.2)`
+                      : "none",
                   }}
                 >
-                  {count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
-          <div className="relative max-w-xs min-w-[200px] flex-1">
-            <Search
-              size={14}
-              className="absolute top-1/2 left-3 -translate-y-1/2"
-              style={{ color: "#8a6898" }}
-              strokeWidth={2.2}
-              aria-hidden
-            />
-            <input
-              type="search"
-              placeholder="이름·장소 검색..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              aria-label="생산품 이름 또는 장소 검색"
-              className="w-full rounded-xl border-[1.5px] py-2 pr-4 pl-9 text-xs transition-all outline-none placeholder:opacity-70 focus:border-[#e8739b] md:py-2.5 md:text-sm"
-              style={{
-                background: "rgba(255,240,246,0.5)",
-                borderColor: "rgba(230,210,230,0.6)",
-                color: "#4a3060",
-              }}
-            />
+                  <span aria-hidden>{tab.emoji}</span>
+                  {tab.label}
+                  <span
+                    className="rounded-full px-1.5 py-0.5 text-[10px] md:text-xs"
+                    style={{
+                      background: isActive
+                        ? `rgba(${BRAND_TINT},0.25)`
+                        : `rgba(${BRAND_TINT},0.15)`,
+                      color: isActive ? BRAND_ACCENT : "#8a6898",
+                    }}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
-          <span
-            className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-bold md:text-sm"
-            style={{
-              background: "rgba(248,164,200,0.15)",
-              borderColor: "rgba(248,164,200,0.4)",
-              color: "#c06898",
-            }}
-          >
-            <Package size={12} aria-hidden />
-            {filteredProducts.length}종
-          </span>
+
+          {/* 오른쪽: 검색 */}
+          <div className="ml-auto">
+            <div className="relative w-40 md:w-52">
+              <Search
+                size={14}
+                className="absolute top-1/2 left-3 -translate-y-1/2"
+                style={{ color: BRAND_LIGHT }}
+                strokeWidth={2.2}
+                aria-hidden
+              />
+              <input
+                type="search"
+                placeholder="이름 검색..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                aria-label="생산품 이름 검색"
+                className="w-full rounded-xl border-[1.5px] py-2 pr-4 pl-9 text-xs transition-all outline-none placeholder:opacity-70 md:py-2.5 md:text-sm"
+                style={{
+                  background: `rgba(${BRAND_TINT},0.1)`,
+                  borderColor: `rgba(${BRAND_TINT},0.35)`,
+                  color: "#4a3060",
+                }}
+              />
+            </div>
+          </div>
         </div>
 
-        {filteredProducts.length === 0 ? (
+        {/* Content */}
+        {filtered.length === 0 ? (
           <div className="py-16 text-center">
             <div className="mb-3 text-4xl" aria-hidden>
               🔍
             </div>
-            <p className="text-xs md:text-sm" style={{ color: "#8a6898" }}>
+            <p className="text-xs md:text-sm" style={{ color: BRAND_LIGHT }}>
               검색 결과가 없어요
             </p>
           </div>
@@ -495,12 +543,12 @@ export default function ProductsPageClient({
               gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
             }}
           >
-            {filteredProducts.map((product) => (
+            {filtered.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
         ) : (
-          <ProductListView products={filteredProducts} />
+          <ProductListView products={filtered} />
         )}
       </div>
     </section>

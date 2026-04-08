@@ -22,8 +22,8 @@ const DOTS = [
 // ─────────────────────────────────────────────
 // Page — React Server Component
 // ─────────────────────────────────────────────
-export default function CouponsPage() {
-  const coupons = getValidCoupons();
+export default async function CouponsPage() {
+  const coupons = await getValidCoupons();
 
   return (
     <section

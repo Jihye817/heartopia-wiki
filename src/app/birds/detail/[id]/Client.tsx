@@ -41,7 +41,7 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
             새 도감
           </Link>
           <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
-          <span style={{ color: "#6b4a7a" }}>{bird.ko}</span>
+          <span style={{ color: "#6b4a7a" }}>{bird.name}</span>
         </nav>
 
         {/* Back */}
@@ -58,7 +58,7 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
           className="relative mt-4 overflow-hidden rounded-[20px] border-[1.5px] p-6 md:p-7"
           style={{
             background: "rgba(255,252,254,0.95)",
-            borderColor: "rgba(230,210,230,0.6)",
+            borderColor: "rgba(200,180,230,0.6)",
             boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
           }}
         >
@@ -76,7 +76,7 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
                 {bird.thumbnail ? (
                   <Image
                     src={bird.thumbnail}
-                    alt={bird.ko}
+                    alt={bird.name}
                     width={120}
                     height={120}
                     className="h-4/5 w-4/5 object-contain"
@@ -91,7 +91,7 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
                 className="m-0 mb-3 text-[clamp(20px,4vw,28px)] leading-tight font-bold tracking-tight md:text-[clamp(24px,4vw,34px)]"
                 style={{ color: "#4a3060" }}
               >
-                {bird.ko}
+                {bird.name}
               </h1>
 
               {/* Divider */}
@@ -104,26 +104,41 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
 
               {/* Badges */}
               <div className="mb-4 flex flex-wrap gap-1.5">
-                <span
-                  className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                  style={{
-                    background: "rgba(189,200,255,0.3)",
-                    color: "#6b4abf",
-                    borderColor: "rgba(189,200,255,0.6)",
-                  }}
-                >
-                  관찰 Lv.{bird.level}
-                </span>
-                <span
-                  className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                  style={{
-                    background: `rgba(${BIRD_TINT},0.2)`,
-                    color: "#8a6bbf",
-                    borderColor: `rgba(${BIRD_TINT},0.45)`,
-                  }}
-                >
-                  {bird.habitat}
-                </span>
+                {bird.level > 0 && (
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+                    style={{
+                      background: "rgba(189,200,255,0.3)",
+                      color: "#6b4abf",
+                      borderColor: "rgba(189,200,255,0.6)",
+                    }}
+                  >
+                    관찰 Lv.{bird.level}
+                  </span>
+                )}
+                {bird.availability === "event" ? (
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+                    style={{
+                      background: "rgba(255,220,130,0.25)",
+                      color: "#9a7020",
+                      borderColor: "rgba(255,220,130,0.55)",
+                    }}
+                  >
+                    이벤트
+                  </span>
+                ) : (
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+                    style={{
+                      background: "rgba(220,252,231,0.4)",
+                      color: "#16a34a",
+                      borderColor: "rgba(134,239,172,0.5)",
+                    }}
+                  >
+                    일상
+                  </span>
+                )}
               </div>
 
               {/* 상세 정보 표 */}
@@ -131,13 +146,13 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
                 className="mb-5 overflow-hidden rounded-2xl border-[1.5px]"
                 style={{
                   background: "rgba(255,252,254,0.95)",
-                  borderColor: "rgba(230,210,230,0.6)",
+                  borderColor: "rgba(200,180,230,0.6)",
                 }}
               >
                 {/* 헤더 */}
                 <div
                   className="flex items-center gap-2 border-b-[1.5px] px-4 py-3"
-                  style={{ borderColor: "rgba(230,210,230,0.6)" }}
+                  style={{ borderColor: "rgba(200,180,230,0.6)" }}
                 >
                   <div
                     className="h-[7px] w-[7px] rounded-full"
@@ -145,35 +160,34 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
                   />
                   <span
                     className="text-xs font-bold tracking-widest uppercase md:text-sm"
-                    style={{ color: "#8a6898" }}
+                    style={{ color: "#8a6bbf" }}
                   >
                     상세 정보
                   </span>
                 </div>
 
-                {/* 위치 + 거리 (2칸 그리드) */}
+                {/* 서식지 + 거리 (2칸 그리드) */}
                 <div className="grid grid-cols-2">
                   <div
                     className="border-r-[1.5px] border-b-[1.5px] p-4"
-                    style={{ borderColor: "rgba(230,210,230,0.6)" }}
+                    style={{ borderColor: "rgba(200,180,230,0.6)" }}
                   >
                     <p
                       className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
                       style={{ color: "#8a6898" }}
                     >
-                      위치
+                      서식지
                     </p>
                     <p
-                      className="flex items-center gap-1 text-sm font-bold md:text-base"
+                      className="text-sm font-bold md:text-base"
                       style={{ color: "#4a3060" }}
                     >
-                      <MapPin size={13} strokeWidth={2.2} aria-hidden />
-                      {bird.location || "-"}
+                      {bird.habitat || "-"}
                     </p>
                   </div>
                   <div
                     className="border-b-[1.5px] p-4"
-                    style={{ borderColor: "rgba(230,210,230,0.6)" }}
+                    style={{ borderColor: "rgba(200,180,230,0.6)" }}
                   >
                     <p
                       className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
@@ -185,45 +199,91 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
                       className="text-sm font-bold md:text-base"
                       style={{ color: "#4a3060" }}
                     >
-                      {bird.distance}
+                      {bird.distance ?? "-"}
                     </p>
                   </div>
                 </div>
 
-                {/* 시간 */}
+                {/* 위치 (전체 너비) */}
                 <div
-                  className="border-b-[1.5px] px-4 py-3"
-                  style={{ borderColor: "rgba(230,210,230,0.6)" }}
+                  className="border-b-[1.5px] p-4"
+                  style={{ borderColor: "rgba(200,180,230,0.6)" }}
                 >
                   <p
-                    className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
+                    className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
                     style={{ color: "#8a6898" }}
                   >
-                    시간
+                    위치
                   </p>
                   <p
                     className="text-sm font-bold md:text-base"
                     style={{ color: "#4a3060" }}
                   >
-                    {bird.times.join(", ")}
+                    {bird.location || "-"}
                   </p>
                 </div>
 
-                {/* 날씨 */}
-                <div className="px-4 py-3">
-                  <p
-                    className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                    style={{ color: "#8a6898" }}
+                {/* 시간 + 날씨 (2칸 그리드) */}
+                <div
+                  className={
+                    bird.desc
+                      ? "grid grid-cols-2 border-b-[1.5px]"
+                      : "grid grid-cols-2"
+                  }
+                  style={{ borderColor: "rgba(200,180,230,0.6)" }}
+                >
+                  <div
+                    className="border-r-[1.5px] p-4"
+                    style={{ borderColor: "rgba(200,180,230,0.6)" }}
                   >
-                    날씨
-                  </p>
-                  <p
-                    className="text-sm font-bold md:text-base"
-                    style={{ color: "#4a3060" }}
-                  >
-                    {bird.weathers.join(", ")}
-                  </p>
+                    <p
+                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
+                      style={{ color: "#8a6898" }}
+                    >
+                      시간
+                    </p>
+                    <p
+                      className="text-sm font-bold md:text-base"
+                      style={{ color: "#4a3060" }}
+                    >
+                      {bird.times.length > 0 ? bird.times.join(", ") : "-"}
+                    </p>
+                  </div>
+                  <div className="p-4">
+                    <p
+                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
+                      style={{ color: "#8a6898" }}
+                    >
+                      날씨
+                    </p>
+                    <p
+                      className="text-sm font-bold md:text-base"
+                      style={{ color: "#4a3060" }}
+                    >
+                      {bird.weathers.length > 0
+                        ? bird.weathers.join(", ")
+                        : "-"}
+                    </p>
+                  </div>
                 </div>
+
+                {/* 특이사항 (있을 때만) */}
+                {bird.desc && (
+                  <div className="px-4 py-3">
+                    <p
+                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
+                      style={{ color: "#8a6898" }}
+                    >
+                      특이사항
+                    </p>
+                    <p
+                      className="text-sm leading-relaxed font-bold whitespace-pre-line md:text-base"
+                      style={{ color: "#4a3060" }}
+                    >
+                      {bird.desc}
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Map placeholder */}
@@ -231,7 +291,7 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
                 className="mt-5 flex flex-col rounded-2xl border-[1.5px] p-4"
                 style={{
                   background: "rgba(255,252,254,0.9)",
-                  borderColor: "rgba(230,210,230,0.6)",
+                  borderColor: "rgba(200,180,230,0.6)",
                 }}
               >
                 <div
@@ -245,7 +305,7 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
                   className="relative flex min-h-[160px] flex-1 items-center justify-center overflow-hidden rounded-xl border-[1.5px]"
                   style={{
                     background:
-                      "linear-gradient(160deg, rgba(250,245,255,0.95) 0%, rgba(255,252,254,1) 55%, rgba(240,230,255,0.3) 100%)",
+                      "linear-gradient(160deg, rgba(248,240,255,0.95) 0%, rgba(255,252,254,1) 55%, rgba(200,180,230,0.3) 100%)",
                     borderColor: `rgba(${BIRD_TINT},0.35)`,
                   }}
                 >
@@ -262,7 +322,7 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
                     </span>
                     <span
                       className="text-sm font-bold"
-                      style={{ color: "rgba(138,104,152,0.6)" }}
+                      style={{ color: "rgba(138,107,191,0.6)" }}
                     >
                       준비중입니다
                     </span>
@@ -271,147 +331,70 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
               </div>
             </div>
 
-            {/* ── 오른쪽: 성급 테이블 + 포즈 테이블 ─────────────────── */}
-            <div className="flex flex-col gap-5">
+            {/* ── 오른쪽: 성급 테이블 ──────────────────────────────── */}
+            <div
+              className="rounded-2xl border-[1.5px] p-4"
+              style={{
+                background: "rgba(255,252,254,0.9)",
+                borderColor: "rgba(200,180,230,0.6)",
+              }}
+            >
               <div
-                className="rounded-2xl border-[1.5px] p-4"
-                style={{
-                  background: "rgba(255,252,254,0.9)",
-                  borderColor: "rgba(230,210,230,0.6)",
-                }}
+                className="mb-3 flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase md:text-sm"
+                style={{ color: "#b080c0" }}
               >
-                <div
-                  className="mb-3 flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase md:text-sm"
-                  style={{ color: "#b080c0" }}
-                >
-                  ⭐ 성급별 판매가
-                </div>
-                <table className="w-full">
-                  <thead>
-                    <tr
-                      className="border-b-[1.5px]"
-                      style={{ borderColor: "rgba(230,210,230,0.6)" }}
-                    >
-                      {["성급", "별점", "판매가"].map((h) => (
-                        <th
-                          key={h}
-                          className="px-2 pb-2.5 text-left text-xs font-bold tracking-wider uppercase md:text-sm"
-                          style={{ color: "#8a6898" }}
-                        >
-                          {h}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {bird.grades.map((g) => (
-                      <tr
-                        key={g.stars}
-                        className="border-b border-[rgba(230,210,230,0.4)] last:border-0"
-                      >
-                        <td className="px-2 py-2.5">
-                          <span
-                            className="text-xs font-bold md:text-sm"
-                            style={{ color: "#4a3060" }}
-                          >
-                            {g.stars}성
-                          </span>
-                        </td>
-                        <td className="px-2 py-2.5">
-                          <span className="text-xs text-amber-500 md:text-sm">
-                            {starsOf(g.stars)}
-                          </span>
-                        </td>
-                        <td className="px-2 py-2.5">
-                          <span
-                            className="text-xs font-bold tabular-nums md:text-sm"
-                            style={{ color: "#b45309" }}
-                          >
-                            {g.sellPrice > 0
-                              ? `${g.sellPrice.toLocaleString()}G`
-                              : "-"}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                ⭐ 성급별 판매가
               </div>
-
-              {/* ── 포즈별 성급 테이블 ──────────────────────────────── */}
-              <div
-                className="rounded-2xl border-[1.5px] p-4"
-                style={{
-                  background: "rgba(255,252,254,0.9)",
-                  borderColor: "rgba(230,210,230,0.6)",
-                }}
-              >
-                <div
-                  className="mb-3 flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase md:text-sm"
-                  style={{ color: "#b080c0" }}
-                >
-                  📸 포즈별 성급
-                </div>
-                <table className="w-full">
-                  <thead>
-                    <tr
-                      className="border-b-[1.5px]"
-                      style={{ borderColor: "rgba(230,210,230,0.6)" }}
-                    >
-                      {["성급", "포즈"].map((h) => (
-                        <th
-                          key={h}
-                          className="px-2 pb-2.5 text-left text-xs font-bold tracking-wider uppercase md:text-sm"
-                          style={{ color: "#8a6898" }}
-                        >
-                          {h}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[
-                      { stars: 1, pose: "무효 정보 카드" },
-                      { stars: 1, pose: "일상 자세" },
-                      {
-                        stars: 2,
-                        pose: "먹이찾기 / 지저귀기 / 1성 포즈 + 완벽한 포착",
-                      },
-                      {
-                        stars: 3,
-                        pose: "깃털 다듬기 / 2성 포즈 + 완벽한 포착",
-                      },
-                      { stars: 4, pose: "펴기 / 3성 포즈 + 완벽한 포착" },
-                      { stars: 5, pose: "4성 포즈 + 완벽한 포착" },
-                    ].map((row, i) => (
-                      <tr
-                        key={i}
-                        className="border-b border-[rgba(230,210,230,0.4)] last:border-0"
+              <table className="w-full">
+                <thead>
+                  <tr
+                    className="border-b-[1.5px]"
+                    style={{ borderColor: "rgba(200,180,230,0.6)" }}
+                  >
+                    {["성급", "별점", "판매가"].map((h) => (
+                      <th
+                        key={h}
+                        className="px-2 pb-2.5 text-left text-xs font-bold tracking-wider uppercase md:text-sm"
+                        style={{ color: "#8a6898" }}
                       >
-                        <td className="px-2 py-2.5">
-                          <span className="text-xs text-amber-500 md:text-sm">
-                            {starsOf(row.stars)}
-                          </span>
-                        </td>
-                        <td className="px-2 py-2.5">
-                          <span
-                            className="text-xs font-bold md:text-sm"
-                            style={{ color: "#4a3060" }}
-                          >
-                            {row.pose}
-                          </span>
-                        </td>
-                      </tr>
+                        {h}
+                      </th>
                     ))}
-                  </tbody>
-                </table>
-                <p
-                  className="mt-3 text-xs font-semibold"
-                  style={{ color: "#8a6898" }}
-                >
-                  ※ 완벽한 포착은 관찰 Lv.4부터 사용할 수 있습니다.
-                </p>
-              </div>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bird.grades.map((g) => (
+                    <tr
+                      key={g.stars}
+                      className="border-b border-[rgba(200,180,230,0.4)] last:border-0"
+                    >
+                      <td className="px-2 py-2.5">
+                        <span
+                          className="text-xs font-bold md:text-sm"
+                          style={{ color: "#4a3060" }}
+                        >
+                          {g.stars}성
+                        </span>
+                      </td>
+                      <td className="px-2 py-2.5">
+                        <span className="text-xs text-amber-500 md:text-sm">
+                          {starsOf(g.stars)}
+                        </span>
+                      </td>
+                      <td className="px-2 py-2.5">
+                        <span
+                          className="text-xs font-bold tabular-nums md:text-sm"
+                          style={{ color: "#b45309" }}
+                        >
+                          {g.sellPrice > 0
+                            ? `${g.sellPrice.toLocaleString()}G`
+                            : "-"}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

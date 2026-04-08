@@ -1,12 +1,12 @@
 import { notFound } from "next/navigation";
-import { FOODS } from "../../../_data/foods";
+import { getFoodDetail } from "../../../_data/foods";
 import FoodDetailClient from "./Client";
 
 type PageProps = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: PageProps) {
   const { id } = await params;
-  const food = FOODS.find((f) => f.id === id);
+  const food = id ? await getFoodDetail(id) : null;
   if (!food) {
     return {
       title: "요리 상세",
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function FoodDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const food = FOODS.find((f) => f.id === id);
+  const food = id ? await getFoodDetail(id) : null;
 
   if (!food) {
     notFound();

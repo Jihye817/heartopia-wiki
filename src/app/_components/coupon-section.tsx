@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { getValidCoupons } from "@/data/coupons";
+import type { Coupon } from "@/data/coupons";
 
 function CopyIcon({ size = 14 }: { size?: number }) {
   return (
@@ -75,12 +75,20 @@ function TagIcon({ size = 14 }: { size?: number }) {
   );
 }
 
+function isNew(createdAt: string): boolean {
+  return (Date.now() - new Date(createdAt).getTime()) / 86_400_000 <= 7;
+}
+
 function formatExpiresAt(dateStr: string): string {
   const [y, m, d] = dateStr.split("-");
   return `~ ${y}.${m}.${d}`;
 }
 
-export function CouponSection() {
+interface CouponSectionProps {
+  coupons: Coupon[];
+}
+
+export function CouponSection({ coupons }: CouponSectionProps) {
   const [copied, setCopied] = useState<string | null>(null);
 
   const handleCopy = (code: string) => {
@@ -147,7 +155,7 @@ export function CouponSection() {
           />
 
           <div className="py-2">
-            {getValidCoupons().slice(0, 5).map((coupon, idx) => (
+            {coupons.slice(0, 5).map((coupon, idx) => (
               <div key={coupon.code}>
                 {idx > 0 && (
                   <div
@@ -169,17 +177,29 @@ export function CouponSection() {
                       <TagIcon size={14} />
                     </div>
                     <div>
-                      <div
-                        className="text-[15px] font-bold tracking-wider"
-                        style={{
-                          color: "#6b4a7a",
-                          letterSpacing: "0.08em",
-                          fontFamily: "'Courier New', 'Courier', monospace",
-                        }}
-                      >
-                        {coupon.code}
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="text-[17px] font-extrabold tracking-wider"
+                          style={{
+                            color: "#6b4a7a",
+                            letterSpacing: "0.08em",
+                            fontFamily: "var(--font-mono), 'Courier New', monospace",
+                          }}
+                        >
+                          {coupon.code}
+                        </div>
+                        {isNew(coupon.created_at) && (
+                          <span
+                            className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-extrabold tracking-widest text-white"
+                            style={{
+                              background: "linear-gradient(90deg, #f8a4c8, #c9a7eb)",
+                            }}
+                          >
+                            NEW
+                          </span>
+                        )}
                       </div>
-                      <div className="mt-0.5 text-xs text-[#b090c0]">
+                      <div className="mt-1 text-[13px] font-medium leading-relaxed" style={{ color: "#8a6898" }}>
                         {coupon.reward}
                       </div>
                     </div>
@@ -188,9 +208,9 @@ export function CouponSection() {
                   <div className="flex shrink-0 items-center gap-2 self-end md:self-auto">
                     <span
                       className="text-xs text-[#b090c0]"
-                      title={`만료: ${coupon.expiresAt}`}
+                      title={`만료: ${coupon.expires_at}`}
                     >
-                      만료 {formatExpiresAt(coupon.expiresAt)}
+                      만료 {formatExpiresAt(coupon.expires_at)}
                     </span>
                     <button
                       type="button"

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BUGS } from "./_data/bugs";
+import { getBugs } from "./_data/bugs";
 import BugsClient from "./Client";
 
 export const metadata: Metadata = {
@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/bugs" },
 };
 
-export default function BugsPage() {
-  return <BugsClient bugs={BUGS} />;
+export default async function BugsPage() {
+  const bugs = await getBugs();
+  return <BugsClient bugs={bugs} />;
 }

@@ -10,6 +10,14 @@ import type { FishDetail } from "../../_data/fishes";
 const FISHING_TINT = "126, 200, 227";
 const FISHING_BORDER = "#c8e8f8";
 
+const SHADOW_SIZE_STYLE: Record<string, { bg: string; color: string; border: string }> = {
+  소형: { bg: "rgba(230,210,230,0.3)", color: "#8a6898", border: "rgba(200,160,200,0.5)" },
+  중형: { bg: "rgba(230,210,230,0.3)", color: "#8a6898", border: "rgba(200,160,200,0.5)" },
+  대형: { bg: "rgba(230,210,230,0.3)", color: "#8a6898", border: "rgba(200,160,200,0.5)" },
+  파랑: { bg: "rgba(186,230,253,0.4)", color: "#0284c7", border: "rgba(125,211,252,0.6)" },
+  금색: { bg: "rgba(254,243,199,0.5)", color: "#b45309", border: "rgba(252,211,77,0.6)" },
+};
+
 const FISH_TYPE_EMOJI: Record<string, string> = {
   강: "🏞️",
   호수: "💧",
@@ -47,7 +55,7 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
             물고기 도감
           </Link>
           <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
-          <span style={{ color: "#6b4a7a" }}>{fish.ko}</span>
+          <span style={{ color: "#6b4a7a" }}>{fish.name}</span>
         </nav>
 
         {/* Back */}
@@ -82,7 +90,7 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
                 {fish.thumbnail ? (
                   <Image
                     src={fish.thumbnail}
-                    alt={fish.ko}
+                    alt={fish.name}
                     width={120}
                     height={120}
                     className="h-4/5 w-4/5 object-contain"
@@ -97,7 +105,7 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
                 className="m-0 mb-3 text-[clamp(20px,4vw,28px)] leading-tight font-bold tracking-tight md:text-[clamp(24px,4vw,34px)]"
                 style={{ color: "#4a3060" }}
               >
-                {fish.ko}
+                {fish.name}
               </h1>
 
               {/* Divider */}
@@ -123,9 +131,9 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
                 <span
                   className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
                   style={{
-                    background: `rgba(${FISHING_TINT},0.2)`,
-                    color: "#4a9bbf",
-                    borderColor: `rgba(${FISHING_TINT},0.45)`,
+                    background: SHADOW_SIZE_STYLE[fish.shadowSize]?.bg ?? "rgba(230,210,230,0.3)",
+                    color: SHADOW_SIZE_STYLE[fish.shadowSize]?.color ?? "#8a6898",
+                    borderColor: SHADOW_SIZE_STYLE[fish.shadowSize]?.border ?? "rgba(200,160,200,0.5)",
                   }}
                 >
                   그림자 : {fish.shadowSize}
@@ -173,7 +181,7 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
                       className="text-sm font-bold md:text-base"
                       style={{ color: "#4a3060" }}
                     >
-                      {FISH_TYPE_EMOJI[fish.fishType]} {fish.fishType}
+                      {fish.fishType}
                     </p>
                   </div>
                   <div
@@ -195,44 +203,42 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
                   </div>
                 </div>
 
-                {/* 시간 */}
+                {/* 시간 + 날씨 */}
                 <div
-                  className="border-b-[1.5px] px-4 py-3"
+                  className={fish.desc ? "grid grid-cols-2 border-b-[1.5px]" : "grid grid-cols-2"}
                   style={{ borderColor: "rgba(230,210,230,0.6)" }}
                 >
-                  <p
-                    className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                    style={{ color: "#8a6898" }}
+                  <div
+                    className="border-r-[1.5px] p-4"
+                    style={{ borderColor: "rgba(230,210,230,0.6)" }}
                   >
-                    시간
-                  </p>
-                  <p
-                    className="text-sm font-bold md:text-base"
-                    style={{ color: "#4a3060" }}
-                  >
-                    {fish.times.join(", ")}
-                  </p>
-                </div>
-
-                {/* 날씨 */}
-                <div
-                  className={
-                    fish.desc ? "border-b-[1.5px] px-4 py-3" : "px-4 py-3"
-                  }
-                  style={{ borderColor: "rgba(230,210,230,0.6)" }}
-                >
-                  <p
-                    className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                    style={{ color: "#8a6898" }}
-                  >
-                    날씨
-                  </p>
-                  <p
-                    className="text-sm font-bold md:text-base"
-                    style={{ color: "#4a3060" }}
-                  >
-                    {fish.weathers.join(", ")}
-                  </p>
+                    <p
+                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
+                      style={{ color: "#8a6898" }}
+                    >
+                      시간
+                    </p>
+                    <p
+                      className="text-sm font-bold md:text-base"
+                      style={{ color: "#4a3060" }}
+                    >
+                      {fish.times.join(", ")}
+                    </p>
+                  </div>
+                  <div className="p-4">
+                    <p
+                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
+                      style={{ color: "#8a6898" }}
+                    >
+                      날씨
+                    </p>
+                    <p
+                      className="text-sm font-bold md:text-base"
+                      style={{ color: "#4a3060" }}
+                    >
+                      {fish.weathers.join(", ")}
+                    </p>
+                  </div>
                 </div>
 
                 {/* 특이사항 (있을 때만) */}

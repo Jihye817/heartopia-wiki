@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PRODUCTS } from "./_data/products";
+import { getProducts } from "./_data/products";
 import ProductsPageClient from "./Client";
 
 export const metadata: Metadata = {
@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/others/products" },
 };
 
-export default function OthersProductsPage() {
-  return <ProductsPageClient products={PRODUCTS} />;
+export default async function OthersProductsPage() {
+  const products = await getProducts();
+  return <ProductsPageClient products={products} />;
 }

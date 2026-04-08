@@ -278,7 +278,7 @@ export default function FoodDetailClient({ food }: FoodDetailClientProps) {
                     className="h-4/5 w-4/5 object-contain"
                   />
                 ) : (
-                  <span aria-hidden>{food.emoji}</span>
+                  <span aria-hidden>{food.emoji || "🥗"}</span>
                 )}
               </div>
 
@@ -310,16 +310,29 @@ export default function FoodDetailClient({ food }: FoodDetailClientProps) {
                 >
                   요리 Lv.{food.level}
                 </span>
-                <span
-                  className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                  style={{
-                    background: `rgba(${FOOD_TINT},0.2)`,
-                    color: "#d47840",
-                    borderColor: `rgba(${FOOD_TINT},0.45)`,
-                  }}
-                >
-                  {food.availability === "always" ? "상시" : "이벤트"}
-                </span>
+                {food.availability === "event" ? (
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+                    style={{
+                      background: "rgba(255,220,130,0.25)",
+                      color: "#9a7020",
+                      borderColor: "rgba(255,220,130,0.55)",
+                    }}
+                  >
+                    이벤트 : {food.event ?? "이벤트"}
+                  </span>
+                ) : (
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+                    style={{
+                      background: "rgba(220,252,231,0.4)",
+                      color: "#16a34a",
+                      borderColor: "rgba(134,239,172,0.5)",
+                    }}
+                  >
+                    일상
+                  </span>
+                )}
               </div>
 
               {/* 상세 정보 표 */}
@@ -347,7 +360,9 @@ export default function FoodDetailClient({ food }: FoodDetailClientProps) {
                 </div>
 
                 <div
-                  className={food.desc ? "border-b-[1.5px] px-4 py-3" : "px-4 py-3"}
+                  className={
+                    food.desc ? "border-b-[1.5px] px-4 py-3" : "px-4 py-3"
+                  }
                   style={{ borderColor: "rgba(230,210,230,0.6)" }}
                 >
                   <p
@@ -360,7 +375,7 @@ export default function FoodDetailClient({ food }: FoodDetailClientProps) {
                     className="text-sm font-bold md:text-base"
                     style={{ color: "#4a3060" }}
                   >
-                    💰 {food.sellMin.toLocaleString()} ~ {food.sellMax.toLocaleString()}G
+                    💰 {food.sellMin} ~ {food.sellMax} G
                   </p>
                 </div>
 
@@ -450,7 +465,7 @@ export default function FoodDetailClient({ food }: FoodDetailClientProps) {
                           className="text-xs font-bold tabular-nums md:text-sm"
                           style={{ color: "#b45309" }}
                         >
-                          {g.sellPrice.toLocaleString()}G
+                          {g.sellPrice} G
                         </span>
                       </td>
                     </tr>

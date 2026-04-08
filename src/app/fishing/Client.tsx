@@ -3,31 +3,49 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { LayoutGrid, List, MapPin, Search, Waves } from "lucide-react";
-import type { FishDetail, FishType } from "./_data/fishes";
+import { LayoutGrid, List, MapPin, Search } from "lucide-react";
+import type { FishListItem, FishType } from "./_data/fishes";
 
 // ── Constants ──────────────────────────────────────────────────────────────────
 
-/** 낚시 테마 색상 (category-section.tsx fishing 참고) */
 const FISHING_TINT = "126, 200, 227";
 const FISHING_BORDER = "rgba(126,200,227,0.6)";
 const FISHING_BG_HOVER = "#f0faff";
 
-const SHADOW_SIZE_STYLE: Record<string, { bg: string; color: string; border: string }> = {
-  소형: { bg: "rgba(230,210,230,0.3)", color: "#8a6898", border: "rgba(200,160,200,0.5)" },
-  중형: { bg: "rgba(230,210,230,0.3)", color: "#8a6898", border: "rgba(200,160,200,0.5)" },
-  대형: { bg: "rgba(230,210,230,0.3)", color: "#8a6898", border: "rgba(200,160,200,0.5)" },
-  파랑: { bg: "rgba(186,230,253,0.4)", color: "#0284c7", border: "rgba(125,211,252,0.6)" },
-  금색: { bg: "rgba(254,243,199,0.5)", color: "#b45309", border: "rgba(252,211,77,0.6)" },
+const SHADOW_SIZE_STYLE: Record<
+  string,
+  { bg: string; color: string; border: string }
+> = {
+  소형: {
+    bg: "rgba(230,210,230,0.3)",
+    color: "#8a6898",
+    border: "rgba(200,160,200,0.5)",
+  },
+  중형: {
+    bg: "rgba(230,210,230,0.3)",
+    color: "#8a6898",
+    border: "rgba(200,160,200,0.5)",
+  },
+  대형: {
+    bg: "rgba(230,210,230,0.3)",
+    color: "#8a6898",
+    border: "rgba(200,160,200,0.5)",
+  },
+  파랑: {
+    bg: "rgba(186,230,253,0.4)",
+    color: "#0284c7",
+    border: "rgba(125,211,252,0.6)",
+  },
+  금색: {
+    bg: "rgba(254,243,199,0.5)",
+    color: "#b45309",
+    border: "rgba(252,211,77,0.6)",
+  },
 };
 
 // ── Subcomponents ──────────────────────────────────────────────────────────────
 
-interface FishCardProps {
-  fish: FishDetail;
-}
-
-function FishCard({ fish }: FishCardProps) {
+function FishCard({ fish }: { fish: FishListItem }) {
   return (
     <Link
       href={`/fishing/detail/${fish.id}`}
@@ -50,104 +68,132 @@ function FishCard({ fish }: FishCardProps) {
         e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.04)";
       }}
     >
-      {/* BG decoration */}
-      <div
-        className="absolute -right-2.5 -bottom-2.5 opacity-[0.06] transition-opacity duration-300 group-hover:opacity-[0.11]"
-        style={{
-          transform: "scale(2) rotate(-10deg)",
-          transformOrigin: "bottom right",
-        }}
-        aria-hidden
-      >
-        <span className="text-4xl">🐟</span>
+      {/* 썸네일 */}
+      <div className="mb-4 flex justify-center">
+        <div
+          className="inline-flex h-[110px] w-[110px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] p-4 text-5xl transition-transform duration-300 group-hover:scale-105"
+          style={{
+            background: `rgba(${FISHING_TINT},0.15)`,
+            borderColor: `rgba(${FISHING_TINT},0.35)`,
+          }}
+        >
+          {fish.thumbnail ? (
+            <Image
+              src={fish.thumbnail}
+              alt=""
+              width={110}
+              height={110}
+              className="h-full w-full object-contain"
+            />
+          ) : (
+            <span aria-hidden>{fish.emoji || "🐟"}</span>
+          )}
+        </div>
       </div>
 
-      {/* Thumbnail / Emoji */}
-      <div
-        className="mb-4 inline-flex h-[60px] w-[60px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] text-3xl transition-transform duration-300 group-hover:scale-105"
-        style={{
-          background: `rgba(${FISHING_TINT},0.18)`,
-          borderColor: `rgba(${FISHING_TINT},0.4)`,
-        }}
-      >
-        {fish.thumbnail ? (
-          <Image
-            src={fish.thumbnail}
-            alt={fish.ko}
-            width={60}
-            height={60}
-            className="h-4/5 w-4/5 object-contain"
-          />
-        ) : (
-          <span aria-hidden>{fish.emoji}</span>
-        )}
-      </div>
-
-      {/* Name */}
-      <div className="mb-3.5">
+      {/* 이름 */}
+      <div className="mb-3 text-center">
         <div
           className="text-lg leading-tight font-bold md:text-xl"
           style={{ color: "#4a3060" }}
         >
-          {fish.ko}
+          {fish.name}
         </div>
       </div>
 
-      {/* Divider */}
-      <div
-        className="mb-3.5 h-px"
-        style={{
-          background: `linear-gradient(to right, ${FISHING_BORDER}, transparent)`,
-        }}
-      />
-
-      {/* Badges */}
-      <div className="flex flex-col gap-1.5">
-        <div className="flex flex-wrap gap-1.5">
+      {/* 뱃지 */}
+      <div className="mb-3.5 flex flex-wrap justify-center gap-1.5">
+        <span
+          className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+          style={{
+            background: "rgba(189,222,255,0.3)",
+            color: "#0284c7",
+            borderColor: "rgba(189,222,255,0.6)",
+          }}
+        >
+          낚시 Lv.{fish.level}
+        </span>
+        {fish.availability === "always" ? (
           <span
             className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
             style={{
-              background: "rgba(189,222,255,0.3)",
-              color: "#0284c7",
-              borderColor: "rgba(189,222,255,0.6)",
+              background: "rgba(220,252,231,0.4)",
+              color: "#16a34a",
+              borderColor: "rgba(134,239,172,0.5)",
             }}
           >
-            낚시 Lv.{fish.level}
+            일상
           </span>
+        ) : (
           <span
             className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
             style={{
-              background: SHADOW_SIZE_STYLE[fish.shadowSize]?.bg ?? "rgba(230,210,230,0.3)",
+              background: "rgba(255,220,130,0.25)",
+              color: "#9a7020",
+              borderColor: "rgba(255,220,130,0.55)",
+            }}
+          >
+            {fish.availability ?? "이벤트"}
+          </span>
+        )}
+        {fish.shadowSize && (
+          <span
+            className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+            style={{
+              background:
+                SHADOW_SIZE_STYLE[fish.shadowSize]?.bg ??
+                "rgba(230,210,230,0.3)",
               color: SHADOW_SIZE_STYLE[fish.shadowSize]?.color ?? "#8a6898",
-              borderColor: SHADOW_SIZE_STYLE[fish.shadowSize]?.border ?? "rgba(200,160,200,0.5)",
+              borderColor:
+                SHADOW_SIZE_STYLE[fish.shadowSize]?.border ??
+                "rgba(200,160,200,0.5)",
             }}
           >
-            그림자 : {fish.shadowSize}
+            {fish.shadowSize}
           </span>
-        </div>
-        <div>
-          <span
-            className="flex w-fit items-center gap-1 rounded-lg border px-2 py-1 text-xs font-bold md:text-[13px]"
-            style={{
-              background: "rgba(255,245,235,0.9)",
-              borderColor: "rgba(210,170,120,0.5)",
-              color: "#8a6020",
-            }}
-          >
-            <MapPin size={11} strokeWidth={2.2} aria-hidden />
-            {fish.location || "-"}
-          </span>
-        </div>
+        )}
       </div>
+
+      {/* 성급별 가격 */}
+      {fish.fish_grades.length > 0 && (
+        <>
+          <div
+            className="mb-3 h-px"
+            style={{ background: `rgba(${FISHING_TINT},0.4)` }}
+          />
+          <div className="grid grid-cols-5 gap-1">
+            {fish.fish_grades.map((g) => (
+              <div
+                key={g.stars}
+                className="flex flex-col items-center rounded-lg border py-1.5"
+                style={{
+                  background: "rgba(245,245,247,0.7)",
+                  borderColor: "rgba(209,213,219,0.5)",
+                }}
+              >
+                <span className="text-xs font-bold text-amber-500">
+                  {g.stars}★
+                </span>
+                <div
+                  className="my-1 h-px w-4"
+                  style={{ background: "rgba(209,213,219,0.6)" }}
+                />
+                <span
+                  className="text-xs font-bold tabular-nums"
+                  style={{ color: "#6b7280" }}
+                >
+                  {g.sellPrice || "-"}
+                </span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </Link>
   );
 }
 
-interface FishListViewProps {
-  fishes: FishDetail[];
-}
-
-function FishListView({ fishes }: FishListViewProps) {
+function FishListView({ fishes }: { fishes: FishListItem[] }) {
   return (
     <div
       className="overflow-x-auto rounded-[20px] border-[1.5px]"
@@ -163,15 +209,17 @@ function FishListView({ fishes }: FishListViewProps) {
             className="border-b-[1.5px]"
             style={{ borderColor: `rgba(${FISHING_TINT},0.4)` }}
           >
-            {["이름", "레벨", "어종", "그림자", "위치", "1성 ~ 5성 가격"].map((h) => (
-              <th
-                key={h}
-                className="px-4 py-3.5 text-left text-sm font-bold tracking-wider uppercase"
-                style={{ color: "#b080c0" }}
-              >
-                {h}
-              </th>
-            ))}
+            {["이름", "레벨", "어종", "그림자", "위치", "판매 가격"].map(
+              (h) => (
+                <th
+                  key={h}
+                  className="px-4 py-3.5 text-left text-sm font-bold tracking-wider uppercase"
+                  style={{ color: "#b080c0" }}
+                >
+                  {h}
+                </th>
+              ),
+            )}
           </tr>
         </thead>
         <tbody>
@@ -180,10 +228,13 @@ function FishListView({ fishes }: FishListViewProps) {
               key={fish.id}
               className="border-b border-[rgba(126,200,227,0.3)] transition-colors last:border-0 hover:bg-[#f0faff]/50"
             >
-              <td className="px-4 py-3.5">
-                <div className="flex items-center gap-2">
+              <td className="p-0">
+                <Link
+                  href={`/fishing/detail/${fish.id}`}
+                  className="flex items-center px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
+                >
                   <div
-                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg border-[1.5px]"
+                    className="mr-2.5 inline-flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-lg border-[1.5px]"
                     style={{
                       background: `rgba(${FISHING_TINT},0.18)`,
                       borderColor: `rgba(${FISHING_TINT},0.4)`,
@@ -192,84 +243,120 @@ function FishListView({ fishes }: FishListViewProps) {
                     {fish.thumbnail ? (
                       <Image
                         src={fish.thumbnail}
-                        alt={fish.ko}
-                        width={32}
-                        height={32}
+                        alt=""
+                        width={28}
+                        height={28}
                         className="h-4/5 w-4/5 object-contain"
                       />
                     ) : (
-                      <span className="text-base" aria-hidden>{fish.emoji}</span>
+                      <span className="text-sm" aria-hidden>
+                        {fish.emoji || "🐟"}
+                      </span>
                     )}
                   </div>
                   <span
                     className="text-sm font-bold"
                     style={{ color: "#4a3060" }}
                   >
-                    {fish.ko}
+                    {fish.name}
                   </span>
-                </div>
+                </Link>
               </td>
-              <td className="px-4 py-3.5">
-                <span
-                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                  style={{
-                    background: "rgba(189,222,255,0.3)",
-                    color: "#0284c7",
-                    borderColor: "rgba(189,222,255,0.6)",
-                  }}
+              <td className="p-0">
+                <Link
+                  href={`/fishing/detail/${fish.id}`}
+                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
-                  Lv.{fish.level}
-                </span>
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                    style={{
+                      background: "rgba(189,222,255,0.3)",
+                      color: "#0284c7",
+                      borderColor: "rgba(189,222,255,0.6)",
+                    }}
+                  >
+                    Lv.{fish.level}
+                  </span>
+                </Link>
               </td>
-              <td className="px-4 py-3.5">
-                <span
-                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                  style={{
-                    background: `rgba(${FISHING_TINT},0.2)`,
-                    color: "#4a9bbf",
-                    borderColor: `rgba(${FISHING_TINT},0.45)`,
-                  }}
+              <td className="p-0">
+                <Link
+                  href={`/fishing/detail/${fish.id}`}
+                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
-                  {fish.fishType}
-                </span>
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                    style={{
+                      background: `rgba(${FISHING_TINT},0.2)`,
+                      color: "#4a9bbf",
+                      borderColor: `rgba(${FISHING_TINT},0.45)`,
+                    }}
+                  >
+                    {fish.fishType}
+                  </span>
+                </Link>
               </td>
-              <td className="px-4 py-3.5">
-                <span
-                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                  style={{
-                    background: SHADOW_SIZE_STYLE[fish.shadowSize]?.bg ?? "rgba(230,210,230,0.3)",
-                    color: SHADOW_SIZE_STYLE[fish.shadowSize]?.color ?? "#6b4a7a",
-                    borderColor: SHADOW_SIZE_STYLE[fish.shadowSize]?.border ?? "rgba(230,210,230,0.6)",
-                  }}
+              <td className="p-0">
+                <Link
+                  href={`/fishing/detail/${fish.id}`}
+                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
-                  {fish.shadowSize}
-                </span>
+                  <span
+                    className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                    style={{
+                      background:
+                        SHADOW_SIZE_STYLE[fish.shadowSize]?.bg ??
+                        "rgba(230,210,230,0.3)",
+                      color:
+                        SHADOW_SIZE_STYLE[fish.shadowSize]?.color ?? "#6b4a7a",
+                      borderColor:
+                        SHADOW_SIZE_STYLE[fish.shadowSize]?.border ??
+                        "rgba(230,210,230,0.6)",
+                    }}
+                  >
+                    {fish.shadowSize || "-"}
+                  </span>
+                </Link>
               </td>
-              <td className="px-4 py-3.5">
-                <span
-                  className="flex w-fit items-center gap-1 rounded-lg border px-2 py-1 text-xs font-bold md:text-[13px]"
-                  style={{
-                    background: "rgba(255,245,235,0.9)",
-                    borderColor: "rgba(210,170,120,0.5)",
-                    color: "#8a6020",
-                  }}
+              <td className="p-0">
+                <Link
+                  href={`/fishing/detail/${fish.id}`}
+                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
-                  <MapPin size={11} strokeWidth={2.2} aria-hidden />
-                  {fish.location || "-"}
-                </span>
+                  <span
+                    className="flex w-fit items-center gap-1 rounded-lg border px-2 py-1 text-xs font-bold md:text-[13px]"
+                    style={{
+                      background: "rgba(255,245,235,0.9)",
+                      borderColor: "rgba(210,170,120,0.5)",
+                      color: "#8a6020",
+                    }}
+                  >
+                    <MapPin size={11} strokeWidth={2.2} aria-hidden />
+                    {fish.location || "-"}
+                  </span>
+                </Link>
               </td>
-              <td className="px-4 py-3.5">
-                <span
-                  className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                  style={{
-                    background: "rgba(255,248,230,0.9)",
-                    borderColor: "rgba(210,170,100,0.45)",
-                    color: "#7a5a10",
-                  }}
+              <td className="p-0">
+                <Link
+                  href={`/fishing/detail/${fish.id}`}
+                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
                 >
-                  {fish.sellMin.toLocaleString()}~
-                  {fish.sellMax.toLocaleString()}G
-                </span>
+                  {fish.sellMin || fish.sellMax ? (
+                    <span
+                      className="text-sm font-bold tabular-nums"
+                      style={{ color: "#b45309" }}
+                    >
+                      {fish.sellMin} ~ {fish.sellMax} G
+                    </span>
+                  ) : (
+                    <span
+                      className="text-sm font-bold"
+                      style={{ color: "#c4b0cc" }}
+                    >
+                      -
+                    </span>
+                  )}
+                </Link>
               </td>
             </tr>
           ))}
@@ -281,49 +368,60 @@ function FishListView({ fishes }: FishListViewProps) {
 
 // ── Main ───────────────────────────────────────────────────────────────────────
 
-type FishTypeFilter = "all" | FishType;
+type AvailFilter = "all" | "always" | "event";
 
 interface FishingClientProps {
-  fishes: FishDetail[];
+  fishes: FishListItem[];
 }
 
 export default function FishingClient({ fishes }: FishingClientProps) {
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [search, setSearch] = useState("");
-  const [typeFilter, setTypeFilter] = useState<FishTypeFilter>("all");
+  const [availFilter, setAvailFilter] = useState<AvailFilter>("all");
+  const [levelFilter, setLevelFilter] = useState<number | null>(null);
+
+  const levels = useMemo(() => {
+    return Array.from(
+      new Set(
+        fishes.map((f) => f.level).filter((l): l is number => l !== null),
+      ),
+    ).sort((a, b) => a - b);
+  }, [fishes]);
 
   const tabCounts = useMemo(
     () => ({
       all: fishes.length,
-      강: fishes.filter((f) => f.fishType === "강").length,
-      호수: fishes.filter((f) => f.fishType === "호수").length,
-      바다: fishes.filter((f) => f.fishType === "바다").length,
+      always: fishes.filter((f) => f.availability === "always").length,
+      event: fishes.filter((f) => f.availability !== "always").length,
     }),
     [fishes],
   );
 
   const filtered = useMemo(() => {
-    const byType =
-      typeFilter === "all"
+    let result =
+      availFilter === "all"
         ? fishes
-        : fishes.filter((f) => f.fishType === typeFilter);
+        : availFilter === "always"
+          ? fishes.filter((f) => f.availability === "always")
+          : fishes.filter((f) => f.availability !== "always");
 
-    if (!search.trim()) return byType;
+    if (levelFilter !== null) {
+      result = result.filter((f) => f.level === levelFilter);
+    }
 
+    if (!search.trim()) return result;
     const q = search.trim().toLowerCase();
-    return byType.filter(
+    return result.filter(
       (f) =>
-        f.ko.toLowerCase().includes(q) ||
         f.name.toLowerCase().includes(q) ||
         f.location.toLowerCase().includes(q),
     );
-  }, [fishes, typeFilter, search]);
+  }, [fishes, availFilter, levelFilter, search]);
 
-  const tabs: { id: FishTypeFilter; label: string; emoji: string }[] = [
+  const tabs: { id: AvailFilter; label: string; emoji: string }[] = [
     { id: "all", label: "전체", emoji: "✨" },
-    { id: "강", label: "강", emoji: "🏞️" },
-    { id: "호수", label: "호수", emoji: "💧" },
-    { id: "바다", label: "바다", emoji: "🌊" },
+    { id: "always", label: "일상", emoji: "🌿" },
+    { id: "event", label: "이벤트", emoji: "🎉" },
   ];
 
   return (
@@ -396,84 +494,105 @@ export default function FishingClient({ fishes }: FishingClientProps) {
           </div>
         </div>
 
-        {/* Filter Tabs */}
-        <div
-          className="mb-6 flex flex-wrap gap-2"
-          role="tablist"
-          aria-label="어종 필터"
-        >
-          {tabs.map((tab) => {
-            const isActive = typeFilter === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => setTypeFilter(tab.id)}
-                className="flex items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1.5 text-xs font-bold transition-all md:text-sm"
-                style={{
-                  background: isActive ? "white" : "rgba(255,252,254,0.85)",
-                  borderColor: isActive
-                    ? `rgba(${FISHING_TINT},0.55)`
-                    : "rgba(230,210,230,0.6)",
-                  color: isActive ? "#6b4a7a" : "#8a6898",
-                  boxShadow: isActive ? "0 1px 4px rgba(0,0,0,0.05)" : "none",
-                }}
-              >
-                <span aria-hidden>{tab.emoji}</span>
-                {tab.label}
-                <span
-                  className="rounded-full px-1.5 py-0.5 text-[10px] md:text-xs"
+        {/* Filter + Search 통합 행 */}
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          {/* 왼쪽: 어종 탭 */}
+          <div
+            className="flex flex-wrap gap-2"
+            role="tablist"
+            aria-label="가용 필터"
+          >
+            {tabs.map((tab) => {
+              const isActive = availFilter === tab.id;
+              const count = tabCounts[tab.id as keyof typeof tabCounts];
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => setAvailFilter(tab.id)}
+                  className="flex cursor-pointer items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1.5 text-xs font-bold transition-all md:text-sm"
                   style={{
                     background: isActive
-                      ? `rgba(${FISHING_TINT},0.25)`
-                      : "rgba(230,210,230,0.45)",
-                    color: "#6b4a7a",
+                      ? `rgba(${FISHING_TINT},0.2)`
+                      : "rgba(255,252,254,0.85)",
+                    borderColor: isActive
+                      ? `rgba(${FISHING_TINT},0.6)`
+                      : `rgba(${FISHING_TINT},0.3)`,
+                    color: isActive ? "#4a9bbf" : "#8a6898",
+                    boxShadow: isActive
+                      ? `0 2px 8px rgba(${FISHING_TINT},0.25)`
+                      : "none",
                   }}
                 >
-                  {tabCounts[tab.id]}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Search + Count */}
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
-          <div className="relative max-w-xs min-w-[200px] flex-1">
-            <Search
-              size={14}
-              className="absolute top-1/2 left-3 -translate-y-1/2"
-              style={{ color: "#8a6898" }}
-              strokeWidth={2.2}
-              aria-hidden
-            />
-            <input
-              type="search"
-              placeholder="이름·장소 검색..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              aria-label="물고기 이름 또는 장소 검색"
-              className="w-full rounded-xl border-[1.5px] py-2 pr-4 pl-9 text-xs transition-all outline-none placeholder:opacity-70 focus:border-[#7ec8e3] md:py-2.5 md:text-sm"
-              style={{
-                background: "rgba(255,240,246,0.5)",
-                borderColor: "rgba(230,210,230,0.6)",
-                color: "#4a3060",
-              }}
-            />
+                  <span aria-hidden>{tab.emoji}</span>
+                  {tab.label}
+                  <span
+                    className="rounded-full px-1.5 py-0.5 text-[10px] md:text-xs"
+                    style={{
+                      background: isActive
+                        ? `rgba(${FISHING_TINT},0.25)`
+                        : "rgba(230,210,230,0.45)",
+                      color: isActive ? "#4a9bbf" : "#8a6898",
+                    }}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
-          <span
-            className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-bold md:text-sm"
-            style={{
-              background: `rgba(${FISHING_TINT},0.15)`,
-              borderColor: `rgba(${FISHING_TINT},0.4)`,
-              color: "#4a9bbf",
-            }}
-          >
-            <Waves size={12} aria-hidden />
-            {filtered.length}종
-          </span>
+
+          {/* 오른쪽: 레벨 셀렉트 + 검색 */}
+          <div className="ml-auto flex items-center gap-2">
+            <select
+              value={levelFilter ?? ""}
+              onChange={(e) =>
+                setLevelFilter(e.target.value ? Number(e.target.value) : null)
+              }
+              aria-label="레벨 필터"
+              className="rounded-xl border-[1.5px] py-2 pr-8 pl-3 text-xs font-bold transition-all outline-none md:py-2.5 md:text-sm"
+              style={{
+                background: "rgba(240,250,255,0.5)",
+                borderColor: `rgba(${FISHING_TINT},0.4)`,
+                color: levelFilter !== null ? "#0284c7" : "#8a6898",
+                appearance: "none",
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a6898' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "right 10px center",
+              }}
+            >
+              <option value="">전체 레벨</option>
+              {levels.map((lv) => (
+                <option key={lv} value={lv}>
+                  낚시 Lv.{lv}
+                </option>
+              ))}
+            </select>
+            <div className="relative w-44 md:w-56">
+              <Search
+                size={14}
+                className="absolute top-1/2 left-3 -translate-y-1/2"
+                style={{ color: "#8a6898" }}
+                strokeWidth={2.2}
+                aria-hidden
+              />
+              <input
+                type="search"
+                placeholder="이름·장소 검색..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                aria-label="물고기 이름 검색"
+                className="w-full rounded-xl border-[1.5px] py-2 pr-4 pl-9 text-xs transition-all outline-none placeholder:opacity-70 focus:border-[#7ec8e3] md:py-2.5 md:text-sm"
+                style={{
+                  background: "rgba(240,250,255,0.5)",
+                  borderColor: `rgba(${FISHING_TINT},0.4)`,
+                  color: "#4a3060",
+                }}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Content */}
