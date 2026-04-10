@@ -191,7 +191,7 @@ function FishListView({ fishes }: { fishes: FishListItem[] }) {
                 >
                   {fish.shadowSize ? (
                     <span
-                      className="rounded-full border px-2.5 py-0.5 text-sm font-semibold"
+                      className="rounded-full border px-2.5 py-0.5 text-sm font-semibold whitespace-nowrap"
                       style={{
                         background: SHADOW_SIZE_STYLE[fish.shadowSize]?.bg ?? "#EBF3F9",
                         color: SHADOW_SIZE_STYLE[fish.shadowSize]?.color ?? "#4A8DB7",

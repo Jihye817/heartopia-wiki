@@ -115,7 +115,7 @@ function ProductCard({ product }: { product: Product }) {
 function ProductListView({ products }: { products: Product[] }) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-[var(--wiki-border-light)] bg-white">
-      <table className="w-full min-w-[540px] border-collapse">
+      <table className="w-full min-w-[600px] border-collapse">
         <thead>
           <tr className="border-b border-[var(--wiki-border-light)] bg-[var(--wiki-bg)]">
             {["이름", "분류", "채집 장소", "리스폰", "판매 가격"].map((h) => (
@@ -214,7 +214,7 @@ function ProductListView({ products }: { products: Product[] }) {
                   >
                     {product.sell_price != null ? (
                       <span
-                        className="text-sm font-semibold tabular-nums"
+                        className="text-sm font-semibold tabular-nums whitespace-nowrap"
                         style={{ color: "#b45309" }}
                       >
                         {product.sell_price.toLocaleString()} G

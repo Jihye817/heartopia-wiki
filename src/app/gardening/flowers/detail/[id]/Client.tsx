@@ -294,16 +294,14 @@ export default function FlowerDetailClient({
                       className="border-b border-[var(--wiki-border-light)] transition-colors last:border-0 hover:bg-[rgba(0,0,0,0.01)]"
                     >
                       <td className="px-4 py-3">
-                        <div className="flex items-center gap-3.5">
-                          <span
-                            className="text-sm font-semibold"
-                            style={{ color: "var(--wiki-text-primary)" }}
-                          >
-                            {g.stars}성
-                          </span>
-                          <span className="text-sm text-amber-500">
-                            {starsOf(g.stars)}
-                          </span>
+                        <div
+                          className="text-sm font-semibold"
+                          style={{ color: "var(--wiki-text-primary)" }}
+                        >
+                          {g.stars}성
+                        </div>
+                        <div className="hidden text-sm leading-none text-amber-500 sm:block">
+                          {starsOf(g.stars)}
                         </div>
                       </td>
                       <td className="px-4 py-3">
