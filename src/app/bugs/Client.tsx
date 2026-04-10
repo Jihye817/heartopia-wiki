@@ -23,15 +23,12 @@ function BugCard({ bug, hideImage }: { bug: BugListItem; hideImage: boolean }) {
       >
         {!hideImage && bug.thumbnail ? (
           <div className="relative h-full w-full">
-            <Image
-              src={bug.thumbnail}
-              alt=""
-              fill
-              className="object-contain"
-            />
+            <Image src={bug.thumbnail} alt="" fill className="object-contain" />
           </div>
         ) : (
-          <span className="text-4xl" aria-hidden>{bug.emoji || "🦋"}</span>
+          <span className="text-4xl" aria-hidden>
+            {bug.emoji || "🦋"}
+          </span>
         )}
       </div>
 
@@ -90,10 +87,16 @@ function BugCard({ bug, hideImage }: { bug: BugListItem; hideImage: boolean }) {
   );
 }
 
-function BugListView({ bugs, hideImage }: { bugs: BugListItem[]; hideImage: boolean }) {
+function BugListView({
+  bugs,
+  hideImage,
+}: {
+  bugs: BugListItem[];
+  hideImage: boolean;
+}) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-[var(--wiki-border-light)] bg-white">
-      <table className="w-full min-w-[560px] border-collapse">
+      <table className="w-full min-w-[600px] border-collapse">
         <thead>
           <tr className="border-b border-[var(--wiki-border-light)] bg-[var(--wiki-bg)]">
             {["이름", "레벨", "서식지", "위치", "판매 가격"].map((h) => (
@@ -128,7 +131,9 @@ function BugListView({ bugs, hideImage }: { bugs: BugListItem[]; hideImage: bool
                         className="object-contain"
                       />
                     ) : (
-                      <span className="text-sm" aria-hidden>{bug.emoji || "🦋"}</span>
+                      <span className="text-sm" aria-hidden>
+                        {bug.emoji || "🦋"}
+                      </span>
                     )}
                   </span>
                   <span
@@ -181,7 +186,7 @@ function BugListView({ bugs, hideImage }: { bugs: BugListItem[]; hideImage: bool
                 >
                   {bug.sellMin || bug.sellMax ? (
                     <span
-                      className="text-sm font-semibold tabular-nums"
+                      className="text-sm font-semibold whitespace-nowrap tabular-nums"
                       style={{ color: "#b45309" }}
                     >
                       {bug.sellMin} ~ {bug.sellMax} G
@@ -233,7 +238,9 @@ export default function BugsClient({ bugs }: BugsClientProps) {
   const levels = useMemo(() => {
     return Array.from(
       new Set(
-        bugs.map((b) => b.level).filter((l): l is number => l !== null && l > 0),
+        bugs
+          .map((b) => b.level)
+          .filter((l): l is number => l !== null && l > 0),
       ),
     ).sort((a, b) => a - b);
   }, [bugs]);
@@ -254,7 +261,8 @@ export default function BugsClient({ bugs }: BugsClientProps) {
         : availFilter === "이벤트"
           ? bugs.filter((b) => b.availability === "event")
           : bugs;
-    if (levelFilter !== null) result = result.filter((b) => b.level === levelFilter);
+    if (levelFilter !== null)
+      result = result.filter((b) => b.level === levelFilter);
     if (search.trim()) {
       const q = search.trim().toLowerCase();
       result = result.filter((b) => b.name.toLowerCase().includes(q));
@@ -331,7 +339,11 @@ export default function BugsClient({ bugs }: BugsClientProps) {
                 color: hideImage ? "#689f38" : "var(--wiki-text-tertiary)",
               }}
             >
-              {hideImage ? <Eye size={14} strokeWidth={2.2} /> : <EyeOff size={14} strokeWidth={2.2} />}
+              {hideImage ? (
+                <Eye size={14} strokeWidth={2.2} />
+              ) : (
+                <EyeOff size={14} strokeWidth={2.2} />
+              )}
               {hideImage ? "사진 보기" : "사진 가리기"}
             </button>
 
@@ -392,7 +404,9 @@ export default function BugsClient({ bugs }: BugsClientProps) {
                   style={{
                     background: isActive ? "var(--wiki-cat-bugs-bg)" : "white",
                     borderColor: isActive ? "#c5e6a0" : "var(--wiki-border)",
-                    color: isActive ? "var(--wiki-cat-bugs)" : "var(--wiki-text-secondary)",
+                    color: isActive
+                      ? "var(--wiki-cat-bugs)"
+                      : "var(--wiki-text-secondary)",
                   }}
                 >
                   {tab.label}
@@ -477,7 +491,7 @@ export default function BugsClient({ bugs }: BugsClientProps) {
               </p>
             </div>
           ) : viewMode === "card" ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:grid-cols-[repeat(auto-fill,minmax(220px,1fr))]">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-[repeat(auto-fill,minmax(220px,1fr))]">
               {filtered.map((bug) => (
                 <BugCard key={bug.id} bug={bug} hideImage={hideImage} />
               ))}

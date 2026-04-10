@@ -94,7 +94,7 @@ function FlowerCard({ flower }: { flower: FlowerListItem }) {
 function FlowerListView({ flowers }: { flowers: FlowerListItem[] }) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-[var(--wiki-border-light)] bg-white">
-      <table className="w-full border-collapse">
+      <table className="w-full min-w-[580px] border-collapse">
         <thead>
           <tr className="border-b border-[var(--wiki-border-light)] bg-[var(--wiki-bg)]">
             {["꽃 이름", "원예 레벨", "종류", "활동시기", "판매 가격"].map(

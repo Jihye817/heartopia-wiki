@@ -101,7 +101,7 @@ function CropCard({ crop }: { crop: CropListItem }) {
 function CropListView({ crops }: { crops: CropListItem[] }) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-[var(--wiki-border-light)] bg-white">
-      <table className="w-full border-collapse">
+      <table className="w-full min-w-[580px] border-collapse">
         <thead>
           <tr className="border-b border-[var(--wiki-border-light)] bg-[var(--wiki-bg)]">
             {[

@@ -107,7 +107,7 @@ function FoodCard({ food }: { food: FoodListItem }) {
 function FoodListView({ foods }: { foods: FoodListItem[] }) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-[var(--wiki-border-light)] bg-white">
-      <table className="w-full border-collapse">
+      <table className="w-full min-w-[500px] border-collapse">
         <thead>
           <tr className="border-b border-[var(--wiki-border-light)] bg-[var(--wiki-bg)]">
             {["요리 이름", "요리 레벨", "활동시기", "판매 가격"].map((h) => (
@@ -330,7 +330,7 @@ export default function FoodsPageClient({ foods }: FoodsPageClientProps) {
 
           {/* View Toggle */}
           <div
-            className="flex gap-0.5 rounded-lg bg-[var(--wiki-border-light)] p-0.5"
+            className="flex w-fit gap-0.5 rounded-lg bg-[var(--wiki-border-light)] p-0.5"
             role="tablist"
             aria-label="보기 방식"
           >
