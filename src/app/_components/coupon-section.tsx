@@ -4,59 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import type { Coupon } from "@/data/coupons";
 
-function CopyIcon({ size = 14 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-    </svg>
-  );
-}
-
-function CheckIcon({ size = 14 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
-  );
-}
-
-function ArrowRightIcon({ size = 14 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" />
-      <path d="m12 5 7 7-7 7" />
-    </svg>
-  );
-}
-
 function TagIcon({ size = 14 }: { size?: number }) {
   return (
     <svg
@@ -79,183 +26,113 @@ function isNew(createdAt: string): boolean {
   return (Date.now() - new Date(createdAt).getTime()) / 86_400_000 <= 7;
 }
 
-function formatExpiresAt(dateStr: string): string {
-  const [y, m, d] = dateStr.split("-");
-  return `~ ${y}.${m}.${d}`;
-}
-
 interface CouponSectionProps {
   coupons: Coupon[];
 }
 
 export function CouponSection({ coupons }: CouponSectionProps) {
-  const [copied, setCopied] = useState<string | null>(null);
+  const [copied, setCopied] = useState<Set<string>>(new Set());
 
   const handleCopy = (code: string) => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
       navigator.clipboard.writeText(code).catch(() => {});
     }
-    setCopied(code);
-    setTimeout(() => setCopied(null), 2000);
+    setCopied((prev) => new Set([...prev, code]));
+    setTimeout(() => {
+      setCopied((prev) => {
+        const next = new Set(prev);
+        next.delete(code);
+        return next;
+      });
+    }, 3500);
   };
 
   return (
-    <section
-      className="px-4 pt-12 pb-16 md:px-6 md:pt-16 md:pb-20"
-      style={{
-        background:
-          "linear-gradient(180deg, rgba(255,252,248,1) 0%, rgba(255,240,250,0.5) 100%)",
-      }}
-    >
-      <div className="mx-auto max-w-[640px]">
-        <div className="mb-7 text-center md:mb-9">
-          <div className="mb-3 inline-flex items-center gap-2">
-            <div
-              className="h-px w-8"
-              style={{ background: "rgba(200,160,200,0.4)" }}
-            />
-            <span
-              className="text-xs font-bold tracking-widest uppercase"
-              style={{ color: "#b080c0", letterSpacing: "0.12em" }}
-            >
-              COUPON
-            </span>
-            <div
-              className="h-px w-8"
-              style={{ background: "rgba(200,160,200,0.4)" }}
-            />
-          </div>
-          <h2
-            className="m-0 text-[clamp(24px,4vw,34px)] font-bold tracking-tight"
-            style={{ color: "#6b4a7a" }}
-          >
-            최신 쿠폰 코드
-          </h2>
-          <p className="m-0 text-[13px] text-[#a080b0]">
-            현재 사용 가능한 쿠폰 코드를 확인하세요
-          </p>
-        </div>
-
-        <div
-          className="overflow-hidden rounded-3xl"
+    <section>
+      <div className="mb-4 flex items-baseline justify-between border-b border-[var(--wiki-border-light)] pb-3">
+        <span
+          className="text-2xl font-semibold text-[var(--wiki-text-primary)]"
           style={{
-            background: "rgba(255,255,255,0.85)",
-            backdropFilter: "blur(12px)",
-            border: "1.5px solid rgba(248,164,200,0.25)",
-            boxShadow:
-              "0 8px 32px rgba(200,120,160,0.08), 0 2px 8px rgba(0,0,0,0.04)",
+            fontFamily: "'Outfit', var(--font-pretendard), sans-serif",
+            letterSpacing: "-0.3px",
           }}
         >
+          쿠폰 코드
+        </span>
+        <Link
+          href="/coupons"
+          className="text-sm text-[var(--wiki-text-tertiary)] no-underline transition-colors hover:text-[#6B6B6B]"
+        >
+          전체보기 &rarr;
+        </Link>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        {coupons.slice(0, 4).map((coupon) => (
           <div
-            className="h-1.5"
-            style={{
-              background:
-                "linear-gradient(90deg, #f8a4c8, #c9a7eb, #9ac8f0, #a8e0b8)",
-            }}
-          />
-
-          <div className="py-2">
-            {coupons.slice(0, 5).map((coupon, idx) => (
-              <div key={coupon.code}>
-                {idx > 0 && (
-                  <div
-                    className="mx-4 h-px md:mx-6"
-                    style={{
-                      background:
-                        "linear-gradient(to right, transparent, rgba(230,200,240,0.6), transparent)",
-                    }}
-                  />
-                )}
-                <div className="flex flex-col gap-3 px-4 py-4 transition-colors duration-150 hover:bg-[rgba(248,240,255,0.5)] md:flex-row md:items-center md:justify-between md:gap-4 md:px-6">
-                  <div className="flex min-w-0 items-center gap-3.5">
-                    <div
-                      className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[10px] border border-[rgba(248,164,200,0.3)]"
-                      style={{
-                        background: "rgba(248,164,200,0.15)",
-                      }}
-                    >
-                      <TagIcon size={14} />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <div
-                          className="text-[17px] font-extrabold tracking-wider"
-                          style={{
-                            color: "#6b4a7a",
-                            letterSpacing: "0.08em",
-                            fontFamily: "var(--font-mono), 'Courier New', monospace",
-                          }}
-                        >
-                          {coupon.code}
-                        </div>
-                        {isNew(coupon.created_at) && (
-                          <span
-                            className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-extrabold tracking-widest text-white"
-                            style={{
-                              background: "linear-gradient(90deg, #f8a4c8, #c9a7eb)",
-                            }}
-                          >
-                            NEW
-                          </span>
-                        )}
-                      </div>
-                      <div className="mt-1 text-[13px] font-medium leading-relaxed" style={{ color: "#8a6898" }}>
-                        {coupon.reward}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex shrink-0 items-center gap-2 self-end md:self-auto">
-                    <span
-                      className="text-xs text-[#b090c0]"
-                      title={`만료: ${coupon.expires_at}`}
-                    >
-                      만료 {formatExpiresAt(coupon.expires_at)}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => handleCopy(coupon.code)}
-                      className="flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all duration-200"
-                      style={{
-                        border:
-                          copied === coupon.code
-                            ? "1.5px solid rgba(100,200,140,0.5)"
-                            : "1.5px solid rgba(248,164,200,0.5)",
-                        background:
-                          copied === coupon.code
-                            ? "rgba(100,200,140,0.12)"
-                            : "rgba(248,164,200,0.12)",
-                        color: copied === coupon.code ? "#50a870" : "#d060a0",
-                      }}
-                    >
-                      {copied === coupon.code ? <CheckIcon /> : <CopyIcon />}
-                      {copied === coupon.code ? "복사됨!" : "복사"}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div
-            className="flex justify-end border-t px-4 py-3.5 md:px-6"
-            style={{ borderTopColor: "rgba(240,220,240,0.7)" }}
+            key={coupon.code}
+            onClick={() => handleCopy(coupon.code)}
+            className="flex cursor-pointer flex-col gap-3 rounded-xl border border-[var(--wiki-border)] bg-white px-4 py-4 transition-all duration-200 hover:border-[var(--wiki-text-muted)] hover:shadow-sm md:flex-row md:items-center md:justify-between md:gap-0"
           >
-            <Link
-              href="/coupons"
-              className="flex items-center gap-1.5 text-xs font-semibold text-[#c060a0] no-underline transition-[gap] duration-200 hover:gap-2"
-              style={{ letterSpacing: "0.02em" }}
+            <div className="flex min-w-0 items-center gap-3.5">
+              <div
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white"
+                style={{
+                  background: "linear-gradient(135deg, #f4adc5, #b49fd8)",
+                }}
+              >
+                <TagIcon size={16} />
+              </div>
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="truncate text-base font-semibold tracking-wider text-[var(--wiki-text-primary)]">
+                    {coupon.code}
+                  </span>
+                  {isNew(coupon.created_at) && (
+                    <span className="shrink-0 rounded-[10px] bg-[#F4EFFE] px-2 py-0.5 text-sm font-semibold text-[#8B6DC0]">
+                      NEW
+                    </span>
+                  )}
+                </div>
+                <span className="text-sm font-light text-[var(--wiki-text-tertiary)]">
+                  {coupon.reward}
+                </span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCopy(coupon.code);
+              }}
+              className={`shrink-0 self-end rounded-full border px-3.5 py-1.5 text-sm font-semibold transition-all duration-200 md:self-auto ${
+                copied.has(coupon.code)
+                  ? "border-[#C8E0CF] bg-[#EEF6F0] text-[#5B9A6F]"
+                  : "border-[#D4C5ED] bg-[#F4EFFE] text-[#8B6DC0] hover:border-[#B49FD8] hover:bg-[#EBE0FB]"
+              }`}
             >
-              전체 쿠폰 보기
-              <ArrowRightIcon size={12} />
-            </Link>
+              {copied.has(coupon.code) ? (
+                <span className="flex items-center gap-1">
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  복사됨
+                </span>
+              ) : (
+                "복사"
+              )}
+            </button>
           </div>
-        </div>
-
-        <p className="mt-3 text-center text-xs text-[#c0a0c8] md:mt-4">
-          쿠폰 코드는 게임 내 환경설정 &gt; 교환 코드 에서 사용하실 수 있습니다.
-          ✨
-        </p>
+        ))}
       </div>
     </section>
   );

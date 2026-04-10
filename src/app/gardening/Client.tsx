@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 
 // ─────────────────────────────────────────────
@@ -29,172 +28,107 @@ export interface GardeningClientProps {
 // Client Page
 // ─────────────────────────────────────────────
 export function GardeningClient({ subcategories }: GardeningClientProps) {
-  const [hovered, setHovered] = useState<string | null>(null);
-
   return (
-    <section
-      className="px-6 pt-8 pb-16"
-      style={{ background: "rgba(255,252,248,1)" }}
-    >
+    <section className="px-4 pt-8 pb-20 md:px-6">
       <div className="mx-auto max-w-[1100px]">
         {/* Breadcrumb */}
         <nav
-          className="mb-8 flex items-center gap-1.5 text-sm font-bold tracking-wide"
-          style={{ color: "#b080c0" }}
+          className="mb-7 flex items-center gap-1.5 text-sm"
+          style={{ color: "var(--wiki-text-tertiary)" }}
           aria-label="breadcrumb"
         >
-          <Link href="/" className="transition-colors hover:opacity-80">
-            🏠 홈
+          <Link
+            href="/"
+            className="no-underline transition-colors hover:text-[var(--wiki-text-secondary)]"
+            style={{ color: "var(--wiki-text-tertiary)" }}
+          >
+            홈
           </Link>
-          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
-          <span style={{ color: "#6b4a7a" }}>원예</span>
+          <span style={{ color: "var(--wiki-text-muted)" }}>›</span>
+          <span
+            className="font-semibold"
+            style={{ color: "var(--wiki-text-secondary)" }}
+          >
+            원예
+          </span>
         </nav>
 
-        {/* Header */}
-        <div className="mb-11">
+        {/* Page Header */}
+        <div className="mb-10" style={{ animation: "fadeUp 0.4s ease-out" }}>
           <h1
-            className="m-0 text-[clamp(24px,4vw,34px)] font-bold tracking-tight"
-            style={{ color: "#6b4a7a", letterSpacing: "-0.02em" }}
+            className="m-0 mb-1.5 text-3xl font-bold tracking-tight"
+            style={{
+              color: "var(--wiki-text-primary)",
+              fontFamily: "'Outfit', var(--font-pretendard), sans-serif",
+              letterSpacing: "-0.5px",
+            }}
           >
             원예
           </h1>
-          <p className="mt-1 text-sm" style={{ color: "#8a6898" }}>
+          <p
+            className="text-sm"
+            style={{ color: "var(--wiki-text-secondary)" }}
+          >
             꽃 교배와 작물 재배 정보를 확인할 수 있어요.
           </p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {[
-              { label: "🌸 꽃 교배", style: "text-rose-500 border-rose-200" },
-              {
-                label: "🌾 작물 재배",
-                style: "text-emerald-600 border-[#b3e5cc]",
-              },
-            ].map(({ label, style }) => (
-              <span
-                key={label}
-                className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-bold ${style}`}
-                style={{ background: "rgba(255,255,255,0.8)" }}
-              >
-                {label}
-              </span>
-            ))}
-          </div>
         </div>
 
-        {/* Sub-category Cards */}
-        <div className="mb-4 flex items-baseline justify-between">
-          <h2
-            className="text-[0.95rem] font-bold tracking-tight"
-            style={{ color: "#6b4a7a" }}
-          >
-            하위 카테고리
-          </h2>
-          <span
-            className="rounded-full border px-2.5 py-0.5 text-xs font-bold"
-            style={{
-              background: "rgba(248,164,200,0.15)",
-              borderColor: "rgba(248,164,200,0.4)",
-              color: "#c06898",
-            }}
-          >
-            2개
-          </span>
-        </div>
-
+        {/* Subcategory Cards */}
         <div
-          className="grid gap-5"
-          style={{
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-          }}
+          className="grid grid-cols-1 gap-4 md:grid-cols-2"
+          style={{ animation: "fadeUp 0.4s ease-out 0.1s both" }}
         >
-          {subcategories.map((cat) => {
-            const isHovered = hovered === cat.href;
-            return (
-              <Link
-                key={cat.href}
-                href={cat.href}
-                className="group relative flex flex-col overflow-hidden rounded-[20px] px-6 pt-7 pb-6 no-underline transition-all duration-300 ease-out"
+          {subcategories.map((cat) => (
+            <Link
+              key={cat.href}
+              href={cat.href}
+              className="group relative flex flex-col overflow-hidden rounded-2xl border-2 bg-white px-6 pt-7 pb-6 no-underline transition-all duration-200 hover:-translate-y-0.5"
+              style={{ borderColor: `${cat.accent}44` }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = `${cat.accent}99`;
+                e.currentTarget.style.boxShadow = `0 8px 24px ${cat.accent}20`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = `${cat.accent}44`;
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              {/* Icon */}
+              <div
+                className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6"
                 style={{
-                  background: isHovered ? cat.bg : "rgba(255,252,254,0.9)",
-                  border: `1.5px solid ${
-                    isHovered ? cat.border : "rgba(230,210,230,0.6)"
-                  }`,
-                  transform: isHovered ? "translateY(-4px)" : "translateY(0)",
-                  boxShadow: isHovered
-                    ? `0 12px 32px rgba(0,0,0,0.06), 0 0 0 2px ${cat.border}`
-                    : "0 2px 12px rgba(0,0,0,0.04)",
+                  background: cat.bg,
+                  borderColor: cat.border,
                 }}
-                onMouseEnter={() => setHovered(cat.href)}
-                onMouseLeave={() => setHovered(null)}
               >
-                {/* Background accent blob */}
-                <div
-                  className="absolute -right-2.5 -bottom-2.5 opacity-[0.06] transition-opacity duration-300 group-hover:opacity-[0.1]"
-                  style={{
-                    transform: "scale(2) rotate(-10deg)",
-                    transformOrigin: "bottom right",
-                  }}
-                  aria-hidden
-                >
-                  <span className="text-4xl">{cat.emoji}</span>
-                </div>
+                {cat.emoji}
+              </div>
 
-                <div
-                  className="mb-4 inline-flex h-[52px] w-[52px] items-center justify-center rounded-2xl border-[1.5px] text-3xl transition-transform duration-300 group-hover:scale-105"
-                  style={{
-                    background: `${cat.color}22`,
-                    borderColor: `${cat.color}44`,
-                  }}
-                >
-                  {cat.emoji}
-                </div>
+              {/* Title */}
+              <h3
+                className="mb-1.5 text-xl font-semibold"
+                style={{ color: "var(--wiki-text-primary)" }}
+              >
+                {cat.title}
+              </h3>
 
-                <span
-                  className={`mb-3 inline-flex w-fit items-center rounded-full border px-2.5 py-0.5 text-xs font-bold ${cat.tag.style}`}
-                >
-                  {cat.tag.label}
-                </span>
+              {/* Description */}
+              <p
+                className="mb-5 flex-1 text-sm leading-relaxed"
+                style={{ color: "var(--wiki-text-secondary)" }}
+              >
+                {cat.desc}
+              </p>
 
-                <h3
-                  className="mb-2 text-xl leading-tight font-bold"
-                  style={{ color: "#4a3060" }}
-                >
-                  {cat.title}
-                </h3>
-
-                <p
-                  className="mb-4 flex-1 text-[13px] leading-relaxed"
-                  style={{ color: "#8a6898" }}
-                >
-                  {cat.desc}
-                </p>
-
-                <div
-                  className="h-px"
-                  style={{
-                    background: `linear-gradient(to right, ${cat.border}, transparent)`,
-                  }}
-                />
-
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-2 pt-2">
-                  <div className="flex flex-wrap gap-1.5">
-                    {cat.meta.map((m) => (
-                      <span
-                        key={m}
-                        className={`rounded-full border px-2.5 py-0.5 text-xs font-bold ${cat.metaStyle}`}
-                      >
-                        {m}
-                      </span>
-                    ))}
-                  </div>
-                  <span
-                    className={`flex items-center gap-1 text-xs font-bold ${cat.ctaStyle}`}
-                  >
-                    보러 가기 →
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
+              {/* CTA */}
+              <span
+                className="mt-auto text-sm font-semibold transition-colors"
+                style={{ color: "var(--wiki-text-tertiary)" }}
+              >
+                보러 가기 →
+              </span>
+            </Link>
+          ))}
         </div>
       </div>
     </section>

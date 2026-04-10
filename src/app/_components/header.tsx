@@ -16,8 +16,9 @@ const NAV_ITEMS = [
 ] as const;
 
 const linkClassName =
-  "text-[13px] font-medium text-[#9a7aaa] no-underline transition-colors hover:text-[#e873a8]";
-const spanClassName = "cursor-default text-[13px] font-medium text-[#9a7aaa]";
+  "text-sm font-semibold text-[var(--wiki-text-secondary)] no-underline px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--wiki-border-light)] hover:text-[var(--wiki-text-primary)] whitespace-nowrap";
+const spanClassName =
+  "cursor-default text-sm font-semibold text-[var(--wiki-text-secondary)] px-2.5 py-1.5 whitespace-nowrap";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -79,12 +80,10 @@ export function Header() {
             onClick={handleCloseMenu}
           />
           <div
-            className="fixed z-[9999] min-w-[150px] rounded-lg border border-[rgba(248,164,200,0.3)] py-2 shadow-lg"
+            className="fixed z-[9999] min-w-[150px] rounded-xl border border-[var(--wiki-border)] bg-white py-2 shadow-lg"
             style={{
               top: dropdownPosition.top,
               right: dropdownPosition.right,
-              background: "rgba(255, 252, 248, 0.98)",
-              backdropFilter: "blur(16px)",
             }}
           >
             {NAV_ITEMS.map((item) =>
@@ -92,7 +91,7 @@ export function Header() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={`block px-4 py-2.5 ${linkClassName}`}
+                  className="block px-4 py-2.5 text-sm font-semibold text-[var(--wiki-text-secondary)] no-underline transition-colors hover:bg-[var(--wiki-border-light)] hover:text-[var(--wiki-text-primary)]"
                   onClick={handleCloseMenu}
                 >
                   {item.label}
@@ -100,7 +99,7 @@ export function Header() {
               ) : (
                 <span
                   key={item.label}
-                  className={`block px-4 py-2.5 ${spanClassName}`}
+                  className="block cursor-default px-4 py-2.5 text-sm font-semibold text-[var(--wiki-text-tertiary)]"
                 >
                   {item.label}
                 </span>
@@ -113,37 +112,27 @@ export function Header() {
     );
 
   return (
-    <nav
-      className="sticky top-0 z-[100] border-b border-[rgba(248,164,200,0.2)] px-4 py-0 md:px-6"
-      style={{
-        background: "rgba(255, 252, 248, 0.85)",
-        backdropFilter: "blur(16px)",
-      }}
-    >
+    <header className="sticky top-0 z-[100] border-b border-[var(--wiki-border)] bg-white px-4 md:px-6">
       <div className="mx-auto flex h-[60px] max-w-[1100px] items-center justify-between">
         <Link
           href="/"
-          className="flex items-center gap-2.5 text-[#6b4a7a] no-underline"
+          className="flex items-center gap-2.5 text-[var(--wiki-text-primary)] no-underline"
         >
           <div
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-base"
+            className="flex h-7 w-7 items-center justify-center rounded-[7px]"
             style={{
-              background: "linear-gradient(135deg, #f8a4c8, #c9a7eb)",
-              boxShadow: "0 2px 8px rgba(248,164,200,0.4)",
+              background: "linear-gradient(135deg, #FAD4DB, #CCDFF4)",
             }}
           >
-            🌸
+            <span className="text-sm">🌸</span>
           </div>
-          <span
-            className="text-base font-bold tracking-tight"
-            style={{ color: "#6b4a7a" }}
-          >
-            Heartopia Wiki
+          <span className="text-base font-medium tracking-tight" style={{ fontFamily: "var(--font-jua), sans-serif", color: "var(--wiki-text-primary)" }}>
+            두근두근타운 위키
           </span>
         </Link>
 
-        {/* Desktop: 가로 메뉴 */}
-        <div className="hidden items-center gap-7 md:flex">
+        {/* Desktop nav */}
+        <nav className="hidden items-center gap-0.5 md:flex">
           {NAV_ITEMS.map((item) =>
             item.href ? (
               <Link key={item.label} href={item.href} className={linkClassName}>
@@ -155,9 +144,9 @@ export function Header() {
               </span>
             ),
           )}
-        </div>
+        </nav>
 
-        {/* Mobile: 햄버거 버튼 + 드롭다운 (body 포탈) */}
+        {/* Mobile hamburger */}
         <div className="relative flex md:hidden">
           <button
             ref={buttonRef}
@@ -165,22 +154,22 @@ export function Header() {
             aria-label={isMenuOpen ? "메뉴 닫기" : "메뉴 열기"}
             aria-expanded={isMenuOpen}
             onClick={handleToggleMenu}
-            className="flex h-10 w-10 items-center justify-center rounded-lg text-[#9a7aaa] transition-colors hover:bg-[rgba(248,164,200,0.15)] hover:text-[#e873a8]"
+            className="flex h-10 w-10 items-center justify-center rounded-lg text-[var(--wiki-text-secondary)] transition-colors hover:bg-[var(--wiki-border-light)] hover:text-[var(--wiki-text-primary)]"
           >
             {isMenuOpen ? (
-              <span className="text-xl" aria-hidden>
-                ✕
-              </span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+              </svg>
             ) : (
-              <span className="text-xl" aria-hidden>
-                ☰
-              </span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" />
+              </svg>
             )}
           </button>
 
           {dropdownContent}
         </div>
       </div>
-    </nav>
+    </header>
   );
 }

@@ -14,18 +14,18 @@ export const metadata: Metadata = {
 const SUBCATEGORIES = [
   {
     href: "/cooking/recipes",
-    emoji: "🥗",
+    emoji: "🍳",
     tag: {
       label: "요리 도감",
       style: "bg-orange-50 text-orange-700 border-orange-200",
     },
-    title: "요리",
+    title: "요리 도감",
     desc: "두근두근타운에서 만들 수 있는 다양한 요리를 확인하세요. 필요한 재료와 만드는 방법을 한눈에 볼 수 있어요.",
     meta: ["🍽️ 요리", "🥕 재료", "⭐ 등급"],
     metaStyle: "bg-orange-50 text-orange-700 border-orange-200",
     ctaStyle: "text-orange-500",
     color: "#f5a878",
-    bg: "#fff8f0",
+    bg: "var(--wiki-cat-cooking-bg)",
     border: "#fde0c8",
     accent: "#d47840",
   },

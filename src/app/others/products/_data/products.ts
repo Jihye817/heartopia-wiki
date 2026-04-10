@@ -14,9 +14,27 @@ export interface Product {
   sell_price: number | null;
   stamina: number | null;
   notes: string | null;
-  strange_1: string | null;
-  strange_2: string | null;
-  strange_3: string | null;
+  parent_id: string | null;
+}
+
+// ── Helpers ────────────────────────────────────────────────────────────────────
+
+function sortProducts(products: Product[]): Product[] {
+  const parents = products.filter((p) => p.parent_id === null);
+  const childrenMap = new Map<string, Product[]>();
+  for (const p of products) {
+    if (p.parent_id !== null) {
+      const list = childrenMap.get(p.parent_id) ?? [];
+      list.push(p);
+      childrenMap.set(p.parent_id, list);
+    }
+  }
+  const result: Product[] = [];
+  for (const parent of parents) {
+    result.push(parent);
+    result.push(...(childrenMap.get(parent.id) ?? []));
+  }
+  return result;
 }
 
 // ── Fetch functions ────────────────────────────────────────────────────────────
@@ -27,7 +45,7 @@ export async function getProducts(): Promise<Product[]> {
     .select("*")
     .order("category");
   if (error) throw new Error(error.message);
-  return (data ?? []) as Product[];
+  return sortProducts((data ?? []) as Product[]);
 }
 
 export async function getProductDetail(id: string): Promise<Product | null> {

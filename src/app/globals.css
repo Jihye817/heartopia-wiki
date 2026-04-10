@@ -48,6 +48,33 @@
 }
 
 :root {
+  /* Wiki text colors */
+  --wiki-text-primary: #2A2A2A;
+  --wiki-text-secondary: #6B6B6B;
+  --wiki-text-tertiary: #999999;
+  --wiki-text-muted: #B0B0B0;
+  --wiki-bg: #FAFAFA;
+  --wiki-surface: #FFFFFF;
+  --wiki-border: #E8E8E8;
+  --wiki-border-light: #F0F0F0;
+
+  /* Category accent colors */
+  --wiki-cat-garden: #e8739b;
+  --wiki-cat-garden-bg: #fff0f6;
+  --wiki-cat-garden-border: #FFD6E8;
+  --wiki-cat-cooking: #d47840;
+  --wiki-cat-cooking-bg: #fff8f0;
+  --wiki-cat-fishing: #4a9bbf;
+  --wiki-cat-fishing-bg: #f0faff;
+  --wiki-cat-bugs: #689f38;
+  --wiki-cat-bugs-bg: #f1f8e9;
+  --wiki-cat-birds: #8a6bbf;
+  --wiki-cat-birds-bg: #f8f0ff;
+  --wiki-cat-pets: #c96a42;
+  --wiki-cat-pets-bg: #fff3ef;
+  --wiki-cat-others: #5a6f82;
+  --wiki-cat-others-bg: #f4f7fa;
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -129,69 +156,23 @@
   }
 }
 
-/* Hero section (v2-style) keyframes */
-@keyframes hero-blobA {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(30px, -40px) scale(1.06);
-  }
-}
-
-@keyframes hero-blobB {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(-20px, 25px) scale(0.96);
-  }
-}
-
-@keyframes hero-sway {
-  0%,
-  100% {
-    transform: rotate(-3deg);
-  }
-  50% {
-    transform: rotate(3deg);
-  }
-}
-
-@keyframes hero-flutter {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-4deg) scale(1);
-  }
-  33% {
-    transform: translateY(-6px) rotate(2deg) scale(1.04);
-  }
-  66% {
-    transform: translateY(-2px) rotate(-2deg) scale(0.97);
-  }
-}
-
-@keyframes hero-twinkle {
-  0%,
-  100% {
-    opacity: 0.25;
-    transform: scale(0.85) rotate(0deg);
-  }
-  50% {
-    opacity: 0.85;
-    transform: scale(1.15) rotate(18deg);
-  }
-}
-
-@keyframes hero-riseIn {
+/* Page animations */
+@keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(28px) scale(0.97);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
+  }
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    background: #8B7EC8;
+  }
+  50% {
+    background: #B8A8E8;
   }
 }

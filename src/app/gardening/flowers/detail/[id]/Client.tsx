@@ -48,291 +48,239 @@ export default function FlowerDetailClient({
   flower,
 }: FlowerDetailClientProps) {
   return (
-    <section
-      className="px-6 pt-8 pb-16"
-      style={{ background: "rgba(255,252,248,1)" }}
-    >
+    <section className="px-4 pt-8 pb-16 md:px-6">
       <div className="mx-auto max-w-[1100px]">
         {/* Breadcrumb */}
         <nav
-          className="mb-4 flex items-center gap-1.5 text-xs font-bold tracking-wide md:mb-8 md:text-sm"
-          style={{ color: "#b080c0" }}
+          className="mb-7 flex items-center gap-1.5 text-sm"
+          style={{ color: "var(--wiki-text-tertiary)" }}
           aria-label="breadcrumb"
         >
-          <Link href="/" className="transition-colors hover:opacity-80">
-            🏠 홈
+          <Link
+            href="/"
+            className="no-underline transition-colors hover:text-[var(--wiki-text-secondary)]"
+            style={{ color: "var(--wiki-text-tertiary)" }}
+          >
+            홈
           </Link>
-          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
+          <span style={{ color: "var(--wiki-text-muted)" }}>›</span>
           <Link
             href="/gardening"
-            className="transition-colors hover:opacity-80"
+            className="no-underline transition-colors hover:text-[var(--wiki-text-secondary)]"
+            style={{ color: "var(--wiki-text-tertiary)" }}
           >
             원예
           </Link>
-          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
+          <span style={{ color: "var(--wiki-text-muted)" }}>›</span>
           <Link
             href="/gardening/flowers"
-            className="transition-colors hover:opacity-80"
+            className="no-underline transition-colors hover:text-[var(--wiki-text-secondary)]"
+            style={{ color: "var(--wiki-text-tertiary)" }}
           >
             꽃 도감
           </Link>
-          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
-          <span style={{ color: "#6b4a7a" }}>{flower.name}</span>
+          <span style={{ color: "var(--wiki-text-muted)" }}>›</span>
+          <span
+            className="font-semibold"
+            style={{ color: "var(--wiki-text-secondary)" }}
+          >
+            {flower.name}
+          </span>
         </nav>
 
         {/* Back */}
         <Link
           href="/gardening/flowers"
-          className="mb-2 inline-flex items-center gap-1.5 text-xs font-bold transition-all hover:gap-2.5 md:mb-4 md:text-sm"
-          style={{ color: "#b080c0" }}
+          className="mb-5 inline-flex items-center gap-1 text-sm no-underline transition-colors hover:text-[var(--wiki-text-secondary)]"
+          style={{ color: "var(--wiki-text-tertiary)" }}
         >
-          ← 꽃 목록으로
+          ← 꽃 도감으로 돌아가기
         </Link>
 
-        {/* Hero card */}
+        {/* Two Column Detail */}
         <div
-          className="relative mt-4 overflow-hidden rounded-[20px] border-[1.5px] p-6 md:p-7"
-          style={{
-            background: "rgba(255,252,254,0.95)",
-            borderColor: "rgba(230,210,230,0.6)",
-            boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
-          }}
+          className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-[340px_1fr]"
+          style={{ animation: "fadeUp 0.4s ease-out" }}
         >
-          <div className="relative z-10 grid grid-cols-1 gap-8 md:grid-cols-2 md:items-start">
-            {/* Left: flower info */}
-            <div>
+          {/* Left Column */}
+          <div className="flex flex-col gap-4">
+            {/* Thumbnail Card */}
+            <div className="flex flex-col items-center rounded-2xl border border-[var(--wiki-border)] bg-white p-8">
               <div
-                className="mb-4 inline-flex h-[144px] w-[144px] flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] bg-[rgba(248,164,200,0.15)] p-3"
-                style={{ borderColor: "rgba(248,164,200,0.35)" }}
+                className="mb-5 flex h-[180px] w-[180px] items-center justify-center overflow-hidden rounded-xl border bg-[var(--wiki-cat-garden-bg)] p-5"
+                style={{ borderColor: "var(--wiki-cat-garden-border)" }}
               >
                 <Image
                   src={flower.thumbnail}
                   alt={flower.name}
-                  width={120}
-                  height={120}
+                  width={130}
+                  height={130}
                   className="h-full w-full object-contain"
                 />
               </div>
-
-              <h1
-                className="m-0 mb-3 text-[clamp(20px,4vw,28px)] leading-tight font-bold tracking-tight md:text-[clamp(24px,4vw,34px)]"
-                style={{ color: "#4a3060" }}
+              <div
+                className="text-2xl font-bold"
+                style={{ color: "var(--wiki-text-primary)" }}
               >
                 {flower.name}
-              </h1>
-              <div
-                className="mb-4 h-px"
-                style={{
-                  background: "linear-gradient(to right, #ffd6e8, transparent)",
-                }}
-              />
-
-              <div className="mb-4 flex flex-wrap gap-1.5">
-                {flower.level !== null && (
-                  <span
-                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                    style={{
-                      background: "rgba(189,222,255,0.3)",
-                      color: "#0284c7",
-                      borderColor: "rgba(189,222,255,0.6)",
-                    }}
-                  >
-                    원예 Lv.{flower.level}
-                  </span>
-                )}
-                <span
-                  className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                  style={{
-                    background: "rgba(248,164,200,0.2)",
-                    color: "#c06898",
-                    borderColor: "rgba(248,164,200,0.4)",
-                  }}
-                >
-                  {flower.stages} 종류
-                </span>
-                {flower.availability === "event" ? (
-                  <span
-                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                    style={{
-                      background: "rgba(255,220,130,0.25)",
-                      color: "#9a7020",
-                      borderColor: "rgba(255,220,130,0.55)",
-                    }}
-                  >
-                    {`이벤트 : ${flower.event ?? "이벤트"}`}
-                  </span>
-                ) : (
-                  <span
-                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                    style={{
-                      background: "rgba(220,252,231,0.4)",
-                      color: "#16a34a",
-                      borderColor: "rgba(134,239,172,0.5)",
-                    }}
-                  >
-                    일상
-                  </span>
-                )}
-              </div>
-
-              {/* 상세 정보 표 */}
-              <div
-                className="mb-5 overflow-hidden rounded-2xl border-[1.5px]"
-                style={{
-                  background: "rgba(255,252,254,0.95)",
-                  borderColor: "rgba(230,210,230,0.6)",
-                }}
-              >
-                <div
-                  className="flex items-center gap-2 border-b-[1.5px] px-4 py-3"
-                  style={{ borderColor: "rgba(230,210,230,0.6)" }}
-                >
-                  <div
-                    className="h-[7px] w-[7px] rounded-full"
-                    style={{ background: "#c06898" }}
-                  />
-                  <span
-                    className="text-xs font-bold tracking-widest uppercase md:text-sm"
-                    style={{ color: "#8a6898" }}
-                  >
-                    상세 정보
-                  </span>
-                </div>
-
-                {/* 성장 기간 + 판매 가격 */}
-                <div className="grid grid-cols-2">
-                  <div
-                    className="border-r-[1.5px] border-b-[1.5px] p-4"
-                    style={{ borderColor: "rgba(230,210,230,0.6)" }}
-                  >
-                    <p
-                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#8a6898" }}
-                    >
-                      성장 기간
-                    </p>
-                    <p
-                      className="text-sm font-bold md:text-base"
-                      style={{ color: "#4a3060" }}
-                    >
-                      {flower.grow_time}
-                    </p>
-                  </div>
-                  <div
-                    className="border-b-[1.5px] p-4"
-                    style={{ borderColor: "rgba(230,210,230,0.6)" }}
-                  >
-                    <p
-                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#8a6898" }}
-                    >
-                      판매 가격
-                    </p>
-                    <p
-                      className="text-sm font-bold md:text-base"
-                      style={{ color: "#b45309" }}
-                    >
-                      💰 {flower.sell_min} ~ {flower.sell_max}G
-                    </p>
-                  </div>
-                </div>
-
-                {/* 씨앗 구매 가격 + NPC */}
-                <div className="grid grid-cols-2">
-                  <div
-                    className="border-r-[1.5px] border-b-[1.5px] p-4"
-                    style={{ borderColor: "rgba(230,210,230,0.6)" }}
-                  >
-                    <p
-                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#8a6898" }}
-                    >
-                      씨앗 가격
-                    </p>
-                    <p
-                      className="text-sm font-bold md:text-base"
-                      style={{ color: "#b45309" }}
-                    >
-                      {flower.seed_cost}G
-                    </p>
-                  </div>
-                  <div
-                    className="border-b-[1.5px] p-4"
-                    style={{ borderColor: "rgba(230,210,230,0.6)" }}
-                  >
-                    <p
-                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#8a6898" }}
-                    >
-                      구매 NPC
-                    </p>
-                    <p
-                      className="text-sm font-bold md:text-base"
-                      style={{ color: "#4a3060" }}
-                    >
-                      {flower.seed_npc}
-                    </p>
-                  </div>
-                </div>
-
-                {/* 씨앗 색상 */}
-                <div className="p-4">
-                  <p
-                    className="mb-2 text-xs font-bold tracking-wider uppercase md:text-sm"
-                    style={{ color: "#8a6898" }}
-                  >
-                    씨앗 색상
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {flower.seed_colors.map((colorName) => (
-                      <span
-                        key={colorName}
-                        className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                        style={{
-                          background: "rgba(248,164,200,0.1)",
-                          borderColor: "rgba(248,164,200,0.35)",
-                          color: "#4a3060",
-                        }}
-                      >
-                        {COLOR_HEX[colorName] && (
-                          <span
-                            className="inline-block h-3 w-3 shrink-0 rounded-full border border-white/80 shadow-sm"
-                            style={{ background: COLOR_HEX[colorName] }}
-                          />
-                        )}
-                        {colorName}
-                      </span>
-                    ))}
-                  </div>
-                </div>
               </div>
             </div>
 
-            {/* Right: grade table */}
-            <div
-              className="rounded-2xl border-[1.5px] p-4"
-              style={{
-                background: "rgba(255,252,254,0.9)",
-                borderColor: "rgba(230,210,230,0.6)",
-              }}
-            >
+            {/* Info Table */}
+            <div className="overflow-hidden rounded-2xl border border-[var(--wiki-border)] bg-white">
               <div
-                className="mb-3 flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase md:text-sm"
-                style={{ color: "#b080c0" }}
+                className="flex items-center gap-1.5 border-b border-[var(--wiki-border-light)] px-5 py-4 text-base font-bold"
+                style={{ color: "var(--wiki-text-primary)" }}
               >
-                ⭐ 성급별 색상
+                기본 정보
               </div>
-              <table className="w-full">
+              <table className="w-full border-collapse">
+                <tbody>
+                  {flower.level !== null && (
+                    <tr className="border-b border-[var(--wiki-border-light)]">
+                      <th
+                        className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                        style={{ color: "var(--wiki-text-secondary)" }}
+                      >
+                        원예 레벨
+                      </th>
+                      <td
+                        className="px-5 py-3.5 text-sm"
+                        style={{ color: "var(--wiki-text-primary)" }}
+                      >
+                        <span className="inline-flex rounded-md bg-[#EBF3F9] px-3 py-1 text-sm font-semibold text-[#4A8DB7]">
+                          Lv.{flower.level}
+                        </span>
+                      </td>
+                    </tr>
+                  )}
+                  <tr className="border-b border-[var(--wiki-border-light)]">
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
+                    >
+                      활동시기
+                    </th>
+                    <td
+                      className="px-5 py-3.5 text-sm"
+                      style={{ color: "var(--wiki-text-primary)" }}
+                    >
+                      {flower.availability === "event" ? (
+                        <span className="inline-flex rounded-md bg-[#FDF2EC] px-3 py-1 text-sm font-semibold text-[#D4845A]">
+                          {`이벤트 : ${flower.event ?? "이벤트"}`}
+                        </span>
+                      ) : (
+                        <span className="inline-flex rounded-md bg-[#EEF6F0] px-3 py-1 text-sm font-semibold text-[#5B9A6F]">
+                          일상
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                  <tr className="border-b border-[var(--wiki-border-light)]">
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
+                    >
+                      성장 기간
+                    </th>
+                    <td
+                      className="px-5 py-3.5 text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-primary)" }}
+                    >
+                      {flower.grow_time}
+                    </td>
+                  </tr>
+                  <tr className="border-b border-[var(--wiki-border-light)]">
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
+                    >
+                      색상 종류
+                    </th>
+                    <td
+                      className="px-5 py-3.5 text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-primary)" }}
+                    >
+                      {flower.stages} 종류
+                    </td>
+                  </tr>
+                  <tr className="border-b border-[var(--wiki-border-light)]">
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
+                    >
+                      씨앗 가격
+                    </th>
+                    <td
+                      className="px-5 py-3.5 text-sm font-semibold"
+                      style={{ color: "#b45309" }}
+                    >
+                      {flower.seed_cost} G
+                    </td>
+                  </tr>
+                  <tr className="border-b border-[var(--wiki-border-light)]">
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
+                    >
+                      구매 NPC
+                    </th>
+                    <td
+                      className="px-5 py-3.5 text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-primary)" }}
+                    >
+                      {flower.seed_npc}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left align-middle text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
+                    >
+                      씨앗 색상
+                    </th>
+                    <td className="px-5 py-3.5">
+                      <div className="flex flex-wrap gap-1.5">
+                        {flower.seed_colors.map((colorName) => (
+                          <span
+                            key={colorName}
+                            className="inline-flex items-center gap-1.5 rounded-md border border-[var(--wiki-border-light)] px-2.5 py-1 text-sm font-semibold"
+                            style={{ color: "var(--wiki-text-primary)" }}
+                          >
+                            {COLOR_HEX[colorName] && (
+                              <span
+                                className="inline-block h-3 w-3 shrink-0 rounded-full border border-white/80 shadow-sm"
+                                style={{ background: COLOR_HEX[colorName] }}
+                              />
+                            )}
+                            {colorName}
+                          </span>
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Right Column: Grade Table */}
+          <div className="flex flex-col gap-4">
+            <div className="overflow-hidden rounded-2xl border border-[var(--wiki-border)] bg-white">
+              <div
+                className="flex items-center gap-1.5 border-b border-[var(--wiki-border-light)] px-5 py-3.5 text-sm font-semibold"
+                style={{ color: "var(--wiki-text-primary)" }}
+              >
+                성급별 색상 · 가격
+              </div>
+              <table className="w-full border-collapse">
                 <thead>
-                  <tr
-                    className="border-b-[1.5px]"
-                    style={{ borderColor: "rgba(230,210,230,0.6)" }}
-                  >
-                    {["성급", "꽃", "색상", "판매가"].map((h) => (
+                  <tr className="border-b border-[var(--wiki-border-light)] bg-[var(--wiki-bg)]">
+                    {["성급", "색상", "판매가"].map((h) => (
                       <th
                         key={h}
-                        className="px-2 pb-2.5 text-left text-xs font-bold tracking-wider uppercase md:text-sm"
-                        style={{ color: "#8a6898" }}
+                        className="px-4 py-3 text-left text-sm font-semibold tracking-wide"
+                        style={{ color: "var(--wiki-text-tertiary)" }}
                       >
                         {h}
                       </th>
@@ -343,43 +291,45 @@ export default function FlowerDetailClient({
                   {flower.grades.map((g) => (
                     <tr
                       key={`${g.stars}-${g.color}`}
-                      className="border-b border-[rgba(230,210,230,0.4)] last:border-0"
+                      className="border-b border-[var(--wiki-border-light)] transition-colors last:border-0 hover:bg-[rgba(0,0,0,0.01)]"
                     >
-                      <td className="px-2 py-2.5">
-                        <div
-                          className="text-xs font-bold md:text-sm"
-                          style={{ color: "#4a3060" }}
-                        >
-                          {g.stars}성
-                        </div>
-                        <div className="text-xs leading-none text-amber-500 md:text-sm">
-                          {starsOf(g.stars)}
-                        </div>
-                      </td>
-                      <td className="px-2 py-3">
-                        {g.image && (
-                          <span className="inline-flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-white/90 bg-gray-100 md:h-[34px] md:w-[34px]">
-                            <Image
-                              src={g.image}
-                              alt={g.color}
-                              width={34}
-                              height={34}
-                              className="h-full w-full object-contain"
-                            />
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3.5">
+                          <span
+                            className="text-sm font-semibold"
+                            style={{ color: "var(--wiki-text-primary)" }}
+                          >
+                            {g.stars}성
                           </span>
-                        )}
-                      </td>
-                      <td className="px-2 py-2.5">
-                        <div
-                          className="text-xs font-bold md:text-sm"
-                          style={{ color: "#4a3060" }}
-                        >
-                          {g.color}
+                          <span className="text-sm text-amber-500">
+                            {starsOf(g.stars)}
+                          </span>
                         </div>
                       </td>
-                      <td className="px-2 py-2.5">
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2">
+                          {g.image && (
+                            <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--wiki-border-light)] bg-gray-100">
+                              <Image
+                                src={g.image}
+                                alt={g.color}
+                                width={32}
+                                height={32}
+                                className="h-full w-full object-contain"
+                              />
+                            </span>
+                          )}
+                          <div
+                            className="text-sm font-semibold"
+                            style={{ color: "var(--wiki-text-primary)" }}
+                          >
+                            {g.color}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
                         <span
-                          className="text-xs font-bold tabular-nums md:text-sm"
+                          className="text-sm font-semibold tabular-nums"
                           style={{ color: "#b45309" }}
                         >
                           {g.sell_price ?? flower.sell_min} G
@@ -387,7 +337,7 @@ export default function FlowerDetailClient({
                         {flower.availability === "event" &&
                           g.event_price != null && (
                             <div
-                              className="mt-0.5 text-xs font-bold tabular-nums md:text-sm"
+                              className="mt-0.5 text-sm font-semibold tabular-nums"
                               style={{ color: "#7c3aed" }}
                             >
                               Ⓔ {g.event_price}
@@ -403,7 +353,10 @@ export default function FlowerDetailClient({
         </div>
 
         {/* Breeding rules + color cross table */}
-        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-1 lg:items-start">
+        <div
+          className="grid grid-cols-1 gap-6"
+          style={{ animation: "fadeUp 0.4s ease-out 0.1s both" }}
+        >
           <FlowerCrossTable flower={flower} />
         </div>
       </div>

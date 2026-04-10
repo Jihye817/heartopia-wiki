@@ -3,19 +3,15 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Eye, MapPin } from "lucide-react";
+import { Eye } from "lucide-react";
 import type { BugDetail } from "../../_data/bugs";
 
-// ── Constants ──────────────────────────────────────────────────────────────────
-
-const BUG_TINT = "139, 195, 74";
+const BUG_BG = "#eef6e8";
 const BUG_BORDER = "#c5e1a5";
 
 function starsOf(n: number) {
   return "★".repeat(n) + "☆".repeat(Math.max(0, 5 - n));
 }
-
-// ── Main ───────────────────────────────────────────────────────────────────────
 
 interface BugDetailClientProps {
   bug: BugDetail;
@@ -25,73 +21,79 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
   const [hideImage, setHideImage] = useState(false);
   const [peeking, setPeeking] = useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setHideImage(sessionStorage.getItem("bugs_hideImage") === "true");
   }, []);
 
   return (
-    <section
-      className="px-6 pt-8 pb-16"
-      style={{ background: "rgba(255,252,248,1)" }}
-    >
+    <section className="px-4 pt-8 pb-16 md:px-6">
       <div className="mx-auto max-w-[1100px]">
         {/* Breadcrumb */}
         <nav
-          className="mb-4 flex flex-wrap items-center gap-1.5 text-xs font-bold tracking-wide md:mb-8 md:text-sm"
-          style={{ color: "#b080c0" }}
+          className="mb-7 flex items-center gap-1.5 text-sm"
+          style={{ color: "var(--wiki-text-tertiary)" }}
           aria-label="breadcrumb"
         >
-          <Link href="/" className="transition-colors hover:opacity-80">
-            🏠 홈
+          <Link
+            href="/"
+            className="no-underline transition-colors hover:text-[var(--wiki-text-secondary)]"
+            style={{ color: "var(--wiki-text-tertiary)" }}
+          >
+            홈
           </Link>
-          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
-          <Link href="/bugs" className="transition-colors hover:opacity-80">
-            곤충 도감
+          <span style={{ color: "var(--wiki-text-muted)" }}>›</span>
+          <Link
+            href="/bugs"
+            className="no-underline transition-colors hover:text-[var(--wiki-text-secondary)]"
+            style={{ color: "var(--wiki-text-tertiary)" }}
+          >
+            곤충 채집
           </Link>
-          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
-          <span style={{ color: "#6b4a7a" }}>{bug.name}</span>
+          <span style={{ color: "var(--wiki-text-muted)" }}>›</span>
+          <span
+            className="font-semibold"
+            style={{ color: "var(--wiki-text-secondary)" }}
+          >
+            {bug.name}
+          </span>
         </nav>
 
         {/* Back */}
         <Link
           href="/bugs"
-          className="mb-2 inline-flex items-center gap-1.5 text-xs font-bold transition-all hover:gap-2.5 md:mb-4 md:text-sm"
-          style={{ color: "#b080c0" }}
+          className="mb-5 inline-flex items-center gap-1 text-sm no-underline transition-colors hover:text-[var(--wiki-text-secondary)]"
+          style={{ color: "var(--wiki-text-tertiary)" }}
         >
-          ← 곤충 목록으로
+          ← 곤충 도감으로 돌아가기
         </Link>
 
-        {/* Hero card */}
+        {/* Two Column Detail */}
         <div
-          className="relative mt-4 overflow-hidden rounded-[20px] border-[1.5px] p-6 md:p-7"
-          style={{
-            background: "rgba(255,252,254,0.95)",
-            borderColor: "rgba(197,225,165,0.6)",
-            boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
-          }}
+          className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-[340px_1fr]"
+          style={{ animation: "fadeUp 0.4s ease-out" }}
         >
-          <div className="relative z-10 grid grid-cols-1 gap-8 md:grid-cols-2 md:items-start">
-            {/* ── 왼쪽: 기본 정보 + 지도 ──────────────────────────── */}
-            <div>
-              {/* Thumbnail / Emoji box */}
-              <div className="mb-4 flex items-end gap-2">
+          {/* Left Column */}
+          <div className="flex flex-col gap-4">
+            {/* Thumbnail Card */}
+            <div className="flex flex-col items-center rounded-2xl border border-[var(--wiki-border)] bg-white p-8">
+              <div className="mb-5 flex items-end gap-2">
                 <div
-                  className="inline-flex h-[144px] w-[144px] flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] text-7xl"
-                  style={{
-                    background: `rgba(${BUG_TINT},0.18)`,
-                    borderColor: `rgba(${BUG_TINT},0.4)`,
-                  }}
+                  className="flex h-[180px] w-[180px] items-center justify-center overflow-hidden rounded-xl border p-5"
+                  style={{ background: BUG_BG, borderColor: BUG_BORDER }}
                 >
                   {(!hideImage || peeking) && bug.thumbnail ? (
                     <Image
                       src={bug.thumbnail}
                       alt={bug.name}
-                      width={120}
-                      height={120}
-                      className="h-4/5 w-4/5 object-contain"
+                      width={130}
+                      height={130}
+                      className="h-full w-full object-contain"
                     />
                   ) : (
-                    <span aria-hidden>{bug.emoji}</span>
+                    <span className="text-6xl" aria-hidden>
+                      {bug.emoji}
+                    </span>
                   )}
                 </div>
                 {hideImage && bug.thumbnail && (
@@ -103,12 +105,10 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
                     onMouseLeave={() => setPeeking(false)}
                     onTouchStart={() => setPeeking(true)}
                     onTouchEnd={() => setPeeking(false)}
-                    className="mb-1 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl border-[1.5px] transition-all select-none"
+                    className="mb-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-all select-none"
                     style={{
-                      background: peeking
-                        ? `rgba(${BUG_TINT},0.25)`
-                        : `rgba(${BUG_TINT},0.12)`,
-                      borderColor: `rgba(${BUG_TINT},0.45)`,
+                      background: peeking ? "#d4edbc" : BUG_BG,
+                      borderColor: BUG_BORDER,
                       color: "#689f38",
                     }}
                   >
@@ -116,254 +116,180 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
                   </button>
                 )}
               </div>
-
-              {/* Name */}
-              <h1
-                className="m-0 mb-3 text-[clamp(20px,4vw,28px)] leading-tight font-bold tracking-tight md:text-[clamp(24px,4vw,34px)]"
-                style={{ color: "#4a3060" }}
+              <div
+                className="mb-3 text-2xl font-bold"
+                style={{ color: "var(--wiki-text-primary)" }}
               >
                 {bug.name}
-              </h1>
-
-              {/* Divider */}
-              <div
-                className="mb-4 h-px"
-                style={{
-                  background: `linear-gradient(to right, ${BUG_BORDER}, transparent)`,
-                }}
-              />
-
-              {/* Badges */}
-              <div className="mb-4 flex flex-wrap gap-1.5">
+              </div>
+              <div className="flex flex-wrap justify-center gap-1.5">
                 {bug.level > 0 && (
-                  <span
-                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                    style={{
-                      background: "rgba(189,225,150,0.3)",
-                      color: "#689f38",
-                      borderColor: "rgba(189,225,150,0.6)",
-                    }}
-                  >
+                  <span className="rounded-md bg-[#EBF3F9] px-3 py-1 text-sm font-semibold text-[#4A8DB7]">
                     채집 Lv.{bug.level}
                   </span>
                 )}
                 {bug.availability === "event" ? (
-                  <span
-                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                    style={{
-                      background: "rgba(255,220,130,0.25)",
-                      color: "#9a7020",
-                      borderColor: "rgba(255,220,130,0.55)",
-                    }}
-                  >
+                  <span className="rounded-md bg-[#FDF2EC] px-3 py-1 text-sm font-semibold text-[#D4845A]">
                     이벤트
                   </span>
                 ) : (
-                  <span
-                    className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-                    style={{
-                      background: "rgba(220,252,231,0.4)",
-                      color: "#16a34a",
-                      borderColor: "rgba(134,239,172,0.5)",
-                    }}
-                  >
+                  <span className="rounded-md bg-[#EEF6F0] px-3 py-1 text-sm font-semibold text-[#5B9A6F]">
                     일상
                   </span>
                 )}
               </div>
-
-              {/* 상세 정보 표 */}
-              <div
-                className="mb-5 overflow-hidden rounded-2xl border-[1.5px]"
-                style={{
-                  background: "rgba(255,252,254,0.95)",
-                  borderColor: "rgba(197,225,165,0.6)",
-                }}
-              >
-                {/* 헤더 */}
-                <div
-                  className="flex items-center gap-2 border-b-[1.5px] px-4 py-3"
-                  style={{ borderColor: "rgba(197,225,165,0.6)" }}
-                >
-                  <div
-                    className="h-[7px] w-[7px] rounded-full"
-                    style={{ background: "#689f38" }}
-                  />
-                  <span
-                    className="text-xs font-bold tracking-widest uppercase md:text-sm"
-                    style={{ color: "#8a6898" }}
-                  >
-                    상세 정보
-                  </span>
-                </div>
-
-                {/* 서식지 + 위치 (2칸 그리드) */}
-                <div
-                  className="grid grid-cols-2 border-b-[1.5px]"
-                  style={{ borderColor: "rgba(197,225,165,0.6)" }}
-                >
-                  <div
-                    className="border-r-[1.5px] p-4"
-                    style={{ borderColor: "rgba(197,225,165,0.6)" }}
-                  >
-                    <p
-                      className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#8a6898" }}
-                    >
-                      서식지
-                    </p>
-                    <p
-                      className="text-sm font-bold md:text-base"
-                      style={{ color: "#4a3060" }}
-                    >
-                      {bug.habitat || "-"}
-                    </p>
-                  </div>
-                  <div className="p-4">
-                    <p
-                      className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#8a6898" }}
-                    >
-                      위치
-                    </p>
-                    <p
-                      className="text-sm font-bold md:text-base"
-                      style={{ color: "#4a3060" }}
-                    >
-                      {bug.location || "-"}
-                    </p>
-                  </div>
-                </div>
-
-                {/* 시간 + 날씨 (2칸 그리드) */}
-                <div
-                  className={
-                    bug.desc ? "grid grid-cols-2 border-b-[1.5px]" : "grid grid-cols-2"
-                  }
-                  style={{ borderColor: "rgba(197,225,165,0.6)" }}
-                >
-                  <div
-                    className="border-r-[1.5px] p-4"
-                    style={{ borderColor: "rgba(197,225,165,0.6)" }}
-                  >
-                    <p
-                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#8a6898" }}
-                    >
-                      시간
-                    </p>
-                    <p
-                      className="text-sm font-bold md:text-base"
-                      style={{ color: "#4a3060" }}
-                    >
-                      {bug.times.length > 0 ? bug.times.join(", ") : "-"}
-                    </p>
-                  </div>
-                  <div className="p-4">
-                    <p
-                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#8a6898" }}
-                    >
-                      날씨
-                    </p>
-                    <p
-                      className="text-sm font-bold md:text-base"
-                      style={{ color: "#4a3060" }}
-                    >
-                      {bug.weathers.length > 0 ? bug.weathers.join(", ") : "-"}
-                    </p>
-                  </div>
-                </div>
-
-                {/* 특이사항 (있을 때만) */}
-                {bug.desc && (
-                  <div className="px-4 py-3">
-                    <p
-                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#8a6898" }}
-                    >
-                      특이사항
-                    </p>
-                    <p
-                      className="text-sm leading-relaxed font-bold whitespace-pre-line md:text-base"
-                      style={{ color: "#4a3060" }}
-                    >
-                      {bug.desc}
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Map placeholder */}
-              <div
-                className="mt-5 flex flex-col rounded-2xl border-[1.5px] p-4"
-                style={{
-                  background: "rgba(255,252,254,0.9)",
-                  borderColor: "rgba(197,225,165,0.6)",
-                }}
-              >
-                <div
-                  className="mb-3 flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase md:text-sm"
-                  style={{ color: "#b080c0" }}
-                >
-                  <MapPin size={13} strokeWidth={2.2} aria-hidden />
-                  채집 포인트
-                </div>
-                <div
-                  className="relative flex min-h-[160px] flex-1 items-center justify-center overflow-hidden rounded-xl border-[1.5px]"
-                  style={{
-                    background:
-                      "linear-gradient(160deg, rgba(241,248,233,0.95) 0%, rgba(255,252,254,1) 55%, rgba(197,225,165,0.3) 100%)",
-                    borderColor: `rgba(${BUG_TINT},0.35)`,
-                  }}
-                >
-                  <div
-                    className="pointer-events-none absolute inset-0 opacity-[0.07]"
-                    style={{
-                      backgroundImage: `radial-gradient(circle at 30% 20%, rgba(${BUG_TINT},0.5) 0%, transparent 45%)`,
-                    }}
-                    aria-hidden
-                  />
-                  <div className="relative z-[1] flex flex-col items-center gap-2">
-                    <span className="text-7xl drop-shadow-md" aria-hidden>
-                      🦋
-                    </span>
-                    <span
-                      className="text-sm font-bold"
-                      style={{ color: "rgba(138,104,152,0.6)" }}
-                    >
-                      준비중입니다
-                    </span>
-                  </div>
-                </div>
-              </div>
             </div>
 
-            {/* ── 오른쪽: 성급 테이블 ──────────────────────────────── */}
-            <div
-              className="rounded-2xl border-[1.5px] p-4"
-              style={{
-                background: "rgba(255,252,254,0.9)",
-                borderColor: "rgba(197,225,165,0.6)",
-              }}
-            >
+            {/* Info Table */}
+            <div className="overflow-hidden rounded-2xl border border-[var(--wiki-border)] bg-white">
               <div
-                className="mb-3 flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase md:text-sm"
-                style={{ color: "#b080c0" }}
+                className="flex items-center gap-1.5 border-b border-[var(--wiki-border-light)] px-5 py-4 text-base font-bold"
+                style={{ color: "var(--wiki-text-primary)" }}
               >
-                ⭐ 성급별 판매가
+                상세 정보
               </div>
-              <table className="w-full">
-                <thead>
+              <table className="w-full border-collapse">
+                <tbody>
+                  {bug.level > 0 && (
+                    <tr className="border-b border-[var(--wiki-border-light)]">
+                      <th
+                        className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                        style={{ color: "var(--wiki-text-secondary)" }}
+                      >
+                        채집 레벨
+                      </th>
+                      <td
+                        className="px-5 py-3.5 text-sm"
+                        style={{ color: "var(--wiki-text-primary)" }}
+                      >
+                        <span className="inline-flex rounded-md bg-[#EBF3F9] px-3 py-1 text-sm font-semibold text-[#4A8DB7]">
+                          Lv.{bug.level}
+                        </span>
+                      </td>
+                    </tr>
+                  )}
+                  <tr className="border-b border-[var(--wiki-border-light)]">
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
+                    >
+                      활동시기
+                    </th>
+                    <td
+                      className="px-5 py-3.5 text-sm"
+                      style={{ color: "var(--wiki-text-primary)" }}
+                    >
+                      {bug.availability === "event" ? (
+                        <span className="inline-flex rounded-md bg-[#FDF2EC] px-3 py-1 text-sm font-semibold text-[#D4845A]">
+                          이벤트
+                        </span>
+                      ) : (
+                        <span className="inline-flex rounded-md bg-[#EEF6F0] px-3 py-1 text-sm font-semibold text-[#5B9A6F]">
+                          일상
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                  <tr className="border-b border-[var(--wiki-border-light)]">
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
+                    >
+                      서식지
+                    </th>
+                    <td
+                      className="px-5 py-3.5 text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-primary)" }}
+                    >
+                      {bug.habitat || "-"}
+                    </td>
+                  </tr>
+                  <tr className="border-b border-[var(--wiki-border-light)]">
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
+                    >
+                      위치
+                    </th>
+                    <td
+                      className="px-5 py-3.5 text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-primary)" }}
+                    >
+                      {bug.location || "-"}
+                    </td>
+                  </tr>
+                  <tr className="border-b border-[var(--wiki-border-light)]">
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
+                    >
+                      시간
+                    </th>
+                    <td
+                      className="px-5 py-3.5 text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-primary)" }}
+                    >
+                      {bug.times.length > 0 ? bug.times.join(", ") : "-"}
+                    </td>
+                  </tr>
                   <tr
-                    className="border-b-[1.5px]"
-                    style={{ borderColor: "rgba(197,225,165,0.6)" }}
+                    className={
+                      bug.desc
+                        ? "border-b border-[var(--wiki-border-light)]"
+                        : ""
+                    }
                   >
-                    {["성급", "별점", "판매가"].map((h) => (
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
+                    >
+                      날씨
+                    </th>
+                    <td
+                      className="px-5 py-3.5 text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-primary)" }}
+                    >
+                      {bug.weathers.length > 0 ? bug.weathers.join(", ") : "-"}
+                    </td>
+                  </tr>
+                  {bug.desc && (
+                    <tr>
+                      <th
+                        className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                        style={{ color: "var(--wiki-text-secondary)" }}
+                      >
+                        특이사항
+                      </th>
+                      <td
+                        className="px-5 py-3.5 text-sm leading-relaxed font-semibold whitespace-pre-line"
+                        style={{ color: "var(--wiki-text-primary)" }}
+                      >
+                        {bug.desc}
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Right Column: Grade Table + Map */}
+          <div className="flex flex-col gap-4">
+            <div className="overflow-hidden rounded-2xl border border-[var(--wiki-border)] bg-white">
+              <div
+                className="flex items-center gap-1.5 border-b border-[var(--wiki-border-light)] px-5 py-3.5 text-sm font-semibold"
+                style={{ color: "var(--wiki-text-primary)" }}
+              >
+                성급별 판매가
+              </div>
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b border-[var(--wiki-border-light)] bg-[var(--wiki-bg)]">
+                    {["성급", "판매가"].map((h) => (
                       <th
                         key={h}
-                        className="px-2 pb-2.5 text-left text-xs font-bold tracking-wider uppercase md:text-sm"
-                        style={{ color: "#8a6898" }}
+                        className="px-4 py-3 text-left text-sm font-semibold tracking-wide"
+                        style={{ color: "var(--wiki-text-tertiary)" }}
                       >
                         {h}
                       </th>
@@ -374,33 +300,61 @@ export default function BugDetailClient({ bug }: BugDetailClientProps) {
                   {bug.grades.map((g) => (
                     <tr
                       key={g.stars}
-                      className="border-b border-[rgba(197,225,165,0.4)] last:border-0"
+                      className="border-b border-[var(--wiki-border-light)] transition-colors last:border-0 hover:bg-[rgba(0,0,0,0.01)]"
                     >
-                      <td className="px-2 py-2.5">
-                        <span
-                          className="text-xs font-bold md:text-sm"
-                          style={{ color: "#4a3060" }}
-                        >
-                          {g.stars}성
-                        </span>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3.5">
+                          <span
+                            className="text-sm font-semibold"
+                            style={{ color: "var(--wiki-text-primary)" }}
+                          >
+                            {g.stars}성
+                          </span>
+                          <span className="hidden text-sm text-amber-500 sm:inline">
+                            {starsOf(g.stars)}
+                          </span>
+                        </div>
                       </td>
-                      <td className="px-2 py-2.5">
-                        <span className="text-xs text-amber-500 md:text-sm">
-                          {starsOf(g.stars)}
-                        </span>
-                      </td>
-                      <td className="px-2 py-2.5">
+                      <td className="px-4 py-3">
                         <span
-                          className="text-xs font-bold tabular-nums md:text-sm"
+                          className="text-sm font-semibold"
                           style={{ color: "#b45309" }}
                         >
-                          {g.sellPrice > 0 ? `${g.sellPrice.toLocaleString()}G` : "-"}
+                          {g.sellPrice > 0
+                            ? `${g.sellPrice.toLocaleString()} G`
+                            : "-"}
                         </span>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Map placeholder */}
+            <div className="overflow-hidden rounded-2xl border border-[var(--wiki-border)] bg-white">
+              <div
+                className="flex items-center gap-1.5 border-b border-[var(--wiki-border-light)] px-5 py-4 text-base font-bold"
+                style={{ color: "var(--wiki-text-primary)" }}
+              >
+                🦋 채집 포인트
+              </div>
+              <div
+                className="flex min-h-[160px] items-center justify-center"
+                style={{ background: BUG_BG }}
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <span className="text-5xl drop-shadow-sm" aria-hidden>
+                    🗺️
+                  </span>
+                  <span
+                    className="text-sm"
+                    style={{ color: "var(--wiki-text-muted)" }}
+                  >
+                    준비중입니다
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
