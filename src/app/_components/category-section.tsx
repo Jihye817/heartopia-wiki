@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 
-// v1 아이콘 (인라인 SVG)
 function FlowerIcon({
   size = 24,
   color = "currentColor",
@@ -67,6 +65,34 @@ function FlowerIcon({
   );
 }
 
+function ChefHatIcon({
+  size = 24,
+  color = "currentColor",
+}: {
+  size?: number;
+  color?: string;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path
+        d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6V13.87z"
+        fill={color}
+        fillOpacity="0.15"
+      />
+      <line x1="6" x2="18" y1="17" y2="17" />
+    </svg>
+  );
+}
+
 function FishIcon({
   size = 24,
   color = "currentColor",
@@ -93,66 +119,6 @@ function FishIcon({
       <path d="M2 12s2-4 4.5-4" />
       <path d="M2 12s2 4 4.5 4" />
       <circle cx="17" cy="10" r="1" fill={color} />
-    </svg>
-  );
-}
-
-function PawPrintIcon({
-  size = 24,
-  color = "currentColor",
-}: {
-  size?: number;
-  color?: string;
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="11" cy="4" r="2" fill={color} fillOpacity="0.3" />
-      <circle cx="18" cy="8" r="2" fill={color} fillOpacity="0.3" />
-      <circle cx="4" cy="8" r="2" fill={color} fillOpacity="0.3" />
-      <circle cx="7" cy="15" r="2" fill={color} fillOpacity="0.3" />
-      <path
-        d="M8 15.5c1 2 2.5 3.5 5 4s4-1 5-3-1-4-2.5-4.5S9 13.5 8 15.5z"
-        fill={color}
-        fillOpacity="0.2"
-        stroke={color}
-      />
-    </svg>
-  );
-}
-
-function ChefHatIcon({
-  size = 24,
-  color = "currentColor",
-}: {
-  size?: number;
-  color?: string;
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path
-        d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6V13.87z"
-        fill={color}
-        fillOpacity="0.15"
-      />
-      <line x1="6" x2="18" y1="17" y2="17" />
     </svg>
   );
 }
@@ -240,6 +206,38 @@ function BirdIcon({
   );
 }
 
+function PawPrintIcon({
+  size = 24,
+  color = "currentColor",
+}: {
+  size?: number;
+  color?: string;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="11" cy="4" r="2" fill={color} fillOpacity="0.3" />
+      <circle cx="18" cy="8" r="2" fill={color} fillOpacity="0.3" />
+      <circle cx="4" cy="8" r="2" fill={color} fillOpacity="0.3" />
+      <circle cx="7" cy="15" r="2" fill={color} fillOpacity="0.3" />
+      <path
+        d="M8 15.5c1 2 2.5 3.5 5 4s4-1 5-3-1-4-2.5-4.5S9 13.5 8 15.5z"
+        fill={color}
+        fillOpacity="0.2"
+        stroke={color}
+      />
+    </svg>
+  );
+}
+
 function PouchIcon({
   size = 24,
   color = "currentColor",
@@ -282,307 +280,152 @@ const CATEGORIES = [
     id: "garden",
     icon: FlowerIcon,
     title: "원예",
-    subtitle: "Gardening",
-    color: "#f8a4c8",
-    bg: "#fff0f6",
-    border: "#ffd6e8",
+    desc: "꽃 교배와 작물 재배",
+    color: "var(--wiki-cat-garden)",
     accent: "#e8739b",
-    categoryHref: "/gardening",
-    items: [
-      {
-        label: "꽃 교배",
-        href: "/gardening/flowers",
-      },
-      {
-        label: "작물 재배",
-        href: "/gardening/crops",
-      },
-    ],
+    bg: "var(--wiki-cat-garden-bg)",
+    href: "/gardening",
   },
   {
     id: "cooking",
     icon: ChefHatIcon,
     title: "요리",
-    subtitle: "Cooking",
-    color: "#f5a878",
-    bg: "#fff8f0",
-    border: "#fde0c8",
+    desc: "레시피와 재료 정보",
+    color: "var(--wiki-cat-cooking)",
     accent: "#d47840",
-    categoryHref: "/cooking",
-    items: [
-      {
-        label: "레시피",
-        href: "/cooking/recipes",
-      },
-      // {
-      //   label: "재료 계산기 (준비중)",
-      //   href: "/cooking/ingredient-calculator",
-      // },
-      // {
-      //   label: "수익 계산기 (준비중)",
-      //   href: "/cooking/profit-calculator",
-      // },
-    ],
+    bg: "var(--wiki-cat-cooking-bg)",
+    href: "/cooking",
   },
   {
     id: "fishing",
     icon: FishIcon,
     title: "낚시",
-    subtitle: "Fishing",
-    color: "#7ec8e3",
-    bg: "#f0faff",
-    border: "#c8e8f8",
+    desc: "물고기 도감과 낚시터",
+    color: "var(--wiki-cat-fishing)",
     accent: "#4a9bbf",
-    categoryHref: "/fishing",
-    items: [
-      {
-        label: "물고기 도감",
-        href: "/fishing",
-      },
-    ],
+    bg: "var(--wiki-cat-fishing-bg)",
+    href: "/fishing",
   },
   {
     id: "bugs",
     icon: BugIcon,
     title: "곤충 채집",
-    subtitle: "Bug Catching",
-    color: "#8bc34a",
-    bg: "#f1f8e9",
-    border: "#c5e1a5",
+    desc: "곤충 도감과 채집 정보",
+    color: "var(--wiki-cat-bugs)",
     accent: "#689f38",
-    categoryHref: "/bugs",
-    items: [
-      {
-        label: "곤충 도감",
-        href: "/bugs",
-      },
-    ],
+    bg: "var(--wiki-cat-bugs-bg)",
+    href: "/bugs",
   },
   {
     id: "birds",
     icon: BirdIcon,
     title: "새 관찰",
-    subtitle: "Bird Watching",
-    color: "#b89fdc",
-    bg: "#f8f0ff",
-    border: "#e0d0f8",
+    desc: "새 도감과 관찰 정보",
+    color: "var(--wiki-cat-birds)",
     accent: "#8a6bbf",
-    categoryHref: "/birds",
-    items: [
-      {
-        label: "새 도감",
-        href: "/birds",
-      },
-    ],
+    bg: "var(--wiki-cat-birds-bg)",
+    href: "/birds",
   },
   {
     id: "pets",
     icon: PawPrintIcon,
     title: "반려동물",
-    subtitle: "Pets",
-    color: "#e0916e",
-    bg: "#fff3ef",
-    border: "#f5d0c4",
+    desc: "강아지와 고양이 가이드",
+    color: "var(--wiki-cat-pets)",
     accent: "#c96a42",
-    items: [
-      {
-        label: "강아지",
-        href: "/pets/dogs",
-      },
-      {
-        label: "고양이",
-        href: "/pets/cats",
-      },
-    ],
+    bg: "var(--wiki-cat-pets-bg)",
+    href: undefined,
   },
   {
-    id: "other-collection",
+    id: "others",
     icon: PouchIcon,
     title: "기타 수집",
-    subtitle: "Other Collection",
-    color: "#7b8fa3",
-    bg: "#f4f7fa",
-    border: "#d8e0e8",
+    desc: "생산품과 기타 아이템",
+    color: "var(--wiki-cat-others)",
     accent: "#5a6f82",
-    categoryHref: "/others",
-    items: [
-      {
-        label: "생산품",
-        href: "/others/products",
-      },
-    ],
+    bg: "var(--wiki-cat-others-bg)",
+    href: "/others",
   },
 ] as const;
 
 export function CategorySection() {
-  const [hovered, setHovered] = useState<string | null>(null);
-
   return (
-    <section className="bg-[rgba(255,252,248,1)] px-6 py-16">
+    <section
+      className="px-4 md:px-6"
+      style={{ animation: "fadeUp 0.5s ease-out 0.1s both" }}
+    >
       <div className="mx-auto max-w-[1100px]">
-        <div className="mb-11 text-center">
-          <div className="mb-3 inline-flex items-center gap-2">
-            <div
-              className="h-px w-8"
-              style={{ background: "rgba(200,160,200,0.4)" }}
-            />
+        <div className="mb-5 flex items-baseline justify-between border-b border-[var(--wiki-border)] pb-3">
+          <div className="flex items-baseline gap-2.5">
             <span
-              className="text-xs font-bold tracking-widest uppercase"
-              style={{ color: "#b080c0", letterSpacing: "0.12em" }}
+              className="text-3xl font-bold text-[var(--wiki-text-primary)]"
+              style={{
+                fontFamily: "'Outfit', var(--font-pretendard), sans-serif",
+                letterSpacing: "-0.3px",
+              }}
             >
-              CATEGORY
+              카테고리
             </span>
-            <div
-              className="h-px w-8"
-              style={{ background: "rgba(200,160,200,0.4)" }}
-            />
+            <span className="text-sm text-[var(--wiki-text-tertiary)]">
+              전체 도감을 둘러보세요
+            </span>
           </div>
-          <h2
-            className="m-0 text-[clamp(24px,4vw,34px)] font-bold tracking-tight"
-            style={{ color: "#6b4a7a", letterSpacing: "-0.02em" }}
-          >
-            정보 카테고리
-          </h2>
         </div>
 
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-5">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           {CATEGORIES.map((cat) => {
             const Icon = cat.icon;
-            const isHovered = hovered === cat.id;
-            const showComingSoon =
-              isHovered && !("categoryHref" in cat && cat.categoryHref);
+            const CardContent = (
+              <>
+                <div
+                  className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-lg border transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6"
+                  style={{ background: cat.bg, color: cat.color, borderColor: `${cat.accent}44` }}
+                >
+                  <Icon size={20} color={cat.color} />
+                </div>
+                <div className="text-xl font-bold text-[var(--wiki-text-primary)]">
+                  {cat.title}
+                </div>
+                <div className="text-sm leading-relaxed font-light text-[var(--wiki-text-tertiary)]">
+                  {cat.desc}
+                </div>
+              </>
+            );
+
+            const baseCardClass =
+              "group relative rounded-xl border-2 bg-white px-[18px] py-[22px] transition-all duration-200 hover:-translate-y-0.5";
+
+            if (cat.href) {
+              return (
+                <Link
+                  key={cat.id}
+                  href={cat.href}
+                  className={`${baseCardClass} block no-underline`}
+                  style={{ borderColor: `${cat.accent}44` }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = `${cat.accent}99`;
+                    e.currentTarget.style.boxShadow = `0 8px 24px ${cat.accent}20`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = `${cat.accent}44`;
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
+                >
+                  {CardContent}
+                </Link>
+              );
+            }
+
             return (
               <div
                 key={cat.id}
-                onMouseEnter={() => setHovered(cat.id)}
-                onMouseLeave={() => setHovered(null)}
-                className="group relative cursor-pointer overflow-hidden rounded-[20px] px-6 pt-7 pb-6 transition-all duration-300 ease-out"
-                style={{
-                  background: isHovered ? cat.bg : "rgba(255,252,254,0.9)",
-                  border: `1.5px solid ${
-                    isHovered ? cat.border : "rgba(230,210,230,0.6)"
-                  }`,
-                  transform: isHovered ? "translateY(-4px)" : "translateY(0)",
-                  boxShadow: isHovered
-                    ? `0 12px 32px rgba(0,0,0,0.06), 0 0 0 2px ${cat.border}`
-                    : "0 2px 12px rgba(0,0,0,0.04)",
-                  ["--accent" as string]: cat.accent,
-                }}
+                className={`${baseCardClass} cursor-default`}
+                style={{ borderColor: `${cat.accent}33` }}
               >
-                {showComingSoon && (
-                  <div
-                    className="absolute inset-0 z-10 flex items-center justify-center rounded-[20px] bg-white/90 backdrop-blur-sm transition-opacity duration-300"
-                    style={{ opacity: showComingSoon ? 1 : 0 }}
-                    aria-hidden
-                  >
-                    <span
-                      className="text-base font-semibold"
-                      style={{ color: cat.accent }}
-                    >
-                      준비중입니다
-                    </span>
-                  </div>
-                )}
-
-                <div
-                  className="absolute -right-2.5 -bottom-2.5 transition-opacity duration-300"
-                  style={{
-                    opacity: isHovered ? 0.08 : 0.04,
-                    transform: "scale(2.5) rotate(-10deg)",
-                    transformOrigin: "bottom right",
-                  }}
-                >
-                  <Icon size={48} color={cat.color} />
-                </div>
-
-                {"categoryHref" in cat && cat.categoryHref ? (
-                  <Link href={cat.categoryHref} className="block no-underline">
-                    <div
-                      className="mb-4 inline-flex h-[52px] w-[52px] items-center justify-center rounded-2xl border-[1.5px] transition-transform duration-300"
-                      style={{
-                        background: `${cat.color}22`,
-                        borderColor: `${cat.color}44`,
-                        transform: isHovered
-                          ? "scale(1.08) rotate(-4deg)"
-                          : "scale(1)",
-                      }}
-                    >
-                      <Icon size={26} color={cat.accent} />
-                    </div>
-                    <div className="mb-3.5">
-                      <div
-                        className="mb-0.5 text-xl leading-tight font-bold"
-                        style={{ color: "#4a3060" }}
-                      >
-                        {cat.title}
-                      </div>
-                      <div
-                        className="text-xs font-semibold uppercase"
-                        style={{
-                          color: cat.accent,
-                          letterSpacing: "0.06em",
-                        }}
-                      >
-                        {cat.subtitle}
-                      </div>
-                    </div>
-                  </Link>
-                ) : (
-                  <>
-                    <div
-                      className="mb-4 inline-flex h-[52px] w-[52px] items-center justify-center rounded-2xl border-[1.5px] transition-transform duration-300"
-                      style={{
-                        background: `${cat.color}22`,
-                        borderColor: `${cat.color}44`,
-                        transform: isHovered
-                          ? "scale(1.08) rotate(-4deg)"
-                          : "scale(1)",
-                      }}
-                    >
-                      <Icon size={26} color={cat.accent} />
-                    </div>
-                    <div className="mb-3.5">
-                      <div
-                        className="mb-0.5 text-xl leading-tight font-bold"
-                        style={{ color: "#4a3060" }}
-                      >
-                        {cat.title}
-                      </div>
-                      <div
-                        className="text-xs font-semibold uppercase"
-                        style={{
-                          color: cat.accent,
-                          letterSpacing: "0.06em",
-                        }}
-                      >
-                        {cat.subtitle}
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                <div
-                  className="mb-3.5 h-px"
-                  style={{
-                    background: `linear-gradient(to right, ${cat.border}, transparent)`,
-                  }}
-                />
-
-                <div className="flex flex-col gap-1.5">
-                  {cat.items.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="flex items-center gap-1.5 py-0.5 text-[13px] text-[#8a6898] no-underline transition-colors duration-150 group-hover:text-[var(--accent)]"
-                    >
-                      <span
-                        className="h-1 w-1 shrink-0 rounded-full opacity-80"
-                        style={{ background: cat.color }}
-                      />
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
+                {CardContent}
+                <span className="absolute top-3.5 right-3.5 rounded-full bg-[#F0F0F0] px-2.5 py-0.5 text-sm font-semibold text-[var(--wiki-text-tertiary)]">
+                  준비중
+                </span>
               </div>
             );
           })}

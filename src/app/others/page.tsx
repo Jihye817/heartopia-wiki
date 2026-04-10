@@ -25,7 +25,7 @@ const SUBCATEGORIES = [
     metaStyle: "bg-slate-50 text-slate-700 border-slate-200",
     ctaStyle: "text-slate-600",
     color: "#7b8fa3",
-    bg: "#f4f7fa",
+    bg: "var(--wiki-cat-others-bg)",
     border: "#d8e0e8",
     accent: "#5a6f82",
   },

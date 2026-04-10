@@ -13,6 +13,7 @@ const MORE_LINKS = ["쿠폰", "문의"] as const;
 
 const CATEGORY_HREF: Record<string, string> = {
   원예: "/gardening",
+  요리: "/cooking",
   낚시: "/fishing",
   "곤충 채집": "/bugs",
   "새 관찰": "/birds",
@@ -26,32 +27,30 @@ const MORE_HREF: Record<string, string> = {
 export function Footer() {
   return (
     <footer
-      className="border-t border-[rgba(248,164,200,0.15)] px-4 py-8 md:px-6 md:py-12"
-      style={{ background: "rgba(60,40,75,0.96)" }}
+      className="border-t border-[var(--wiki-border)] px-4 py-8 md:px-6 md:py-12"
+      style={{
+        backgroundImage: "linear-gradient(180deg, var(--wiki-bg) 0%, var(--wiki-bg) 70%, rgba(244,241,248,0.3) 100%), url('/images/pics/ddt1.jpeg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center bottom",
+      }}
     >
       <div className="mx-auto max-w-[1100px]">
         <div className="mb-6 flex flex-col gap-8 md:mb-9 md:flex-row md:flex-wrap md:justify-between">
           <div className="max-w-full md:max-w-[280px]">
             <div className="mb-3 flex items-center gap-2.5">
               <div
-                className="flex h-[30px] w-[30px] items-center justify-center rounded-full text-sm"
+                className="flex h-7 w-7 items-center justify-center rounded-[7px] text-sm"
                 style={{
-                  background: "linear-gradient(135deg, #f8a4c8, #c9a7eb)",
+                  background: "linear-gradient(135deg, #FAD4DB, #CCDFF4)",
                 }}
               >
                 🌸
               </div>
-              <span
-                className="text-[15px] font-bold"
-                style={{ color: "rgba(255,220,240,0.95)" }}
-              >
+              <span className="text-[15px] font-semibold text-[var(--wiki-text-primary)]">
                 Heartopia Wiki
               </span>
             </div>
-            <p
-              className="m-0 text-xs leading-[1.7]"
-              style={{ color: "rgba(200,160,200,0.7)" }}
-            >
+            <p className="m-0 text-sm leading-[1.7] text-[var(--wiki-text-tertiary)]">
               두근두근타운의 팬 제작 정보 위키입니다.
               <br />
               공식 사이트와 무관합니다.
@@ -60,45 +59,33 @@ export function Footer() {
 
           <div className="grid grid-cols-2 gap-6 sm:flex sm:gap-8">
             <div>
-              <div
-                className="mb-3 text-xs font-bold tracking-wider uppercase"
-                style={{
-                  color: "rgba(248,164,200,0.8)",
-                  letterSpacing: "0.1em",
-                }}
-              >
+              <div className="mb-3 text-sm font-semibold tracking-wider uppercase text-[var(--wiki-text-secondary)]">
                 카테고리
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="grid grid-cols-2 gap-x-10 gap-y-2">
                 {CATEGORY_LINKS.map((link) =>
                   CATEGORY_HREF[link] ? (
                     <Link
                       key={link}
                       href={CATEGORY_HREF[link]}
-                      className="text-xs text-[rgba(200,170,215,0.7)] no-underline transition-colors hover:text-[rgba(248,200,224,0.95)]"
+                      className="text-sm text-[var(--wiki-text-tertiary)] no-underline transition-colors hover:text-[var(--wiki-text-primary)]"
                     >
                       {link}
                     </Link>
                   ) : (
                     <span
                       key={link}
-                      className="text-xs text-[rgba(200,170,215,0.7)] cursor-not-allowed"
+                      className="cursor-not-allowed text-sm text-[var(--wiki-text-muted)]"
                     >
                       {link}
                     </span>
-                  )
+                  ),
                 )}
               </div>
             </div>
 
             <div>
-              <div
-                className="mb-3 text-xs font-bold tracking-wider uppercase"
-                style={{
-                  color: "rgba(248,164,200,0.8)",
-                  letterSpacing: "0.1em",
-                }}
-              >
+              <div className="mb-3 text-sm font-semibold tracking-wider uppercase text-[var(--wiki-text-secondary)]">
                 더 보기
               </div>
               <div className="flex flex-col gap-2">
@@ -106,7 +93,7 @@ export function Footer() {
                   <Link
                     key={link}
                     href={MORE_HREF[link] ?? "#"}
-                    className="text-xs text-[rgba(200,170,215,0.7)] no-underline transition-colors hover:text-[rgba(248,200,224,0.95)]"
+                    className="text-sm text-[var(--wiki-text-tertiary)] no-underline transition-colors hover:text-[var(--wiki-text-primary)]"
                   >
                     {link}
                   </Link>
@@ -116,24 +103,13 @@ export function Footer() {
           </div>
         </div>
 
-        <div
-          className="flex flex-col items-center gap-4 border-t border-white/[0.07] pt-6 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-2"
-          style={{ borderTopColor: "rgba(255,255,255,0.07)" }}
-        >
-          <p
-            className="m-0 text-center text-xs md:text-left"
-            style={{ color: "rgba(180,140,190,0.5)" }}
-          >
-            © {new Date().getFullYear()} Heartopia Wiki - @Jihye817 All rights
+        <div className="flex flex-col items-center gap-4 border-t border-white/40 pt-6 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-2">
+          <p className="m-0 text-center text-sm text-white md:text-left">
+            &copy; {new Date().getFullYear()} Heartopia Wiki - @Jihye817 All rights
             reserved. - 팬 제작 위키, 비공식
+            <span className="mx-2 opacity-50">|</span>
+            문의 <a href="mailto:heartopiawiki@gmail.com" className="underline opacity-80 hover:opacity-100 transition-opacity">heartopiawiki@gmail.com</a>
           </p>
-          <div className="flex gap-1.5">
-            {["🌸", "🍀", "🌿", "✨"].map((emoji, index) => (
-              <span key={index} className="text-[13px] opacity-50">
-                {emoji}
-              </span>
-            ))}
-          </div>
         </div>
       </div>
     </footer>

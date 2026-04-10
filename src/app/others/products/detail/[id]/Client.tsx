@@ -5,12 +5,8 @@ import Link from "next/link";
 import { MapPin } from "lucide-react";
 import type { Product, ProductCategory } from "../../_data/products";
 
-// ── Constants ──────────────────────────────────────────────────────────────────
-
-const BRAND_TINT = "123, 143, 163";
-const BRAND_ACCENT = "#5a6f82";
-const BRAND_LIGHT = "#7b8fa3";
-const BRAND_BORDER = "rgba(216, 224, 232, 0.6)";
+const OTHERS_BG = "#f0f4f7";
+const OTHERS_BORDER = "#c8d4de";
 
 const CATEGORY_LABEL: Record<ProductCategory, string> = {
   mushroom: "버섯",
@@ -26,339 +22,237 @@ const CATEGORY_EMOJI: Record<ProductCategory, string> = {
   stone: "🪨",
 };
 
-// 카테고리 뱃지·썸네일은 카테고리별 색상 유지
-const CATEGORY_TINT: Record<ProductCategory, string> = {
-  mushroom: "160, 100, 220",
-  fruit: "232, 120, 140",
-  wood: "100, 160, 80",
-  stone: "150, 150, 170",
+const CATEGORY_COLOR: Record<ProductCategory, { bg: string; color: string; border: string }> = {
+  mushroom: { bg: "#F0EBFF", color: "#7B5EAE", border: "#D8C8F0" },
+  fruit:    { bg: "#FDF0F5", color: "#C4607A", border: "#F0C8D8" },
+  wood:     { bg: "#EEF6F0", color: "#5B9A6F", border: "#C8E0CF" },
+  stone:    { bg: "#F2F4F7", color: "#6B7A8D", border: "#D0D8E4" },
 };
-
-const CATEGORY_BORDER: Record<ProductCategory, string> = {
-  mushroom: "#c4b5e8",
-  fruit: "#fbcfe8",
-  wood: "#b5d8b5",
-  stone: "#c8c8d8",
-};
-
-// ── Main ───────────────────────────────────────────────────────────────────────
 
 interface ProductDetailClientProps {
   product: Product;
 }
 
 export default function ProductDetailClient({ product }: ProductDetailClientProps) {
-  const catTint = CATEGORY_TINT[product.category] ?? "150, 150, 150";
-  const accentBorder = CATEGORY_BORDER[product.category] ?? "#c4b5e8";
+  const catColor = CATEGORY_COLOR[product.category] ?? CATEGORY_COLOR.stone;
   const emoji = CATEGORY_EMOJI[product.category] ?? "📦";
 
-  const strangeImages = [product.strange_1, product.strange_2, product.strange_3].filter(
-    (s): s is string => Boolean(s),
-  );
-
   return (
-    <section
-      className="px-6 pt-8 pb-16"
-      style={{ background: "rgba(255,252,248,1)" }}
-    >
+    <section className="px-4 pt-8 pb-16 md:px-6">
       <div className="mx-auto max-w-[1100px]">
         {/* Breadcrumb */}
         <nav
-          className="mb-4 flex flex-wrap items-center gap-1.5 text-xs font-bold tracking-wide md:mb-8 md:text-sm"
-          style={{ color: "#b080c0" }}
+          className="mb-7 flex items-center gap-1.5 text-sm"
+          style={{ color: "var(--wiki-text-tertiary)" }}
           aria-label="breadcrumb"
         >
-          <Link href="/" className="transition-colors hover:opacity-80">
-            🏠 홈
+          <Link
+            href="/"
+            className="no-underline transition-colors hover:text-[var(--wiki-text-secondary)]"
+            style={{ color: "var(--wiki-text-tertiary)" }}
+          >
+            홈
           </Link>
-          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
-          <Link href="/others" className="transition-colors hover:opacity-80">
+          <span style={{ color: "var(--wiki-text-muted)" }}>›</span>
+          <Link
+            href="/others"
+            className="no-underline transition-colors hover:text-[var(--wiki-text-secondary)]"
+            style={{ color: "var(--wiki-text-tertiary)" }}
+          >
             기타 수집
           </Link>
-          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
-          <Link href="/others/products" className="transition-colors hover:opacity-80">
+          <span style={{ color: "var(--wiki-text-muted)" }}>›</span>
+          <Link
+            href="/others/products"
+            className="no-underline transition-colors hover:text-[var(--wiki-text-secondary)]"
+            style={{ color: "var(--wiki-text-tertiary)" }}
+          >
             생산품 도감
           </Link>
-          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
-          <span style={{ color: "#6b4a7a" }}>{product.name}</span>
+          <span style={{ color: "var(--wiki-text-muted)" }}>›</span>
+          <span
+            className="font-semibold"
+            style={{ color: "var(--wiki-text-secondary)" }}
+          >
+            {product.name}
+          </span>
         </nav>
 
         {/* Back */}
         <Link
           href="/others/products"
-          className="mb-2 inline-flex items-center gap-1.5 text-xs font-bold transition-all hover:gap-2.5 md:mb-4 md:text-sm"
-          style={{ color: "#b080c0" }}
+          className="mb-5 inline-flex items-center gap-1 text-sm no-underline transition-colors hover:text-[var(--wiki-text-secondary)]"
+          style={{ color: "var(--wiki-text-tertiary)" }}
         >
-          ← 생산품 목록으로
+          ← 생산품 도감으로 돌아가기
         </Link>
 
-        {/* Hero card */}
+        {/* Two Column Detail */}
         <div
-          className="relative mt-4 overflow-hidden rounded-[20px] border-[1.5px] p-6 md:p-7"
-          style={{
-            background: "rgba(255,252,254,0.95)",
-            borderColor: BRAND_BORDER,
-            boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
-          }}
+          className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-[340px_1fr]"
+          style={{ animation: "fadeUp 0.4s ease-out" }}
         >
-          <div className="relative z-10 grid grid-cols-1 gap-8 md:grid-cols-2 md:items-start">
-            {/* ── 왼쪽: 기본 정보 ──────────────────────────────────── */}
-            <div>
-              {/* Thumbnail */}
+          {/* Left Column */}
+          <div className="flex flex-col gap-4">
+            {/* Thumbnail Card */}
+            <div className="flex flex-col items-center rounded-2xl border border-[var(--wiki-border)] bg-white p-8">
               <div
-                className="mb-4 inline-flex h-[144px] w-[144px] flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] text-7xl"
-                style={{
-                  background: `rgba(${BRAND_TINT},0.18)`,
-                  borderColor: `rgba(${BRAND_TINT},0.4)`,
-                }}
+                className="mb-5 flex h-[180px] w-[180px] items-center justify-center overflow-hidden rounded-xl border p-5"
+                style={{ background: OTHERS_BG, borderColor: OTHERS_BORDER }}
               >
                 {product.thumbnail ? (
                   <Image
                     src={product.thumbnail}
                     alt={product.name}
-                    width={120}
-                    height={120}
-                    className="h-4/5 w-4/5 object-contain"
+                    width={130}
+                    height={130}
+                    className="h-full w-full object-contain"
                   />
                 ) : (
-                  <span aria-hidden>{emoji}</span>
+                  <span className="text-6xl" aria-hidden>
+                    {emoji}
+                  </span>
                 )}
               </div>
-
-              {/* Name */}
-              <h1
-                className="m-0 mb-3 text-[clamp(20px,4vw,28px)] leading-tight font-bold tracking-tight md:text-[clamp(24px,4vw,34px)]"
-                style={{ color: "#4a3060" }}
+              <div
+                className="mb-3 text-2xl font-bold"
+                style={{ color: "var(--wiki-text-primary)" }}
               >
                 {product.name}
-              </h1>
-
-              {/* Divider */}
-              <div
-                className="mb-4 h-px"
-                style={{
-                  background: `linear-gradient(to right, ${accentBorder}, transparent)`,
-                }}
-              />
-
-              {/* Category badge */}
-              <div className="mb-4 flex flex-wrap gap-1.5">
+              </div>
+              <div className="flex flex-wrap justify-center gap-1.5">
                 <span
-                  className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
+                  className="rounded-md border px-3 py-1 text-sm font-semibold"
                   style={{
-                    background: `rgba(${catTint},0.2)`,
-                    color: "#6b4a7a",
-                    borderColor: `rgba(${catTint},0.45)`,
+                    background: catColor.bg,
+                    color: catColor.color,
+                    borderColor: catColor.border,
                   }}
                 >
                   {CATEGORY_LABEL[product.category]}
                 </span>
               </div>
+            </div>
 
-              {/* 상세 정보 표 */}
+            {/* Info Table */}
+            <div className="overflow-hidden rounded-2xl border border-[var(--wiki-border)] bg-white">
               <div
-                className="mb-5 overflow-hidden rounded-2xl border-[1.5px]"
-                style={{
-                  background: "rgba(255,252,254,0.95)",
-                  borderColor: BRAND_BORDER,
-                }}
+                className="flex items-center gap-1.5 border-b border-[var(--wiki-border-light)] px-5 py-4 text-base font-bold"
+                style={{ color: "var(--wiki-text-primary)" }}
               >
-                {/* 헤더 */}
-                <div
-                  className="flex items-center gap-2 border-b-[1.5px] px-4 py-3"
-                  style={{ borderColor: BRAND_BORDER }}
-                >
-                  <div
-                    className="h-[7px] w-[7px] rounded-full"
-                    style={{ background: BRAND_LIGHT }}
-                  />
-                  <span
-                    className="text-xs font-bold tracking-widest uppercase md:text-sm"
-                    style={{ color: "#8a6898" }}
-                  >
-                    상세 정보
-                  </span>
-                </div>
-
-                {/* 위치 */}
-                <div
-                  className="border-b-[1.5px] p-4"
-                  style={{ borderColor: BRAND_BORDER }}
-                >
-                  <p
-                    className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
-                    style={{ color: "#8a6898" }}
-                  >
-                    채집 장소
-                  </p>
-                  <p
-                    className="flex items-center gap-1 text-sm font-bold md:text-base"
-                    style={{ color: "#4a3060" }}
-                  >
-                    <MapPin size={13} strokeWidth={2.2} className="shrink-0" aria-hidden />
-                    {product.location || "-"}
-                  </p>
-                </div>
-
-                {/* 리스폰 + 판매가 (2칸 그리드) */}
-                <div
-                  className={`grid grid-cols-2 ${product.stamina != null || product.notes ? "border-b-[1.5px]" : ""}`}
-                  style={{ borderColor: BRAND_BORDER }}
-                >
-                  <div
-                    className="border-r-[1.5px] p-4"
-                    style={{ borderColor: BRAND_BORDER }}
-                  >
-                    <p
-                      className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#8a6898" }}
+                상세 정보
+              </div>
+              <table className="w-full border-collapse">
+                <tbody>
+                  <tr className="border-b border-[var(--wiki-border-light)]">
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
                     >
-                      리스폰 시간
-                    </p>
-                    <p className="text-sm font-bold md:text-base" style={{ color: "#4a3060" }}>
+                      채집 장소
+                    </th>
+                    <td
+                      className="px-5 py-3.5 text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-primary)" }}
+                    >
+                      <span className="flex items-center gap-1">
+                        <MapPin size={13} strokeWidth={2.2} className="shrink-0" aria-hidden />
+                        {product.location || "-"}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr className="border-b border-[var(--wiki-border-light)]">
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
+                    >
+                      리스폰
+                    </th>
+                    <td
+                      className="px-5 py-3.5 text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-primary)" }}
+                    >
                       {product.respawn_time || "-"}
-                    </p>
-                  </div>
-                  <div className="p-4">
-                    <p
-                      className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#8a6898" }}
+                    </td>
+                  </tr>
+                  <tr className={product.stamina != null || product.notes ? "border-b border-[var(--wiki-border-light)]" : ""}>
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
                     >
                       판매 가격
-                    </p>
-                    <p
-                      className="text-sm font-bold tabular-nums md:text-base"
+                    </th>
+                    <td
+                      className="px-5 py-3.5 text-sm font-semibold"
                       style={{ color: "#b45309" }}
                     >
-                      {product.sell_price != null
-                        ? `${product.sell_price.toLocaleString()}G`
-                        : "-"}
-                    </p>
-                  </div>
-                </div>
+                      {product.sell_price != null ? `${product.sell_price.toLocaleString()} G` : "-"}
+                    </td>
+                  </tr>
+                  {product.stamina != null && (
+                    <tr className={product.notes ? "border-b border-[var(--wiki-border-light)]" : ""}>
+                      <th
+                        className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                        style={{ color: "var(--wiki-text-secondary)" }}
+                      >
+                        스태미나
+                      </th>
+                      <td
+                        className="px-5 py-3.5 text-sm font-semibold"
+                        style={{ color: "var(--wiki-text-primary)" }}
+                      >
+                        {product.stamina}
+                      </td>
+                    </tr>
+                  )}
+                  {product.notes && (
+                    <tr>
+                      <th
+                        className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                        style={{ color: "var(--wiki-text-secondary)" }}
+                      >
+                        특이사항
+                      </th>
+                      <td
+                        className="px-5 py-3.5 text-sm leading-relaxed font-semibold whitespace-pre-line"
+                        style={{ color: "var(--wiki-text-primary)" }}
+                      >
+                        {product.notes}
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-                {/* 스태미나 */}
-                {product.stamina != null && (
-                  <div
-                    className={`p-4 ${product.notes ? "border-b-[1.5px]" : ""}`}
-                    style={{ borderColor: BRAND_BORDER }}
+          {/* Right Column */}
+          <div className="flex flex-col gap-4">
+            <div className="overflow-hidden rounded-2xl border border-[var(--wiki-border)] bg-white">
+              <div
+                className="flex items-center gap-1.5 border-b border-[var(--wiki-border-light)] px-5 py-4 text-base font-bold"
+                style={{ color: "var(--wiki-text-primary)" }}
+              >
+                🗺️ 채집 지도
+              </div>
+              <div
+                className="flex min-h-[160px] items-center justify-center"
+                style={{ background: OTHERS_BG }}
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <span className="text-5xl drop-shadow-sm" aria-hidden>
+                    {emoji}
+                  </span>
+                  <span
+                    className="text-sm"
+                    style={{ color: "var(--wiki-text-muted)" }}
                   >
-                    <p
-                      className="mb-1.5 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#8a6898" }}
-                    >
-                      필요 스태미나
-                    </p>
-                    <p className="text-sm font-bold md:text-base" style={{ color: "#4a3060" }}>
-                      {product.stamina}
-                    </p>
-                  </div>
-                )}
-
-                {/* 특이사항 */}
-                {product.notes && (
-                  <div className="px-4 py-3">
-                    <p
-                      className="mb-1 text-xs font-bold tracking-wider uppercase md:text-sm"
-                      style={{ color: "#8a6898" }}
-                    >
-                      특이사항
-                    </p>
-                    <p
-                      className="text-sm leading-relaxed font-bold whitespace-pre-line md:text-base"
-                      style={{ color: "#4a3060" }}
-                    >
-                      {product.notes}
-                    </p>
-                  </div>
-                )}
+                    준비중입니다
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* ── 오른쪽: 이상한 버전 or 지도 플레이스홀더 ────────── */}
-            <div>
-              {strangeImages.length > 0 ? (
-                <div
-                  className="overflow-hidden rounded-2xl border-[1.5px]"
-                  style={{
-                    background: "rgba(255,252,254,0.9)",
-                    borderColor: BRAND_BORDER,
-                  }}
-                >
-                  <div
-                    className="flex items-center gap-2 border-b-[1.5px] px-4 py-3"
-                    style={{ borderColor: BRAND_BORDER }}
-                  >
-                    <div
-                      className="h-[7px] w-[7px] rounded-full"
-                      style={{ background: BRAND_LIGHT }}
-                    />
-                    <span
-                      className="text-xs font-bold md:text-sm"
-                      style={{ color: "#8a6898" }}
-                    >
-                      이상한 {product.name}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-3 gap-4 p-4">
-                    {strangeImages.map((src, i) => (
-                      <div key={i} className="flex flex-col items-center">
-                        <div
-                          className="flex h-[100px] w-full items-center justify-center overflow-hidden rounded-xl border-[1.5px] p-2 md:h-[120px]"
-                          style={{
-                            background: `rgba(${catTint},0.12)`,
-                            borderColor: `rgba(${catTint},0.35)`,
-                          }}
-                        >
-                          <Image
-                            src={src}
-                            alt={`이상한 ${product.name} ${i + 1}`}
-                            width={96}
-                            height={96}
-                            className="h-full w-full object-contain"
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div
-                  className="flex flex-col rounded-2xl border-[1.5px] p-4 md:min-h-[320px]"
-                  style={{
-                    background: "rgba(255,252,254,0.9)",
-                    borderColor: BRAND_BORDER,
-                  }}
-                >
-                  <div
-                    className="mb-3 flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase md:text-sm"
-                    style={{ color: "#b080c0" }}
-                  >
-                    🗺️ 채집 지도
-                  </div>
-                  <div
-                    className="relative flex min-h-[220px] flex-1 items-center justify-center overflow-hidden rounded-xl border-[1.5px] md:min-h-[280px]"
-                    style={{
-                      background:
-                        "linear-gradient(160deg, rgba(244,247,250,0.95) 0%, rgba(255,252,254,1) 55%, rgba(216,224,232,0.3) 100%)",
-                      borderColor: `rgba(${BRAND_TINT},0.35)`,
-                    }}
-                  >
-                    <div className="flex flex-col items-center gap-2">
-                      <span className="text-7xl drop-shadow-md" aria-hidden>
-                        {emoji}
-                      </span>
-                      <span
-                        className="text-sm font-bold"
-                        style={{ color: `rgba(${BRAND_TINT},0.6)` }}
-                      >
-                        준비중입니다
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </div>

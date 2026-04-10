@@ -13,101 +13,57 @@ const AVAILABILITY_LABEL: Record<string, string> = {
   event: "이벤트",
 };
 
-const CROP_TINT = "126, 203, 170";
+// 작물 포인트 색상 (초록 계열)
+const CROP_COLOR = "#047857";
+const CROP_BG = "#eef9f4";
+const CROP_BORDER = "#b3e5cc";
 
 // ── Subcomponents ─────────────────────────────────────────────────────────────
 
-interface CropCardProps {
-  crop: CropListItem;
-}
-
-function CropCard({ crop }: CropCardProps) {
+function CropCard({ crop }: { crop: CropListItem }) {
   return (
     <Link
       href={`/gardening/crops/detail/${crop.id}`}
-      className="group relative block cursor-pointer overflow-hidden rounded-[20px] px-6 pt-7 pb-6 no-underline transition-all duration-300 ease-out"
-      style={{
-        background: "rgba(255,252,254,0.9)",
-        border: `1.5px solid rgba(${CROP_TINT},0.34)`,
-        boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
-      }}
+      className="group flex flex-col items-center rounded-2xl border border-[var(--wiki-border)] bg-white px-5 pt-6 pb-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
+      style={{ ["--crop-border" as string]: CROP_BORDER }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.background = "#eef9f4";
-        e.currentTarget.style.borderColor = "#b3e5cc";
-        e.currentTarget.style.transform = "translateY(-4px)";
-        e.currentTarget.style.boxShadow =
-          "0 12px 32px rgba(0,0,0,0.06), 0 0 0 2px #b3e5cc";
+        e.currentTarget.style.borderColor = "#04785766";
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.background = "rgba(255,252,254,0.9)";
-        e.currentTarget.style.borderColor = `rgba(${CROP_TINT},0.34)`;
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.04)";
+        e.currentTarget.style.borderColor = "var(--wiki-border)";
       }}
     >
       {/* 썸네일 */}
-      <div className="mb-4 flex justify-center">
-        <div
-          className="inline-flex h-[110px] w-[110px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1.5px] p-4 transition-transform duration-300 group-hover:scale-105"
-          style={{
-            background: `rgba(${CROP_TINT},0.15)`,
-            borderColor: `rgba(${CROP_TINT},0.35)`,
-          }}
-        >
-          <Image
-            src={crop.thumbnail}
-            alt=""
-            width={110}
-            height={110}
-            className="object-contain"
-          />
+      <div
+        className="mb-4 flex h-[100px] w-[100px] items-center justify-center overflow-hidden rounded-xl border p-2 transition-transform duration-200 group-hover:scale-105"
+        style={{ background: CROP_BG, borderColor: CROP_BORDER }}
+      >
+        <div className="relative h-full w-full">
+          <Image src={crop.thumbnail} alt="" fill className="object-contain" />
         </div>
       </div>
 
       {/* 작물 이름 */}
-      <div className="mb-3 text-center">
-        <div
-          className="text-lg leading-tight font-bold md:text-xl"
-          style={{ color: "#4a3060" }}
-        >
-          {crop.name}
-        </div>
+      <div
+        className="mb-2.5 text-xl font-bold"
+        style={{ color: "var(--wiki-text-primary)" }}
+      >
+        {crop.name}
       </div>
 
       {/* 뱃지 */}
-      <div className="mb-3.5 flex flex-wrap justify-center gap-1.5">
+      <div className="mb-4 flex flex-wrap justify-center gap-1.5">
         {crop.level !== null && (
-          <span
-            className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-            style={{
-              background: "rgba(189,222,255,0.3)",
-              color: "#0284c7",
-              borderColor: "rgba(189,222,255,0.6)",
-            }}
-          >
-            원예 Lv.{crop.level}
+          <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
+            Lv.{crop.level}
           </span>
         )}
         {crop.availability === "event" ? (
-          <span
-            className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-            style={{
-              background: "rgba(255,220,130,0.25)",
-              color: "#9a7020",
-              borderColor: "rgba(255,220,130,0.55)",
-            }}
-          >
+          <span className="rounded-full border border-[#F0D4C0] bg-[#FDF2EC] px-2.5 py-0.5 text-sm font-semibold text-[#D4845A]">
             {crop.event ?? "이벤트"}
           </span>
         ) : (
-          <span
-            className="rounded-full border px-2.5 py-1 text-xs font-bold md:text-sm"
-            style={{
-              background: "rgba(220,252,231,0.4)",
-              color: "#16a34a",
-              borderColor: "rgba(134,239,172,0.5)",
-            }}
-          >
+          <span className="rounded-full border border-[#C8E0CF] bg-[#EEF6F0] px-2.5 py-0.5 text-sm font-semibold text-[#5B9A6F]">
             일상
           </span>
         )}
@@ -115,63 +71,39 @@ function CropCard({ crop }: CropCardProps) {
 
       {/* 성급별 가격 */}
       {crop.crop_grades.length > 0 && (
-        <>
-          <div
-            className="mb-3 h-px"
-            style={{ background: `rgba(${CROP_TINT},0.4)` }}
-          />
-          <div className="grid grid-cols-5 gap-1">
-            {crop.crop_grades.map((g) => (
+        <div className="grid w-full grid-cols-5 gap-1 border-t border-[var(--wiki-border-light)] pt-3.5">
+          {crop.crop_grades.map((g) => (
+            <div
+              key={g.stars}
+              className="flex flex-col items-center gap-1 rounded-md border border-[var(--wiki-border-light)] bg-[var(--wiki-bg)] py-1.5"
+            >
+              <span className="text-sm font-bold text-amber-500">
+                {g.stars}★
+              </span>
               <div
-                key={g.stars}
-                className="flex flex-col items-center rounded-lg border py-1.5"
-                style={{
-                  background: "rgba(245,245,247,0.7)",
-                  borderColor: "rgba(209,213,219,0.5)",
-                }}
+                className="h-px w-3.5"
+                style={{ background: "var(--wiki-border)" }}
+              />
+              <span
+                className="text-sm font-semibold"
+                style={{ color: "var(--wiki-text-secondary)" }}
               >
-                <span className="text-xs font-bold text-amber-500">
-                  {g.stars}★
-                </span>
-                <div
-                  className="my-1 h-px w-4"
-                  style={{ background: "rgba(209,213,219,0.6)" }}
-                />
-                <span
-                  className="text-xs font-bold tabular-nums"
-                  style={{ color: "#6b7280" }}
-                >
-                  {g.sell_price ?? "-"}
-                </span>
-              </div>
-            ))}
-          </div>
-        </>
+                {g.sell_price ?? "-"}
+              </span>
+            </div>
+          ))}
+        </div>
       )}
     </Link>
   );
 }
 
-interface CropListViewProps {
-  crops: CropListItem[];
-}
-
-function CropListView({ crops }: CropListViewProps) {
+function CropListView({ crops }: { crops: CropListItem[] }) {
   return (
-    <div
-      className="overflow-x-auto rounded-[20px] border-[1.5px]"
-      style={{
-        background: "rgba(255,252,254,0.9)",
-        borderColor: `rgba(${CROP_TINT},0.34)`,
-        boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
-      }}
-    >
-      <table className="w-full">
+    <div className="overflow-x-auto rounded-2xl border border-[var(--wiki-border-light)] bg-white">
+      <table className="w-full border-collapse">
         <thead>
-          <tr
-            className="border-b-[1.5px]"
-            style={{ borderColor: `rgba(${CROP_TINT},0.4)` }}
-          >
+          <tr className="border-b border-[var(--wiki-border-light)] bg-[var(--wiki-bg)]">
             {[
               "작물 이름",
               "원예 레벨",
@@ -181,8 +113,8 @@ function CropListView({ crops }: CropListViewProps) {
             ].map((h) => (
               <th
                 key={h}
-                className="px-4 py-3.5 text-left text-sm font-bold tracking-wider uppercase"
-                style={{ color: "#b080c0" }}
+                className="px-4 py-3 text-left text-sm font-semibold tracking-wide"
+                style={{ color: "var(--wiki-text-tertiary)" }}
               >
                 {h}
               </th>
@@ -193,14 +125,17 @@ function CropListView({ crops }: CropListViewProps) {
           {crops.map((c) => (
             <tr
               key={c.id}
-              className="border-b border-[rgba(126,203,170,0.34)] transition-colors last:border-0 hover:bg-[#eef9f4]/50"
+              className="border-b border-[var(--wiki-border-light)] transition-colors last:border-0 hover:bg-[rgba(0,0,0,0.015)]"
             >
               <td className="p-0">
                 <Link
                   href={`/gardening/crops/detail/${c.id}`}
-                  className="flex items-center px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
+                  className="flex items-center gap-2.5 px-4 py-3 no-underline"
                 >
-                  <span className="mr-2.5 flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-lg">
+                  <span
+                    className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md"
+                    style={{ background: CROP_BG }}
+                  >
                     <Image
                       src={c.thumbnail}
                       alt=""
@@ -210,8 +145,8 @@ function CropListView({ crops }: CropListViewProps) {
                     />
                   </span>
                   <span
-                    className="text-sm font-bold"
-                    style={{ color: "#4a3060" }}
+                    className="text-sm font-semibold"
+                    style={{ color: "var(--wiki-text-primary)" }}
                   >
                     {c.name}
                   </span>
@@ -220,17 +155,10 @@ function CropListView({ crops }: CropListViewProps) {
               <td className="p-0">
                 <Link
                   href={`/gardening/crops/detail/${c.id}`}
-                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
+                  className="block px-4 py-3 no-underline"
                 >
                   {c.level !== null && (
-                    <span
-                      className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                      style={{
-                        background: "rgba(189,222,255,0.3)",
-                        color: "#0284c7",
-                        borderColor: "rgba(189,222,255,0.6)",
-                      }}
-                    >
+                    <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
                       Lv.{c.level}
                     </span>
                   )}
@@ -239,14 +167,14 @@ function CropListView({ crops }: CropListViewProps) {
               <td className="p-0">
                 <Link
                   href={`/gardening/crops/detail/${c.id}`}
-                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
+                  className="block px-4 py-3 no-underline"
                 >
                   <span
-                    className="rounded-full border px-2.5 py-1 text-sm font-bold"
+                    className="rounded-full border px-2.5 py-0.5 text-sm font-semibold"
                     style={{
-                      background: "rgba(179,229,204,0.35)",
-                      color: "#15803d",
-                      borderColor: "rgba(126,203,170,0.55)",
+                      background: CROP_BG,
+                      borderColor: CROP_BORDER,
+                      color: CROP_COLOR,
                     }}
                   >
                     {c.grow_time}
@@ -256,28 +184,14 @@ function CropListView({ crops }: CropListViewProps) {
               <td className="p-0">
                 <Link
                   href={`/gardening/crops/detail/${c.id}`}
-                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
+                  className="block px-4 py-3 no-underline"
                 >
                   {c.event ? (
-                    <span
-                      className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                      style={{
-                        background: "rgba(255,220,130,0.25)",
-                        color: "#9a7020",
-                        borderColor: "rgba(255,220,130,0.55)",
-                      }}
-                    >
-                      이벤트 : {c.event}
+                    <span className="rounded-full border border-[#F0D4C0] bg-[#FDF2EC] px-2.5 py-0.5 text-sm font-semibold text-[#D4845A]">
+                      {c.event}
                     </span>
                   ) : (
-                    <span
-                      className="rounded-full border px-2.5 py-1 text-sm font-bold"
-                      style={{
-                        background: "rgba(220,252,231,0.4)",
-                        color: "#16a34a",
-                        borderColor: "rgba(134,239,172,0.5)",
-                      }}
-                    >
+                    <span className="rounded-full border border-[#C8E0CF] bg-[#EEF6F0] px-2.5 py-0.5 text-sm font-semibold text-[#5B9A6F]">
                       {AVAILABILITY_LABEL[c.availability] ?? c.availability}
                     </span>
                   )}
@@ -286,19 +200,19 @@ function CropListView({ crops }: CropListViewProps) {
               <td className="p-0">
                 <Link
                   href={`/gardening/crops/detail/${c.id}`}
-                  className="block px-4 py-3.5 no-underline transition-opacity hover:opacity-90"
+                  className="block px-4 py-3 no-underline"
                 >
                   {c.sell_min || c.sell_max ? (
                     <span
-                      className="text-sm font-bold tabular-nums"
+                      className="text-sm font-semibold"
                       style={{ color: "#b45309" }}
                     >
                       {c.sell_min} ~ {c.sell_max} G
                     </span>
                   ) : (
                     <span
-                      className="text-sm font-bold"
-                      style={{ color: "#c4b0cc" }}
+                      className="text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-muted)" }}
                     >
                       -
                     </span>
@@ -332,13 +246,14 @@ export default function CropsPageClient({ crops }: CropsPageClientProps) {
     ).sort((a, b) => a - b);
   }, [crops]);
 
-  const tabCounts = useMemo(() => {
-    return {
+  const tabCounts = useMemo(
+    () => ({
       all: crops.length,
       always: crops.filter((c) => c.availability === "always").length,
       event: crops.filter((c) => c.availability === "event").length,
-    };
-  }, [crops]);
+    }),
+    [crops],
+  );
 
   const eventNames = useMemo(() => {
     const names = crops
@@ -352,17 +267,11 @@ export default function CropsPageClient({ crops }: CropsPageClientProps) {
       seasonFilter === "all"
         ? crops
         : crops.filter((c) => c.availability === seasonFilter);
-
-    if (seasonFilter === "event" && eventFilter) {
+    if (seasonFilter === "event" && eventFilter)
       result = result.filter((c) => c.event === eventFilter);
-    }
-
-    if (levelFilter !== null) {
+    if (levelFilter !== null)
       result = result.filter((c) => c.level === levelFilter);
-    }
-
     if (!search.trim()) return result;
-
     const query = search.trim().toLowerCase();
     return result.filter((c) => c.name.toLowerCase().includes(query));
   }, [crops, seasonFilter, eventFilter, levelFilter, search]);
@@ -372,101 +281,115 @@ export default function CropsPageClient({ crops }: CropsPageClientProps) {
     setEventFilter(null);
   }
 
-  const tabs: { id: SeasonFilter; label: string; emoji: string }[] = [
-    { id: "all", label: "전체", emoji: "✨" },
-    { id: "always", label: "일상", emoji: "🌱" },
-    { id: "event", label: "이벤트", emoji: "🎉" },
+  const tabs: { id: SeasonFilter; label: string }[] = [
+    { id: "all", label: "전체" },
+    { id: "always", label: "일상" },
+    { id: "event", label: "이벤트" },
   ];
 
   return (
-    <section
-      className="px-6 pt-8 pb-16"
-      style={{ background: "rgba(255,252,248,1)" }}
-    >
+    <section className="px-4 pt-8 pb-20 md:px-6">
       <div className="mx-auto max-w-[1100px]">
         {/* Breadcrumb */}
         <nav
-          className="mb-4 flex items-center gap-1.5 text-xs font-bold tracking-wide md:mb-8 md:text-sm"
-          style={{ color: "#b080c0" }}
+          className="mb-7 flex items-center gap-1.5 text-sm"
+          style={{ color: "var(--wiki-text-tertiary)" }}
           aria-label="breadcrumb"
         >
-          <Link href="/" className="transition-colors hover:opacity-80">
-            🏠 홈
+          <Link
+            href="/"
+            className="no-underline transition-colors hover:text-[var(--wiki-text-secondary)]"
+            style={{ color: "var(--wiki-text-tertiary)" }}
+          >
+            홈
           </Link>
-          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
+          <span style={{ color: "var(--wiki-text-muted)" }}>›</span>
           <Link
             href="/gardening"
-            className="transition-colors hover:opacity-80"
+            className="no-underline transition-colors hover:text-[var(--wiki-text-secondary)]"
+            style={{ color: "var(--wiki-text-tertiary)" }}
           >
             원예
           </Link>
-          <span style={{ color: "rgba(200,160,200,0.5)" }}>›</span>
-          <span style={{ color: "#6b4a7a" }}>작물 도감</span>
+          <span style={{ color: "var(--wiki-text-muted)" }}>›</span>
+          <span
+            className="font-semibold"
+            style={{ color: "var(--wiki-text-secondary)" }}
+          >
+            작물 도감
+          </span>
         </nav>
 
-        {/* Header */}
-        <div className="mb-11">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <h1
-                className="m-0 text-[clamp(20px,4vw,28px)] font-bold tracking-tight md:text-[clamp(24px,4vw,34px)]"
-                style={{ color: "#6b4a7a", letterSpacing: "-0.02em" }}
-              >
-                작물 도감
-              </h1>
-              <p
-                className="mt-1 text-xs md:text-sm"
-                style={{ color: "#8a6898" }}
-              >
-                두근두근타운 작물 재배 정보
-              </p>
-            </div>
-
-            {/* View Toggle */}
-            <div
-              className="flex gap-1 rounded-xl p-1"
-              style={{ background: "rgba(230,210,230,0.3)" }}
-              role="tablist"
-              aria-label="보기 방식"
+        {/* Page Header */}
+        <div
+          className="mb-7 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
+          style={{ animation: "fadeUp 0.4s ease-out" }}
+        >
+          <div>
+            <h1
+              className="m-0 mb-1 text-3xl font-bold tracking-tight"
+              style={{
+                color: "var(--wiki-text-primary)",
+                fontFamily: "'Outfit', var(--font-pretendard), sans-serif",
+                letterSpacing: "-0.5px",
+              }}
             >
-              {[
-                { mode: "card" as const, icon: LayoutGrid, label: "카드" },
-                { mode: "list" as const, icon: List, label: "리스트" },
-              ].map(({ mode, icon: Icon, label }) => (
-                <button
-                  key={mode}
-                  type="button"
-                  onClick={() => setViewMode(mode)}
-                  role="tab"
-                  aria-selected={viewMode === mode}
-                  className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all md:px-3.5 md:text-sm"
-                  style={{
-                    background: viewMode === mode ? "white" : "transparent",
-                    color: viewMode === mode ? "#6b4a7a" : "#8a6898",
-                    boxShadow:
-                      viewMode === mode ? "0 1px 3px rgba(0,0,0,0.06)" : "none",
-                  }}
-                >
-                  <Icon size={14} strokeWidth={2.2} aria-hidden />
-                  {label}
-                </button>
-              ))}
-            </div>
+              작물 도감
+            </h1>
+            <p
+              className="text-sm"
+              style={{ color: "var(--wiki-text-secondary)" }}
+            >
+              두근두근타운 작물 재배 정보
+            </p>
+          </div>
+
+          {/* View Toggle */}
+          <div
+            className="flex w-fit gap-0.5 rounded-lg bg-[var(--wiki-border-light)] p-0.5"
+            role="tablist"
+            aria-label="보기 방식"
+          >
+            {[
+              { mode: "card" as const, icon: LayoutGrid, label: "카드" },
+              { mode: "list" as const, icon: List, label: "리스트" },
+            ].map(({ mode, icon: Icon, label }) => (
+              <button
+                key={mode}
+                type="button"
+                onClick={() => setViewMode(mode)}
+                role="tab"
+                aria-selected={viewMode === mode}
+                className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-semibold transition-all"
+                style={{
+                  background: viewMode === mode ? "white" : "transparent",
+                  color:
+                    viewMode === mode
+                      ? "var(--wiki-text-primary)"
+                      : "var(--wiki-text-tertiary)",
+                  boxShadow:
+                    viewMode === mode ? "0 1px 3px rgba(0,0,0,0.04)" : "none",
+                }}
+              >
+                <Icon size={14} strokeWidth={2.2} aria-hidden />
+                {label}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Filter + Search 통합 행 */}
-        <div className="mb-4 flex flex-wrap items-center gap-3">
-          {/* 왼쪽: 탭 버튼 */}
+        {/* Filter Bar */}
+        <div
+          className="mb-5 flex flex-wrap items-center gap-3"
+          style={{ animation: "fadeUp 0.4s ease-out 0.05s both" }}
+        >
           <div
-            className="flex flex-wrap gap-2"
+            className="flex flex-wrap gap-1.5"
             role="tablist"
             aria-label="시즌 필터"
           >
             {tabs.map((tab) => {
               const isActive = seasonFilter === tab.id;
-              const count = tabCounts[tab.id];
-
               return (
                 <button
                   key={tab.id}
@@ -474,56 +397,46 @@ export default function CropsPageClient({ crops }: CropsPageClientProps) {
                   role="tab"
                   aria-selected={isActive}
                   onClick={() => handleAvailabilityChange(tab.id)}
-                  className="flex cursor-pointer items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1.5 text-xs font-bold transition-all md:text-sm"
+                  className="flex h-[34px] cursor-pointer items-center gap-1.5 rounded-full border px-3.5 text-sm font-semibold transition-all"
                   style={{
-                    background: isActive
-                      ? `rgba(${CROP_TINT},0.2)`
-                      : "rgba(255,252,254,0.85)",
-                    borderColor: isActive
-                      ? `rgba(${CROP_TINT},0.6)`
-                      : `rgba(${CROP_TINT},0.3)`,
-                    color: isActive ? "#15803d" : "#8a6898",
-                    boxShadow: isActive
-                      ? `0 2px 8px rgba(${CROP_TINT},0.25)`
-                      : "none",
+                    background: isActive ? CROP_BG : "white",
+                    borderColor: isActive ? CROP_BORDER : "var(--wiki-border)",
+                    color: isActive ? CROP_COLOR : "var(--wiki-text-secondary)",
                   }}
                 >
-                  <span aria-hidden>{tab.emoji}</span>
                   {tab.label}
                   <span
-                    className="rounded-full px-1.5 py-0.5 text-[10px] md:text-xs"
+                    className="rounded-[10px] px-1.5 py-0.5 text-sm"
                     style={{
                       background: isActive
-                        ? `rgba(${CROP_TINT},0.25)`
-                        : "rgba(230,210,230,0.45)",
-                      color: isActive ? "#15803d" : "#8a6898",
+                        ? "rgba(4,120,87,0.12)"
+                        : "var(--wiki-border-light)",
+                      color: isActive
+                        ? CROP_COLOR
+                        : "var(--wiki-text-tertiary)",
                     }}
                   >
-                    {count}
+                    {tabCounts[tab.id]}
                   </span>
                 </button>
               );
             })}
 
-            {/* 이벤트 selectbox */}
             {seasonFilter === "event" && eventNames.length > 0 && (
               <select
                 value={eventFilter ?? ""}
                 onChange={(e) => setEventFilter(e.target.value || null)}
                 aria-label="이벤트 필터"
-                className="cursor-pointer rounded-full border-[1.5px] py-1.5 pr-8 pl-3 text-xs font-bold transition-all outline-none md:text-sm"
+                className="h-[34px] cursor-pointer rounded-lg border border-[var(--wiki-border)] bg-white pr-8 pl-3 text-sm font-semibold transition-all outline-none"
                 style={{
-                  background: "white",
-                  borderColor: "rgba(255,200,80,0.6)",
-                  color: "#9a7020",
-                  boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
+                  color: "#D4845A",
                   appearance: "none",
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239a7020' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
                   backgroundRepeat: "no-repeat",
                   backgroundPosition: "right 10px center",
                 }}
               >
-                <option value="">🎉 전체 이벤트</option>
+                <option value="">전체 이벤트</option>
                 {eventNames.map((name) => (
                   <option key={name} value={name}>
                     {name}
@@ -533,7 +446,6 @@ export default function CropsPageClient({ crops }: CropsPageClientProps) {
             )}
           </div>
 
-          {/* 오른쪽: 레벨 셀렉트 + 검색 */}
           <div className="ml-auto flex items-center gap-2">
             <select
               value={levelFilter ?? ""}
@@ -541,13 +453,14 @@ export default function CropsPageClient({ crops }: CropsPageClientProps) {
                 setLevelFilter(e.target.value ? Number(e.target.value) : null)
               }
               aria-label="레벨 필터"
-              className="rounded-xl border-[1.5px] py-2 pr-8 pl-3 text-xs font-bold transition-all outline-none md:py-2.5 md:text-sm"
+              className="h-[34px] cursor-pointer rounded-lg border border-[var(--wiki-border)] bg-white pr-8 pl-3 text-sm font-semibold transition-all outline-none"
               style={{
-                background: "rgba(240,255,248,0.5)",
-                borderColor: `rgba(${CROP_TINT},0.4)`,
-                color: levelFilter !== null ? "#0284c7" : "#8a6898",
+                color:
+                  levelFilter !== null
+                    ? "#4A8DB7"
+                    : "var(--wiki-text-secondary)",
                 appearance: "none",
-                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a6898' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "right 10px center",
               }}
@@ -559,11 +472,12 @@ export default function CropsPageClient({ crops }: CropsPageClientProps) {
                 </option>
               ))}
             </select>
-            <div className="relative w-44 md:w-56">
+
+            <div className="relative w-44 md:w-52">
               <Search
                 size={14}
                 className="absolute top-1/2 left-3 -translate-y-1/2"
-                style={{ color: "#8a6898" }}
+                style={{ color: "var(--wiki-text-muted)" }}
                 strokeWidth={2.2}
                 aria-hidden
               />
@@ -573,41 +487,37 @@ export default function CropsPageClient({ crops }: CropsPageClientProps) {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 aria-label="작물 이름 검색"
-                className="w-full rounded-xl border-[1.5px] py-2 pr-4 pl-9 text-xs transition-all outline-none placeholder:opacity-70 focus:border-[#7dceb0] md:py-2.5 md:text-sm"
-                style={{
-                  background: "rgba(240,255,248,0.5)",
-                  borderColor: `rgba(${CROP_TINT},0.4)`,
-                  color: "#4a3060",
-                }}
+                className="h-[34px] w-full rounded-lg border border-[var(--wiki-border)] bg-white pr-4 pl-8 text-sm transition-all outline-none placeholder:text-[var(--wiki-text-muted)] focus:border-[var(--wiki-text-muted)]"
+                style={{ color: "var(--wiki-text-primary)" }}
               />
             </div>
           </div>
         </div>
 
         {/* Content */}
-        {filteredCrops.length === 0 ? (
-          <div className="py-16 text-center">
-            <div className="mb-3 text-4xl" aria-hidden>
-              🔍
+        <div style={{ animation: "fadeUp 0.4s ease-out 0.1s both" }}>
+          {filteredCrops.length === 0 ? (
+            <div className="py-16 text-center">
+              <div className="mb-3 text-4xl" aria-hidden>
+                🔍
+              </div>
+              <p
+                className="text-sm"
+                style={{ color: "var(--wiki-text-tertiary)" }}
+              >
+                검색 결과가 없어요
+              </p>
             </div>
-            <p className="text-xs md:text-sm" style={{ color: "#8a6898" }}>
-              검색 결과가 없어요
-            </p>
-          </div>
-        ) : viewMode === "card" ? (
-          <div
-            className="grid gap-5"
-            style={{
-              gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-            }}
-          >
-            {filteredCrops.map((crop) => (
-              <CropCard key={crop.id} crop={crop} />
-            ))}
-          </div>
-        ) : (
-          <CropListView crops={filteredCrops} />
-        )}
+          ) : viewMode === "card" ? (
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-[repeat(auto-fill,minmax(220px,1fr))]">
+              {filteredCrops.map((crop) => (
+                <CropCard key={crop.id} crop={crop} />
+              ))}
+            </div>
+          ) : (
+            <CropListView crops={filteredCrops} />
+          )}
+        </div>
       </div>
     </section>
   );

@@ -14,6 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // ── 정적 라우트 ──────────────────────────────────────────────
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE_URL, priority: 1.0 },
+    { url: `${BASE_URL}/search`, priority: 0.9 },
     { url: `${BASE_URL}/coupons`, priority: 0.8 },
     { url: `${BASE_URL}/gardening`, priority: 0.8 },
     { url: `${BASE_URL}/gardening/crops`, priority: 0.8 },
@@ -21,8 +22,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/fishing`, priority: 0.8 },
     { url: `${BASE_URL}/cooking`, priority: 0.8 },
     { url: `${BASE_URL}/cooking/recipes`, priority: 0.8 },
-    { url: `${BASE_URL}/birds`, priority: 0.8 },
     { url: `${BASE_URL}/bugs`, priority: 0.8 },
+    { url: `${BASE_URL}/birds`, priority: 0.8 },
     { url: `${BASE_URL}/others`, priority: 0.7 },
     { url: `${BASE_URL}/others/products`, priority: 0.8 },
   ];
