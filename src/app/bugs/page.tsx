@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { getBugs } from "./_data/bugs";
 import BugsClient from "./Client";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "곤충 도감",
   description:

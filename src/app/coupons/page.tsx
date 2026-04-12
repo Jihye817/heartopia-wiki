@@ -3,13 +3,13 @@ import Link from "next/link";
 import { getValidCoupons } from "@/data/coupons";
 import { CouponCard } from "./_components/coupon-card";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "쿠폰",
   description: "두근두근타운에서 사용할 수 있는 쿠폰 코드를 확인할 수 있어요.",
   alternates: { canonical: "/coupons" },
 };
-
-export const dynamic = "force-dynamic";
 
 export default async function CouponsPage() {
   const coupons = await getValidCoupons();
