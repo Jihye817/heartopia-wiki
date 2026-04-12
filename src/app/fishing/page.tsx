@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { getFishes } from "./_data/fishes";
 import FishingClient from "./Client";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "물고기 도감",
   description:

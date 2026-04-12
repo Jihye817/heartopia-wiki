@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { getBirds } from "./_data/birds";
 import BirdsClient from "./Client";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "새 도감",
   description:

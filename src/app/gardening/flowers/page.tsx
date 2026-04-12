@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { getFlowers } from "./_data/flowers";
 import FlowersPageClient from "./Client";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "꽃 도감",
   description:

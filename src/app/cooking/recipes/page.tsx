@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { getFoods } from "../_data/foods";
 import FoodsPageClient from "./Client";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "요리 도감",
   description:

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { getProducts } from "./_data/products";
 import ProductsPageClient from "./Client";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "생산품 도감",
   description:
