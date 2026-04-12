@@ -101,7 +101,7 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
                   <span className="rounded-md bg-[#FDF2EC] px-3 py-1 text-sm font-semibold text-[#D4845A]">
                     이벤트
                   </span>
-                ) : bird.availability === "birds-return" ? (
+                ) : bird.availability === "nest-of-hundreds" ? (
                   <span
                     className="rounded-md px-3 py-1 text-sm font-semibold"
                     style={{ background: BIRD_BG, color: "#7B5EAE" }}
@@ -159,7 +159,7 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
                         <span className="inline-flex rounded-md bg-[#FDF2EC] px-3 py-1 text-sm font-semibold text-[#D4845A]">
                           이벤트
                         </span>
-                      ) : bird.availability === "birds-return" ? (
+                      ) : bird.availability === "nest-of-hundreds" ? (
                         <span
                           className="inline-flex rounded-md px-3 py-1 text-sm font-semibold"
                           style={{ background: BIRD_BG, color: "#7B5EAE" }}

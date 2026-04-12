@@ -56,7 +56,7 @@ function BirdCard({ bird }: { bird: BirdListItem }) {
           <span className="rounded-full border border-[#F0D4C0] bg-[#FDF2EC] px-2.5 py-0.5 text-sm font-semibold text-[#D4845A]">
             이벤트
           </span>
-        ) : bird.availability === "새들의 복귀 사건" ? (
+        ) : bird.availability === "nest-of-hundreds" ? (
           <span className="rounded-full border border-[#e8d5ff] bg-[var(--wiki-cat-birds-bg)] px-2.5 py-0.5 text-sm font-semibold text-[#8a6bbf]">
             새들의 복귀 사건
           </span>
@@ -253,8 +253,9 @@ export default function BirdsClient({ birds }: BirdsClientProps) {
     () => ({
       전체: birds.length,
       일상: birds.filter((b) => b.availability === "always").length,
-      "새들의 복귀 사건": birds.filter((b) => b.availability === "birds-return")
-        .length,
+      "새들의 복귀 사건": birds.filter(
+        (b) => b.availability === "nest-of-hundreds",
+      ).length,
       이벤트: birds.filter((b) => b.availability === "event").length,
     }),
     [birds],
@@ -265,7 +266,7 @@ export default function BirdsClient({ birds }: BirdsClientProps) {
     if (availFilter === "일상")
       result = result.filter((b) => b.availability === "always");
     else if (availFilter === "새들의 복귀 사건")
-      result = result.filter((b) => b.availability === "birds-return");
+      result = result.filter((b) => b.availability === "nest-of-hundreds");
     else if (availFilter === "이벤트")
       result = result.filter((b) => b.availability === "event");
     if (levelFilter !== null)
