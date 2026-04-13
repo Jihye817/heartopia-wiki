@@ -42,7 +42,7 @@ function BugCard({ bug, hideImage }: { bug: BugListItem; hideImage: boolean }) {
 
       {/* 뱃지 */}
       <div className="mb-4 flex flex-wrap justify-center gap-1.5">
-        {bug.level !== null && (
+        {bug.level !== null && bug.availability !== "event" && (
           <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
             채집 Lv.{bug.level}
           </span>
@@ -149,7 +149,7 @@ function BugListView({
                   href={`/bugs/detail/${bug.id}`}
                   className="block px-4 py-3 no-underline"
                 >
-                  {bug.level !== null && (
+                  {bug.level !== null && bug.availability !== "event" && (
                     <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
                       Lv.{bug.level}
                     </span>
