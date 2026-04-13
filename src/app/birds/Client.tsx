@@ -286,7 +286,7 @@ export default function BirdsClient({ birds }: BirdsClientProps) {
       result = result.filter((b) => b.name.toLowerCase().includes(q));
     }
     return result;
-  }, [birds, availFilter, levelFilter, search]);
+  }, [birds, availFilter, eventFilter, levelFilter, search]);
 
   const tabs: { id: AvailFilter; label: string }[] = [
     { id: "전체", label: "전체" },
