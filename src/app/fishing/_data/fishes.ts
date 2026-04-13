@@ -12,6 +12,7 @@ export interface Fish {
   desc?: string;
   level: number;
   availability: string;
+  event?: string;
   weathers: string[];
   times: string[];
   location: string;
@@ -51,6 +52,7 @@ function mapFish(row: any): Fish {
     desc: row.description ?? undefined,
     level: row.level ?? 0,
     availability: row.availability ?? "always",
+    event: row.event ?? undefined,
     weathers: row.weathers ?? [],
     times: row.times ?? [],
     location: row.location ?? "",

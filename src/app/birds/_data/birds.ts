@@ -10,6 +10,7 @@ export interface Bird {
   desc?: string;
   level: number;
   availability: string;
+  event?: string;
   habitat: string;
   location: string;
   distance: number;
@@ -47,6 +48,7 @@ function mapBird(row: any): Bird {
     desc: row.description ?? undefined,
     level: row.level ?? 0,
     availability: row.availability ?? "always",
+    event: row.event ?? undefined,
     habitat: row.habitat ?? "",
     location: row.location ?? "",
     distance: row.distance ?? 0,

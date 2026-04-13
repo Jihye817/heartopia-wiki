@@ -24,6 +24,7 @@ export interface Bug {
   desc?: string;
   level: number;
   availability: string;
+  event?: string;
   habitat: string;
   location: string;
   weathers: string[];
@@ -60,6 +61,7 @@ function mapBug(row: any): Bug {
     desc: row.description ?? undefined,
     level: row.level ?? 0,
     availability: row.availability ?? "always",
+    event: row.event ?? undefined,
     habitat: row.habitat ?? "",
     location: row.location ?? "",
     weathers: row.weathers ?? [],
