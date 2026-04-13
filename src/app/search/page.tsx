@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { supabase } from "@/lib/supabase";
 import SearchClient, { type SearchResultGroup } from "./Client";
 
+export const dynamic = "force-dynamic";
+
 // ── Category config ────────────────────────────────────────────────────────────
 
 const CATEGORY_CONFIG: Record<
