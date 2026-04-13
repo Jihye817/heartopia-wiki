@@ -4,10 +4,14 @@ import { supabase } from "@/lib/supabase";
 
 export type ProductCategory = "mushroom" | "fruit" | "wood" | "stone";
 
+export type ProductAvailability = "always" | "event";
+
 export interface Product {
   id: string;
   name: string;
   category: ProductCategory;
+  availability: ProductAvailability;
+  event?: string | null;
   thumbnail: string | null;
   location: string | null;
   respawn_time: string | null;

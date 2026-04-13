@@ -20,7 +20,7 @@ export interface Bird {
 export interface BirdGrade {
   stars: number;
   sellPrice: number;
-  sellEventPrice: number;
+  eventPrice: number;
 }
 
 export interface BirdListItem extends Bird {
@@ -60,7 +60,7 @@ function mapGrade(row: any): BirdGrade {
   return {
     stars: row.stars,
     sellPrice: row.sell_price ?? 0,
-    sellEventPrice: row.sell_event_price ?? 0,
+    eventPrice: row.event_price ?? 0,
   };
 }
 

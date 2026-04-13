@@ -6,7 +6,7 @@ import Image from "next/image";
 import { LayoutGrid, List, MapPin, Search } from "lucide-react";
 import type { Product, ProductCategory } from "./_data/products";
 
-type CategoryFilter = "all" | ProductCategory;
+type AvailFilter = "all" | "always" | "event";
 
 const CATEGORY_LABEL: Record<ProductCategory, string> = {
   mushroom: "버섯",
@@ -247,7 +247,8 @@ interface ProductsPageClientProps {
 export default function ProductsPageClient({ products }: ProductsPageClientProps) {
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
+  const [availFilter, setAvailFilter] = useState<AvailFilter>("all");
+  const [categoryFilter, setCategoryFilter] = useState<ProductCategory | "">("");
   const [locationFilter, setLocationFilter] = useState<string>("");
 
   const locations = useMemo(
@@ -258,17 +259,17 @@ export default function ProductsPageClient({ products }: ProductsPageClientProps
   const tabCounts = useMemo(
     () => ({
       all: products.length,
-      mushroom: products.filter((p) => p.category === "mushroom").length,
-      fruit: products.filter((p) => p.category === "fruit").length,
-      wood: products.filter((p) => p.category === "wood").length,
-      stone: products.filter((p) => p.category === "stone").length,
+      always: products.filter((p) => p.availability === "always").length,
+      event: products.filter((p) => p.availability === "event").length,
     }),
     [products],
   );
 
   const filtered = useMemo(() => {
     let result = products;
-    if (categoryFilter !== "all")
+    if (availFilter !== "all")
+      result = result.filter((p) => p.availability === availFilter);
+    if (categoryFilter)
       result = result.filter((p) => p.category === categoryFilter);
     if (locationFilter)
       result = result.filter((p) => p.location === locationFilter);
@@ -277,14 +278,12 @@ export default function ProductsPageClient({ products }: ProductsPageClientProps
       result = result.filter((p) => p.name.toLowerCase().includes(q));
     }
     return result;
-  }, [products, categoryFilter, locationFilter, search]);
+  }, [products, availFilter, categoryFilter, locationFilter, search]);
 
-  const tabs: { id: CategoryFilter; label: string }[] = [
+  const tabs: { id: AvailFilter; label: string }[] = [
     { id: "all", label: "전체" },
-    { id: "mushroom", label: "버섯" },
-    { id: "fruit", label: "과일" },
-    { id: "wood", label: "나무" },
-    { id: "stone", label: "돌" },
+    { id: "always", label: "일상" },
+    { id: "event", label: "이벤트" },
   ];
 
   return (
@@ -386,17 +385,17 @@ export default function ProductsPageClient({ products }: ProductsPageClientProps
           <div
             className="flex flex-wrap gap-1.5"
             role="tablist"
-            aria-label="카테고리 필터"
+            aria-label="활동시기 필터"
           >
             {tabs.map((tab) => {
-              const isActive = categoryFilter === tab.id;
+              const isActive = availFilter === tab.id;
               return (
                 <button
                   key={tab.id}
                   type="button"
                   role="tab"
                   aria-selected={isActive}
-                  onClick={() => setCategoryFilter(tab.id)}
+                  onClick={() => setAvailFilter(tab.id)}
                   className="flex h-[34px] cursor-pointer items-center gap-1.5 rounded-full border px-3.5 text-sm font-semibold transition-all"
                   style={{
                     background: isActive ? "var(--wiki-cat-others-bg)" : "white",
@@ -424,6 +423,25 @@ export default function ProductsPageClient({ products }: ProductsPageClientProps
           </div>
 
           <div className="ml-auto flex items-center gap-2">
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value as ProductCategory | "")}
+              aria-label="분류 필터"
+              className="h-[34px] cursor-pointer rounded-lg border border-[var(--wiki-border)] bg-white pr-8 pl-3 text-sm font-semibold transition-all outline-none"
+              style={{
+                color: categoryFilter ? "var(--wiki-cat-others)" : "var(--wiki-text-secondary)",
+                appearance: "none",
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "right 10px center",
+              }}
+            >
+              <option value="">전체 분류</option>
+              <option value="mushroom">버섯</option>
+              <option value="fruit">과일</option>
+              <option value="wood">나무</option>
+              <option value="stone">돌</option>
+            </select>
             <select
               value={locationFilter}
               onChange={(e) => setLocationFilter(e.target.value)}
