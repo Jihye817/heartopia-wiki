@@ -278,7 +278,7 @@ export default function BugsClient({ bugs }: BugsClientProps) {
       result = result.filter((b) => b.name.toLowerCase().includes(q));
     }
     return result;
-  }, [bugs, availFilter, levelFilter, search]);
+  }, [bugs, availFilter, eventFilter, levelFilter, search]);
 
   const tabs: { id: AvailFilter; label: string }[] = [
     { id: "전체", label: "전체" },

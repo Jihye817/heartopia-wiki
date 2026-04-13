@@ -300,7 +300,7 @@ export default function FishingClient({ fishes }: FishingClientProps) {
     return result.filter(
       (f) => f.name.toLowerCase().includes(q) || f.location.toLowerCase().includes(q),
     );
-  }, [fishes, availFilter, levelFilter, search]);
+  }, [fishes, availFilter, eventFilter, levelFilter, search]);
 
   const tabs: { id: AvailFilter; label: string }[] = [
     { id: "all", label: "전체" },

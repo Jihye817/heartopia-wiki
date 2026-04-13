@@ -53,7 +53,7 @@ function CropCard({ crop }: { crop: CropListItem }) {
 
       {/* 뱃지 */}
       <div className="mb-4 flex flex-wrap justify-center gap-1.5">
-        {crop.level !== null && (
+        {crop.level !== null && crop.availability !== "event" && (
           <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
             Lv.{crop.level}
           </span>
@@ -157,7 +157,7 @@ function CropListView({ crops }: { crops: CropListItem[] }) {
                   href={`/gardening/crops/detail/${c.id}`}
                   className="block px-4 py-3 no-underline"
                 >
-                  {c.level !== null && (
+                  {c.level !== null && c.availability !== "event" && (
                     <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
                       Lv.{c.level}
                     </span>
