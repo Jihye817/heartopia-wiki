@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { FishDetail } from "../../_data/fishes";
@@ -26,7 +27,15 @@ interface FishDetailClientProps {
   fish: FishDetail;
 }
 
+const RECIPES_INITIAL = 6;
+
 export default function FishDetailClient({ fish }: FishDetailClientProps) {
+  const [recipesExpanded, setRecipesExpanded] = useState(false);
+  const visibleRecipes = recipesExpanded
+    ? fish.relatedRecipes
+    : fish.relatedRecipes.slice(0, RECIPES_INITIAL);
+  const hiddenCount = fish.relatedRecipes.length - RECIPES_INITIAL;
+
   return (
     <section className="px-4 pt-8 pb-16 md:px-6">
       <div className="mx-auto max-w-[1100px]">
@@ -321,6 +330,86 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
                   </span>
                 </div>
               </div>
+            </div>
+
+            {/* Related Recipes */}
+            <div
+              className="overflow-hidden rounded-2xl border border-[var(--wiki-border)] bg-white"
+              style={{ animation: "fadeUp 0.4s ease-out 0.1s both" }}
+            >
+              <div className="flex items-center justify-between border-b border-[var(--wiki-border-light)] px-5 py-3.5">
+                <span
+                  className="text-sm font-semibold"
+                  style={{ color: "var(--wiki-text-primary)" }}
+                >
+                  🍳 이 물고기가 사용되는 요리
+                </span>
+                <span
+                  className="text-sm font-medium"
+                  style={{ color: "var(--wiki-text-muted)" }}
+                >
+                  {fish.relatedRecipes.length}개
+                </span>
+              </div>
+
+              {fish.relatedRecipes.length === 0 ? (
+                <div
+                  className="py-8 text-center text-sm"
+                  style={{ color: "var(--wiki-text-muted)" }}
+                >
+                  이 물고기가 사용되는 요리가 없어요
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-2 p-4">
+                    {visibleRecipes.map((recipe) => (
+                      <Link
+                        key={recipe.id}
+                        href={`/cooking/recipes/detail/${recipe.id}`}
+                        className="flex items-center gap-2.5 rounded-lg border border-[var(--wiki-border-light)] px-3 py-2.5 no-underline transition-all hover:border-[#F0D4C0] hover:bg-[#FDF2EC]"
+                      >
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-md border border-[#F0D4C0] bg-[#FDF2EC]">
+                          {recipe.thumbnail ? (
+                            <Image
+                              src={recipe.thumbnail}
+                              alt=""
+                              width={32}
+                              height={32}
+                              className="h-full w-full object-contain"
+                            />
+                          ) : (
+                            <span className="text-base">🍳</span>
+                          )}
+                        </span>
+                        <span
+                          className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-semibold"
+                          style={{ color: "var(--wiki-text-primary)" }}
+                        >
+                          {recipe.name}
+                        </span>
+                        <span
+                          className="shrink-0 text-sm"
+                          style={{ color: "var(--wiki-text-muted)" }}
+                        >
+                          ›
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                  {!recipesExpanded && hiddenCount > 0 && (
+                    <div className="px-4 pb-4">
+                      <button
+                        type="button"
+                        onClick={() => setRecipesExpanded(true)}
+                        className="w-full cursor-pointer rounded-lg border border-[var(--wiki-border)] bg-white py-2.5 text-sm font-semibold transition-colors hover:bg-[var(--wiki-bg)]"
+                        style={{ color: "var(--wiki-text-tertiary)" }}
+                      >
+                        + {hiddenCount}개 더보기
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>

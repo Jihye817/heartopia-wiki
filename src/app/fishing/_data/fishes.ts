@@ -32,12 +32,19 @@ export interface FishListItem extends Fish {
   fish_grades: FishGrade[];
 }
 
+export interface RelatedRecipe {
+  id: string;
+  name: string;
+  thumbnail?: string;
+}
+
 export interface FishDetail extends Fish {
   fishType: FishType;
   shadowSize: string;
   sellMin: number;
   sellMax: number;
   grades: FishGrade[];
+  relatedRecipes: RelatedRecipe[];
 }
 
 // ── Mappers ────────────────────────────────────────────────────────────────────
@@ -92,23 +99,52 @@ export async function getFishes(): Promise<FishListItem[]> {
 }
 
 export async function getFishDetail(id: string): Promise<FishDetail | null> {
-  const { data, error } = await supabase
-    .from("fishes")
-    .select("*, fish_grades(*)")
-    .eq("id", id)
-    .single();
-  if (error || !data) return null;
+  const [fishRes, specificRes, groupRes] = await Promise.all([
+    supabase.from("fishes").select("*, fish_grades(*)").eq("id", id).single(),
+    supabase
+      .from("food_ingredients")
+      .select("foods(id, name, thumbnail)")
+      .eq("type", "specific")
+      .eq("item_id", id),
+    supabase
+      .from("food_ingredients")
+      .select("foods(id, name, thumbnail)")
+      .eq("type", "group")
+      .filter("options", "cs", `[{"id": "${id}"}]`),
+  ]);
 
-  const grades = (data.fish_grades ?? [])
+  if (fishRes.error || !fishRes.data) return null;
+
+  const grades = (fishRes.data.fish_grades ?? [])
     .map(mapGrade)
     .sort((a: FishGrade, b: FishGrade) => a.stars - b.stars);
 
+  const seen = new Set<string>();
+  const relatedRecipes: RelatedRecipe[] = [];
+  for (const row of [...(specificRes.data ?? []), ...(groupRes.data ?? [])]) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const food = (row as any).foods as {
+      id: string;
+      name: string;
+      thumbnail?: string;
+    } | null;
+    if (food && !seen.has(food.id)) {
+      seen.add(food.id);
+      relatedRecipes.push({
+        id: food.id,
+        name: food.name,
+        thumbnail: food.thumbnail ?? undefined,
+      });
+    }
+  }
+
   return {
-    ...mapFish(data),
-    fishType: data.fish_type as FishType,
-    shadowSize: data.shadow_size ?? "",
-    sellMin: data.sell_min ?? 0,
-    sellMax: data.sell_max ?? 0,
+    ...mapFish(fishRes.data),
+    fishType: fishRes.data.fish_type as FishType,
+    shadowSize: fishRes.data.shadow_size ?? "",
+    sellMin: fishRes.data.sell_min ?? 0,
+    sellMax: fishRes.data.sell_max ?? 0,
     grades,
+    relatedRecipes,
   };
 }
