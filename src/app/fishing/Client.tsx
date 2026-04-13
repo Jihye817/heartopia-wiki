@@ -64,7 +64,7 @@ function FishCard({ fish }: { fish: FishListItem }) {
           </span>
         ) : (
           <span className="rounded-full border border-[#F0D4C0] bg-[#FDF2EC] px-2.5 py-0.5 text-sm font-semibold text-[#D4845A]">
-            이벤트
+            {fish.event ?? "이벤트"}
           </span>
         )}
         {fish.shadowSize && (
@@ -258,7 +258,15 @@ export default function FishingClient({ fishes }: FishingClientProps) {
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [search, setSearch] = useState("");
   const [availFilter, setAvailFilter] = useState<AvailFilter>("all");
+  const [eventFilter, setEventFilter] = useState<string | null>(null);
   const [levelFilter, setLevelFilter] = useState<number | null>(null);
+
+  const eventNames = useMemo(() => {
+    const names = fishes
+      .filter((f) => f.availability !== "always" && f.event)
+      .map((f) => f.event as string);
+    return Array.from(new Set(names)).sort();
+  }, [fishes]);
 
   const levels = useMemo(() => {
     return Array.from(
@@ -284,6 +292,8 @@ export default function FishingClient({ fishes }: FishingClientProps) {
         : availFilter === "always"
           ? fishes.filter((f) => f.availability === "always")
           : fishes.filter((f) => f.availability !== "always");
+    if (availFilter === "event" && eventFilter)
+      result = result.filter((f) => f.event === eventFilter);
     if (levelFilter !== null) result = result.filter((f) => f.level === levelFilter);
     if (!search.trim()) return result;
     const q = search.trim().toLowerCase();
@@ -399,7 +409,7 @@ export default function FishingClient({ fishes }: FishingClientProps) {
                   type="button"
                   role="tab"
                   aria-selected={isActive}
-                  onClick={() => setAvailFilter(tab.id)}
+                  onClick={() => { setAvailFilter(tab.id); setEventFilter(null); }}
                   className="flex h-[34px] cursor-pointer items-center gap-1.5 rounded-full border px-3.5 text-sm font-semibold transition-all"
                   style={{
                     background: isActive ? "var(--wiki-cat-fishing-bg)" : "white",
@@ -424,6 +434,27 @@ export default function FishingClient({ fishes }: FishingClientProps) {
                 </button>
               );
             })}
+
+            {availFilter === "event" && eventNames.length > 0 && (
+              <select
+                value={eventFilter ?? ""}
+                onChange={(e) => setEventFilter(e.target.value || null)}
+                aria-label="이벤트 필터"
+                className="h-[34px] cursor-pointer rounded-lg border border-[var(--wiki-border)] bg-white pr-8 pl-3 text-sm font-semibold transition-all outline-none"
+                style={{
+                  color: "#D4845A",
+                  appearance: "none",
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 10px center",
+                }}
+              >
+                <option value="">전체 이벤트</option>
+                {eventNames.map((name) => (
+                  <option key={name} value={name}>{name}</option>
+                ))}
+              </select>
+            )}
           </div>
 
           <div className="ml-auto flex items-center gap-2">

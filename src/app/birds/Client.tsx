@@ -54,7 +54,7 @@ function BirdCard({ bird }: { bird: BirdListItem }) {
         )}
         {bird.availability === "event" ? (
           <span className="rounded-full border border-[#F0D4C0] bg-[#FDF2EC] px-2.5 py-0.5 text-sm font-semibold text-[#D4845A]">
-            이벤트
+            {bird.event ?? "이벤트"}
           </span>
         ) : bird.availability === "nest-of-hundreds" ? (
           <span className="rounded-full border border-[#e8d5ff] bg-[var(--wiki-cat-birds-bg)] px-2.5 py-0.5 text-sm font-semibold text-[#8a6bbf]">
@@ -237,7 +237,15 @@ export default function BirdsClient({ birds }: BirdsClientProps) {
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [search, setSearch] = useState("");
   const [availFilter, setAvailFilter] = useState<AvailFilter>("전체");
+  const [eventFilter, setEventFilter] = useState<string | null>(null);
   const [levelFilter, setLevelFilter] = useState<number | null>(null);
+
+  const eventNames = useMemo(() => {
+    const names = birds
+      .filter((b) => b.availability === "event" && b.event)
+      .map((b) => b.event as string);
+    return Array.from(new Set(names)).sort();
+  }, [birds]);
 
   const levels = useMemo(() => {
     return Array.from(
@@ -269,6 +277,8 @@ export default function BirdsClient({ birds }: BirdsClientProps) {
       result = result.filter((b) => b.availability === "nest-of-hundreds");
     else if (availFilter === "이벤트")
       result = result.filter((b) => b.availability === "event");
+    if (availFilter === "이벤트" && eventFilter)
+      result = result.filter((b) => b.event === eventFilter);
     if (levelFilter !== null)
       result = result.filter((b) => b.level === levelFilter);
     if (search.trim()) {
@@ -386,7 +396,7 @@ export default function BirdsClient({ birds }: BirdsClientProps) {
                   type="button"
                   role="tab"
                   aria-selected={isActive}
-                  onClick={() => setAvailFilter(tab.id)}
+                  onClick={() => { setAvailFilter(tab.id); setEventFilter(null); }}
                   className="flex h-[34px] cursor-pointer items-center gap-1.5 rounded-full border px-3.5 text-sm font-semibold transition-all"
                   style={{
                     background: isActive ? "var(--wiki-cat-birds-bg)" : "white",
@@ -413,6 +423,26 @@ export default function BirdsClient({ birds }: BirdsClientProps) {
                 </button>
               );
             })}
+            {availFilter === "이벤트" && eventNames.length > 0 && (
+              <select
+                value={eventFilter ?? ""}
+                onChange={(e) => setEventFilter(e.target.value || null)}
+                aria-label="이벤트 필터"
+                className="h-[34px] cursor-pointer rounded-lg border border-[var(--wiki-border)] bg-white pr-8 pl-3 text-sm font-semibold transition-all outline-none"
+                style={{
+                  color: "#D4845A",
+                  appearance: "none",
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 10px center",
+                }}
+              >
+                <option value="">전체 이벤트</option>
+                {eventNames.map((name) => (
+                  <option key={name} value={name}>{name}</option>
+                ))}
+              </select>
+            )}
           </div>
 
           <div className="ml-auto flex items-center gap-2">
