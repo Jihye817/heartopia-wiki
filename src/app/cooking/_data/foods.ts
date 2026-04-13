@@ -37,7 +37,7 @@ export interface Food {
 export interface FoodGrade {
   stars: number;
   sellPrice: number;
-  sellEventPrice: number;
+  eventPrice: number;
 }
 
 export interface FoodListItem extends Food {
@@ -73,7 +73,7 @@ function mapGrade(row: any): FoodGrade {
   return {
     stars: row.stars,
     sellPrice: row.sell_price ?? 0,
-    sellEventPrice: row.sell_event_price ?? 0,
+    eventPrice: row.event_price ?? 0,
   };
 }
 

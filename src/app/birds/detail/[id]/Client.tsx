@@ -323,6 +323,14 @@ export default function BirdDetailClient({ bird }: BirdDetailClientProps) {
                             ? `${g.sellPrice.toLocaleString()} G`
                             : "-"}
                         </span>
+                        {bird.availability === "event" && g.eventPrice > 0 && (
+                          <div
+                            className="mt-0.5 text-sm font-semibold tabular-nums"
+                            style={{ color: "#7c3aed" }}
+                          >
+                            Ⓔ {g.eventPrice.toLocaleString()}
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}

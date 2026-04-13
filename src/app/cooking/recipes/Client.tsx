@@ -61,9 +61,11 @@ function FoodCard({ food }: { food: FoodListItem }) {
 
       {/* 뱃지 */}
       <div className="mb-4 flex flex-wrap justify-center gap-1.5">
-        <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
-          Lv.{food.level}
-        </span>
+        {food.availability !== "event" && (
+          <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
+            Lv.{food.level}
+          </span>
+        )}
         {food.availability === "event" ? (
           <span className="rounded-full border border-[#F0D4C0] bg-[#FDF2EC] px-2.5 py-0.5 text-sm font-semibold text-[#D4845A]">
             {food.event ?? "이벤트"}
@@ -161,9 +163,11 @@ function FoodListView({ foods }: { foods: FoodListItem[] }) {
                   href={`/cooking/recipes/detail/${food.id}`}
                   className="block px-4 py-3 no-underline"
                 >
-                  <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
-                    Lv.{food.level}
-                  </span>
+                  {food.availability !== "event" && (
+                    <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
+                      Lv.{food.level}
+                    </span>
+                  )}
                 </Link>
               </td>
               <td className="p-0">

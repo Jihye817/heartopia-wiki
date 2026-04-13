@@ -20,7 +20,7 @@ export interface Fish {
 export interface FishGrade {
   stars: number;
   sellPrice: number;
-  sellEventPrice: number;
+  eventPrice: number;
 }
 
 export interface FishListItem extends Fish {
@@ -62,7 +62,7 @@ function mapGrade(row: any): FishGrade {
   return {
     stars: row.stars,
     sellPrice: row.sell_price ?? 0,
-    sellEventPrice: row.sell_event_price ?? 0,
+    eventPrice: row.event_price ?? 0,
   };
 }
 

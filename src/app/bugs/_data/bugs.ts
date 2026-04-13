@@ -33,7 +33,7 @@ export interface Bug {
 export interface BugGrade {
   stars: number;
   sellPrice: number;
-  sellEventPrice: number;
+  eventPrice: number;
 }
 
 export interface BugListItem extends Bug {
@@ -72,7 +72,7 @@ function mapGrade(row: any): BugGrade {
   return {
     stars: row.stars,
     sellPrice: row.sell_price ?? 0,
-    sellEventPrice: row.sell_event_price ?? 0,
+    eventPrice: row.event_price ?? 0,
   };
 }
 

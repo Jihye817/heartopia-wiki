@@ -47,7 +47,7 @@ function BirdCard({ bird }: { bird: BirdListItem }) {
 
       {/* 뱃지 */}
       <div className="mb-4 flex flex-wrap justify-center gap-1.5">
-        {bird.level !== null && (
+        {bird.level !== null && bird.availability !== "event" && (
           <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
             관찰 Lv.{bird.level}
           </span>
@@ -154,7 +154,7 @@ function BirdListView({ birds }: { birds: BirdListItem[] }) {
                   href={`/birds/detail/${bird.id}`}
                   className="block px-4 py-3 no-underline"
                 >
-                  {bird.level !== null && (
+                  {bird.level !== null && bird.availability !== "event" && (
                     <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
                       Lv.{bird.level}
                     </span>
