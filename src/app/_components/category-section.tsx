@@ -238,6 +238,35 @@ function PawPrintIcon({
   );
 }
 
+function NpcIcon({
+  size = 24,
+  color = "currentColor",
+}: {
+  size?: number;
+  color?: string;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="7" r="3.3" fill={color} fillOpacity="0.22" stroke={color} />
+      <path
+        d="M5 21 C5 17 8.13 14 12 14 C15.87 14 19 17 19 21 Z"
+        fill={color}
+        fillOpacity="0.16"
+        stroke={color}
+      />
+    </svg>
+  );
+}
+
 function PouchIcon({
   size = 24,
   color = "currentColor",
@@ -335,6 +364,16 @@ const CATEGORIES = [
     accent: "#c96a42",
     bg: "var(--wiki-cat-pets-bg)",
     href: undefined,
+  },
+  {
+    id: "npc",
+    icon: NpcIcon,
+    title: "NPC",
+    desc: "마을 주민과 캐릭터 정보",
+    color: "var(--wiki-cat-npc)",
+    accent: "#b8920a",
+    bg: "var(--wiki-cat-npc-bg)",
+    href: "/npc",
   },
   {
     id: "others",

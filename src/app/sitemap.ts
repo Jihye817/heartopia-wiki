@@ -6,11 +6,26 @@ import { getFishes } from "./fishing/_data/fishes";
 import { getFoods } from "./cooking/_data/foods";
 import { getBirds } from "./birds/_data/birds";
 import { getBugs } from "./bugs/_data/bugs";
+import { getDogs, getCats } from "./pets/_data/pets";
+import { getNpcs } from "./npc/_data/npcs";
 
 const BASE_URL = "https://heartopia-gamewiki.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [flowers, crops, foods, fishes, bugs, birds, products] = await Promise.all([getFlowers(), getCrops(), getFoods(), getFishes(), getBugs(), getBirds(), getProducts()]);
+  const [flowers, crops, foods, fishes, bugs, birds, products, dogs, cats, npcs] =
+    await Promise.all([
+      getFlowers(),
+      getCrops(),
+      getFoods(),
+      getFishes(),
+      getBugs(),
+      getBirds(),
+      getProducts(),
+      getDogs(),
+      getCats(),
+      getNpcs(),
+    ]);
+
   // ── 정적 라우트 ──────────────────────────────────────────────
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE_URL, priority: 1.0 },
@@ -25,8 +40,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/cooking/calculator`, priority: 0.8 },
     { url: `${BASE_URL}/bugs`, priority: 0.8 },
     { url: `${BASE_URL}/birds`, priority: 0.8 },
+    { url: `${BASE_URL}/pets`, priority: 0.8 },
+    { url: `${BASE_URL}/pets/dogs`, priority: 0.8 },
+    { url: `${BASE_URL}/pets/cats`, priority: 0.8 },
     { url: `${BASE_URL}/others`, priority: 0.7 },
     { url: `${BASE_URL}/others/products`, priority: 0.8 },
+    { url: `${BASE_URL}/npc`, priority: 0.8 },
   ];
 
   // ── 동적 라우트 ──────────────────────────────────────────────
@@ -65,6 +84,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
+  const dogRoutes: MetadataRoute.Sitemap = dogs.map((d) => ({
+    url: `${BASE_URL}/pets/dogs/detail/${d.id}`,
+    priority: 0.6,
+  }));
+
+  const catRoutes: MetadataRoute.Sitemap = cats.map((c) => ({
+    url: `${BASE_URL}/pets/cats/details/${c.id}`,
+    priority: 0.6,
+  }));
+
+  const npcRoutes: MetadataRoute.Sitemap = npcs.map((n) => ({
+    url: `${BASE_URL}/npc/detail/${n.id}`,
+    priority: 0.6,
+  }));
+
   return [
     ...staticRoutes,
     ...cropRoutes,
@@ -74,5 +108,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...foodRoutes,
     ...birdRoutes,
     ...bugRoutes,
+    ...dogRoutes,
+    ...catRoutes,
+    ...npcRoutes,
   ];
 }
