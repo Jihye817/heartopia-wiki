@@ -1,40 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { FishDetail } from "../../_data/fishes";
 import { TIME_SLOTS } from "../../_constants/time-slots";
+import { WEATHER_SLOTS } from "../../_constants/weather-slots";
 
-const TIME_SLOT_STYLE: Record<string, { iconBg: string; color: string }> = {
-  always:  { iconBg: "#E8F4ED", color: "#5B9A6F" },
-  dawn:    { iconBg: "#EDEAFF", color: "#6B5EC8" },
-  morning: { iconBg: "#FFF8E1", color: "#A87820" },
-  day:     { iconBg: "#FEF0E7", color: "#B8653A" },
-  night:   { iconBg: "#EAF0F9", color: "#3A5A8C" },
-};
+function MetaBadge({
+  iconBg,
+  icon,
+  label,
+}: {
+  iconBg: string;
+  icon: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <span
+      className="inline-flex items-center overflow-hidden rounded-md text-sm font-semibold"
+      style={{ background: "#F4F4F4" }}
+    >
+      <span
+        className="flex h-full items-center px-2 py-1"
+        style={{ background: iconBg }}
+      >
+        {icon}
+      </span>
+      <span
+        className="px-2 py-1"
+        style={{ color: "var(--wiki-text-secondary)" }}
+      >
+        {label}
+      </span>
+    </span>
+  );
+}
 
 function TimeSlotBadge({ slot }: { slot: string }) {
   const def = TIME_SLOTS[slot];
-  const style = TIME_SLOT_STYLE[slot] ?? { iconBg: "#F4F4F4", color: "#666" };
-  if (!def) return (
-    <span className="inline-flex rounded-md px-2 py-1 text-sm font-semibold" style={{ color: "var(--wiki-text-secondary)" }}>
-      {slot}
-    </span>
-  );
-  const { Icon, range, label } = def;
+  if (!def) return <MetaBadge iconBg="#F4F4F4" icon={null} label={slot} />;
+  const { Icon, range, label, iconBg, iconColor } = def;
   return (
-    <span className="inline-flex items-center overflow-hidden rounded-md text-sm font-semibold" style={{ background: "#F4F4F4" }}>
-      <span
-        className="flex h-full items-center px-2 py-1"
-        style={{ background: style.iconBg }}
-      >
-        <Icon size={13} strokeWidth={2} color={style.color} aria-hidden />
-      </span>
-      <span className="px-2 py-1" style={{ color: "var(--wiki-text-secondary)" }}>
-        {range ?? label}
-      </span>
-    </span>
+    <MetaBadge
+      iconBg={iconBg}
+      icon={<Icon size={13} strokeWidth={2} color={iconColor} aria-hidden />}
+      label={range ?? label}
+    />
+  );
+}
+
+function WeatherBadge({ weather }: { weather: string }) {
+  const def = WEATHER_SLOTS[weather];
+  if (!def) return <MetaBadge iconBg="#F4F4F4" icon={null} label={weather} />;
+  const { Icon, label, iconBg, iconColor } = def;
+  return (
+    <MetaBadge
+      iconBg={iconBg}
+      icon={<Icon size={13} strokeWidth={2} color={iconColor} aria-hidden />}
+      label={label}
+    />
   );
 }
 
@@ -173,20 +198,32 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
               <table className="w-full border-collapse">
                 <tbody>
                   <tr className="border-b border-[var(--wiki-border-light)]">
-                    <th className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold" style={{ color: "var(--wiki-text-secondary)" }}>
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
+                    >
                       낚시 레벨
                     </th>
-                    <td className="px-5 py-3.5 text-sm" style={{ color: "var(--wiki-text-primary)" }}>
+                    <td
+                      className="px-5 py-3.5 text-sm"
+                      style={{ color: "var(--wiki-text-primary)" }}
+                    >
                       <span className="inline-flex rounded-md bg-[#EBF3F9] px-3 py-1 text-sm font-semibold text-[#4A8DB7]">
                         Lv.{fish.level}
                       </span>
                     </td>
                   </tr>
                   <tr className="border-b border-[var(--wiki-border-light)]">
-                    <th className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold" style={{ color: "var(--wiki-text-secondary)" }}>
+                    <th
+                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-secondary)" }}
+                    >
                       활동시기
                     </th>
-                    <td className="px-5 py-3.5 text-sm" style={{ color: "var(--wiki-text-primary)" }}>
+                    <td
+                      className="px-5 py-3.5 text-sm"
+                      style={{ color: "var(--wiki-text-primary)" }}
+                    >
                       {fish.availability === "always" ? (
                         <span className="inline-flex rounded-md bg-[#EEF6F0] px-3 py-1 text-sm font-semibold text-[#5B9A6F]">
                           일상
@@ -235,10 +272,18 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
                     </th>
                     <td className="px-5 py-3.5">
                       <div className="flex flex-wrap gap-1.5">
-                        {fish.times.length > 0
-                          ? fish.times.map((t) => <TimeSlotBadge key={t} slot={t} />)
-                          : <span className="text-sm font-semibold" style={{ color: "var(--wiki-text-primary)" }}>-</span>
-                        }
+                        {fish.times.length > 0 ? (
+                          fish.times.map((t) => (
+                            <TimeSlotBadge key={t} slot={t} />
+                          ))
+                        ) : (
+                          <span
+                            className="text-sm font-semibold"
+                            style={{ color: "var(--wiki-text-primary)" }}
+                          >
+                            -
+                          </span>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -255,11 +300,21 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
                     >
                       날씨
                     </th>
-                    <td
-                      className="px-5 py-3.5 text-sm font-semibold"
-                      style={{ color: "var(--wiki-text-primary)" }}
-                    >
-                      {fish.weathers.join(", ")}
+                    <td className="px-5 py-3.5">
+                      <div className="flex flex-wrap gap-1.5">
+                        {fish.weathers.length > 0 ? (
+                          fish.weathers.map((w) => (
+                            <WeatherBadge key={w} weather={w} />
+                          ))
+                        ) : (
+                          <span
+                            className="text-sm font-semibold"
+                            style={{ color: "var(--wiki-text-primary)" }}
+                          >
+                            -
+                          </span>
+                        )}
+                      </div>
                     </td>
                   </tr>
                   {fish.desc && (
@@ -415,7 +470,7 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
                           )}
                         </span>
                         <span
-                          className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-semibold"
+                          className="flex-1 overflow-hidden text-sm font-semibold text-ellipsis whitespace-nowrap"
                           style={{ color: "var(--wiki-text-primary)" }}
                         >
                           {recipe.name}

@@ -12,6 +12,7 @@ export interface TimeSlotDef {
   label: string;
   range: string | null;
   Icon: LucideIcon;
+  iconBg: string;
   iconColor: string;
 }
 
@@ -21,6 +22,7 @@ export const TIME_SLOTS: Record<string, TimeSlotDef> = {
     label: "상시",
     range: null,
     Icon: Clock,
+    iconBg: "#E8F4ED",
     iconColor: "#5B9A6F",
   },
   dawn: {
@@ -28,6 +30,7 @@ export const TIME_SLOTS: Record<string, TimeSlotDef> = {
     label: "새벽",
     range: "0~6",
     Icon: Sunrise,
+    iconBg: "#EDEAFF",
     iconColor: "#6B5EC8",
   },
   morning: {
@@ -35,6 +38,7 @@ export const TIME_SLOTS: Record<string, TimeSlotDef> = {
     label: "아침",
     range: "6~12",
     Icon: SunMedium,
+    iconBg: "#FFF8E1",
     iconColor: "#A87820",
   },
   day: {
@@ -42,6 +46,7 @@ export const TIME_SLOTS: Record<string, TimeSlotDef> = {
     label: "낮",
     range: "12~18",
     Icon: Sun,
+    iconBg: "#FEF0E7",
     iconColor: "#B8653A",
   },
   night: {
@@ -49,6 +54,7 @@ export const TIME_SLOTS: Record<string, TimeSlotDef> = {
     label: "밤",
     range: "18~24",
     Icon: Moon,
+    iconBg: "#EAF0F9",
     iconColor: "#3A5A8C",
   },
 };
