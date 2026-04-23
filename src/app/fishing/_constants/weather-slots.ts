@@ -2,9 +2,9 @@ import {
   Sun,
   CloudRain,
   CloudSnow,
-  Sparkles,
   Clock,
   type LucideIcon,
+  Rainbow,
 } from "lucide-react";
 
 export interface WeatherSlotDef {
@@ -47,7 +47,7 @@ export const WEATHER_SLOTS: Record<string, WeatherSlotDef> = {
   rainbow: {
     id: "rainbow",
     label: "무지개",
-    Icon: Sparkles,
+    Icon: Rainbow,
     iconBg: "#F3E8FF",
     iconColor: "#9333EA",
   },
