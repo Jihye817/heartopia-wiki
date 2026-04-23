@@ -4,6 +4,39 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { FishDetail } from "../../_data/fishes";
+import { TIME_SLOTS } from "../../_constants/time-slots";
+
+const TIME_SLOT_STYLE: Record<string, { iconBg: string; color: string }> = {
+  always:  { iconBg: "#E8F4ED", color: "#5B9A6F" },
+  dawn:    { iconBg: "#EDEAFF", color: "#6B5EC8" },
+  morning: { iconBg: "#FFF8E1", color: "#A87820" },
+  day:     { iconBg: "#FEF0E7", color: "#B8653A" },
+  night:   { iconBg: "#EAF0F9", color: "#3A5A8C" },
+};
+
+function TimeSlotBadge({ slot }: { slot: string }) {
+  const def = TIME_SLOTS[slot];
+  const style = TIME_SLOT_STYLE[slot] ?? { iconBg: "#F4F4F4", color: "#666" };
+  if (!def) return (
+    <span className="inline-flex rounded-md px-2 py-1 text-sm font-semibold" style={{ color: "var(--wiki-text-secondary)" }}>
+      {slot}
+    </span>
+  );
+  const { Icon, range, label } = def;
+  return (
+    <span className="inline-flex items-center overflow-hidden rounded-md text-sm font-semibold" style={{ background: "#F4F4F4" }}>
+      <span
+        className="flex h-full items-center px-2 py-1"
+        style={{ background: style.iconBg }}
+      >
+        <Icon size={13} strokeWidth={2} color={style.color} aria-hidden />
+      </span>
+      <span className="px-2 py-1" style={{ color: "var(--wiki-text-secondary)" }}>
+        {range ?? label}
+      </span>
+    </span>
+  );
+}
 
 const FISHING_BG = "#e8f4fb";
 const FISHING_BORDER = "#b8dcf0";
@@ -116,14 +149,12 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
                   낚시 Lv.{fish.level}
                 </span>
                 <span
-                  className="rounded-md border px-3 py-1 text-sm font-semibold"
+                  className="rounded-md px-3 py-1 text-sm font-semibold"
                   style={{
                     background:
                       SHADOW_SIZE_STYLE[fish.shadowSize]?.bg ?? "#F0EBFF",
                     color:
                       SHADOW_SIZE_STYLE[fish.shadowSize]?.color ?? "#7B5EAE",
-                    borderColor:
-                      SHADOW_SIZE_STYLE[fish.shadowSize]?.border ?? "#D8C8F0",
                   }}
                 >
                   그림자 {fish.shadowSize}
@@ -202,11 +233,13 @@ export default function FishDetailClient({ fish }: FishDetailClientProps) {
                     >
                       시간
                     </th>
-                    <td
-                      className="px-5 py-3.5 text-sm font-semibold"
-                      style={{ color: "var(--wiki-text-primary)" }}
-                    >
-                      {fish.times.join(", ")}
+                    <td className="px-5 py-3.5">
+                      <div className="flex flex-wrap gap-1.5">
+                        {fish.times.length > 0
+                          ? fish.times.map((t) => <TimeSlotBadge key={t} slot={t} />)
+                          : <span className="text-sm font-semibold" style={{ color: "var(--wiki-text-primary)" }}>-</span>
+                        }
+                      </div>
                     </td>
                   </tr>
                   <tr
