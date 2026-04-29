@@ -251,17 +251,16 @@ function NpcIcon({
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={color}
-      strokeWidth="1.7"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <circle cx="12" cy="7" r="3.3" fill={color} fillOpacity="0.22" stroke={color} />
+      <circle cx="12" cy="8" r="4" fill={color} fillOpacity="0.3" stroke={color} strokeWidth="1.6" />
       <path
-        d="M5 21 C5 17 8.13 14 12 14 C15.87 14 19 17 19 21 Z"
+        d="M4 20c0-4.4 3.58-8 8-8s8 3.6 8 8"
         fill={color}
-        fillOpacity="0.16"
+        fillOpacity="0.2"
         stroke={color}
+        strokeWidth="1.6"
       />
     </svg>
   );
@@ -371,7 +370,7 @@ const CATEGORIES = [
     title: "NPC",
     desc: "마을 주민과 캐릭터 정보",
     color: "var(--wiki-cat-npc)",
-    accent: "#b8920a",
+    accent: "#5a6ee0",
     bg: "var(--wiki-cat-npc-bg)",
     href: "/npc",
   },

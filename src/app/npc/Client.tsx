@@ -6,7 +6,13 @@ import Image from "next/image";
 import { Search } from "lucide-react";
 import type { Npc, NpcCategory } from "./_data/npcs";
 
-const CATEGORY_LABEL: NpcCategory[] = ["상점", "사건", "퀘스트", "가이드", "주민"];
+const CATEGORY_LABEL: NpcCategory[] = [
+  "상점",
+  "사건",
+  "퀘스트",
+  "가이드",
+  "주민",
+];
 
 const CATEGORY_COLOR: Record<
   NpcCategory,
@@ -35,43 +41,21 @@ function NpcCard({ npc }: { npc: Npc }) {
   return (
     <Link
       href={`/npc/detail/${npc.id}`}
-      className="group flex flex-col items-center rounded-2xl border border-[var(--wiki-border)] bg-white px-5 pt-6 pb-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:border-[#b8920a33] hover:shadow-[0_8px_24px_rgba(184,146,10,0.10)]"
+      className="group flex flex-col items-center rounded-2xl border border-[var(--wiki-border)] bg-white px-5 pt-6 pb-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:border-[#5a6ee033] hover:shadow-[0_8px_24px_rgba(90,110,224,0.10)]"
     >
       {/* 썸네일 */}
       <div
         className="mb-4 flex h-[100px] w-[100px] items-center justify-center overflow-hidden rounded-xl border bg-[var(--wiki-cat-npc-bg)] p-2 transition-transform duration-200 group-hover:scale-105"
-        style={{ borderColor: "#e8d080" }}
+        style={{ borderColor: "#b0b8f0" }}
       >
         {npc.thumbnail ? (
           <div className="relative h-full w-full">
             <Image src={npc.thumbnail} alt="" fill className="object-contain" />
           </div>
         ) : (
-          <svg
-            width="52"
-            height="52"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="var(--wiki-cat-npc)"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle
-              cx="12"
-              cy="7"
-              r="4"
-              fill="var(--wiki-cat-npc)"
-              fillOpacity="0.2"
-              stroke="var(--wiki-cat-npc)"
-            />
-            <path
-              d="M4 21c0-4.42 3.58-8 8-8s8 3.58 8 8"
-              fill="var(--wiki-cat-npc)"
-              fillOpacity="0.12"
-              stroke="var(--wiki-cat-npc)"
-            />
-          </svg>
+          <span className="text-4xl" aria-hidden>
+            🧑
+          </span>
         )}
       </div>
 
@@ -236,7 +220,7 @@ export default function NpcPageClient({ npcs }: NpcPageClientProps) {
                 background:
                   categoryFilter === "" ? "var(--wiki-cat-npc-bg)" : "white",
                 borderColor:
-                  categoryFilter === "" ? "#e0c860" : "var(--wiki-border)",
+                  categoryFilter === "" ? "#a0aaf0" : "var(--wiki-border)",
                 color:
                   categoryFilter === ""
                     ? "var(--wiki-cat-npc)"
@@ -249,7 +233,7 @@ export default function NpcPageClient({ npcs }: NpcPageClientProps) {
                 style={{
                   background:
                     categoryFilter === ""
-                      ? "rgba(184,146,10,0.15)"
+                      ? "rgba(90,110,224,0.12)"
                       : "var(--wiki-border-light)",
                   color:
                     categoryFilter === ""
@@ -262,7 +246,6 @@ export default function NpcPageClient({ npcs }: NpcPageClientProps) {
             </button>
             {CATEGORY_LABEL.map((cat) => {
               const isActive = categoryFilter === cat;
-              const c = CATEGORY_COLOR[cat];
               return (
                 <button
                   key={cat}
@@ -272,9 +255,11 @@ export default function NpcPageClient({ npcs }: NpcPageClientProps) {
                   onClick={() => setCategoryFilter(isActive ? "" : cat)}
                   className="flex h-[34px] cursor-pointer items-center gap-1.5 rounded-full border px-3.5 text-sm font-semibold transition-all"
                   style={{
-                    background: isActive ? c.bg : "white",
-                    borderColor: isActive ? c.border : "var(--wiki-border)",
-                    color: isActive ? c.color : "var(--wiki-text-secondary)",
+                    background: isActive ? "var(--wiki-cat-npc-bg)" : "white",
+                    borderColor: isActive ? "#a0aaf0" : "var(--wiki-border)",
+                    color: isActive
+                      ? "var(--wiki-cat-npc)"
+                      : "var(--wiki-text-secondary)",
                   }}
                 >
                   {cat}
@@ -282,9 +267,11 @@ export default function NpcPageClient({ npcs }: NpcPageClientProps) {
                     className="rounded-[10px] px-1.5 py-0.5 text-sm"
                     style={{
                       background: isActive
-                        ? `${c.color}22`
+                        ? "rgba(90,110,224,0.12)"
                         : "var(--wiki-border-light)",
-                      color: isActive ? c.color : "var(--wiki-text-tertiary)",
+                      color: isActive
+                        ? "var(--wiki-cat-npc)"
+                        : "var(--wiki-text-tertiary)",
                     }}
                   >
                     {categoryCounts[cat]}

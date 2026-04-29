@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { Npc, NpcCategory, NpcItem } from "../../_data/npcs";
 
 const NPC_BG = "var(--wiki-cat-npc-bg)";
-const NPC_BORDER = "#e8d080";
+const NPC_BORDER = "#b0b8f0";
 
 const CATEGORY_COLOR: Record<
   NpcCategory,
@@ -87,31 +87,7 @@ export default function NpcDetailClient({ npc }: NpcDetailClientProps) {
                     className="h-full w-full object-contain"
                   />
                 ) : (
-                  <svg
-                    width="80"
-                    height="80"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="var(--wiki-cat-npc)"
-                    strokeWidth="1.3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle
-                      cx="12"
-                      cy="7"
-                      r="4"
-                      fill="var(--wiki-cat-npc)"
-                      fillOpacity="0.2"
-                      stroke="var(--wiki-cat-npc)"
-                    />
-                    <path
-                      d="M4 21c0-4.42 3.58-8 8-8s8 3.58 8 8"
-                      fill="var(--wiki-cat-npc)"
-                      fillOpacity="0.12"
-                      stroke="var(--wiki-cat-npc)"
-                    />
-                  </svg>
+                  <span className="text-6xl" aria-hidden>🧑</span>
                 )}
               </div>
               <div
