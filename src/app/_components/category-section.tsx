@@ -238,6 +238,34 @@ function PawPrintIcon({
   );
 }
 
+function NpcIcon({
+  size = 24,
+  color = "currentColor",
+}: {
+  size?: number;
+  color?: string;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="8" r="4" fill={color} fillOpacity="0.3" stroke={color} strokeWidth="1.6" />
+      <path
+        d="M4 20c0-4.4 3.58-8 8-8s8 3.6 8 8"
+        fill={color}
+        fillOpacity="0.2"
+        stroke={color}
+        strokeWidth="1.6"
+      />
+    </svg>
+  );
+}
+
 function PouchIcon({
   size = 24,
   color = "currentColor",
@@ -334,7 +362,17 @@ const CATEGORIES = [
     color: "var(--wiki-cat-pets)",
     accent: "#c96a42",
     bg: "var(--wiki-cat-pets-bg)",
-    href: undefined,
+    href: "/pets",
+  },
+  {
+    id: "npc",
+    icon: NpcIcon,
+    title: "NPC",
+    desc: "마을 주민과 캐릭터 정보",
+    color: "var(--wiki-cat-npc)",
+    accent: "#5a6ee0",
+    bg: "var(--wiki-cat-npc-bg)",
+    href: "/npc",
   },
   {
     id: "others",
@@ -346,7 +384,7 @@ const CATEGORIES = [
     bg: "var(--wiki-cat-others-bg)",
     href: "/others",
   },
-] as const;
+];
 
 export function CategorySection() {
   return (

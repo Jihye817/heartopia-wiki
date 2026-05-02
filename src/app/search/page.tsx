@@ -76,7 +76,8 @@ export async function generateMetadata({
     title: q
       ? `"${q}" 검색 결과 | 두근두근타운 위키`
       : "검색 | 두근두근타운 위키",
-    description: "두근두근타운 위키에서 아이템, 물고기, 레시피, 꽃, 곤충, 새 등을 검색해보세요.",
+    description:
+      "두근두근타운 위키에서 아이템, 물고기, 레시피, 꽃, 곤충, 새 등을 검색해보세요.",
     alternates: { canonical: "/search" },
     robots: { index: false },
   };

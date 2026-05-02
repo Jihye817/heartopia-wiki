@@ -10,10 +10,11 @@ const NAV_ITEMS = [
   { label: "낚시", href: "/fishing" },
   { label: "곤충 채집", href: "/bugs" },
   { label: "새 관찰", href: "/birds" },
-  { label: "반려동물", href: undefined },
+  { label: "반려동물", href: "/pets" },
+  { label: "NPC", href: "/npc" },
   { label: "기타 수집", href: "/others" },
   { label: "쿠폰", href: "/coupons" },
-] as const;
+];
 
 const linkClassName =
   "text-sm font-semibold text-[var(--wiki-text-secondary)] no-underline px-2.5 py-1.5 rounded-lg transition-colors hover:bg-[var(--wiki-border-light)] hover:text-[var(--wiki-text-primary)] whitespace-nowrap";
