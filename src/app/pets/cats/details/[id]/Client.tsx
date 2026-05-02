@@ -157,22 +157,22 @@ export default function CatDetailClient({ cat }: CatDetailClientProps) {
                   {cat.eyeShapes.length}종
                 </span>
               </div>
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(90px,1fr))] gap-2.5 p-4">
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(130px,1fr))] gap-2.5 p-4">
                 {cat.eyeShapes.map((eye) => (
                   <div
                     key={eye.id}
-                    className="flex flex-col items-center gap-2 rounded-xl border border-[var(--wiki-border-light)] px-2 py-3 transition-colors hover:bg-[var(--wiki-bg)]"
+                    className="flex flex-col items-center gap-2 rounded-xl border border-[var(--wiki-border-light)] px-4 py-4 transition-colors hover:bg-[var(--wiki-bg)]"
                   >
                     <div
-                      className="flex h-8 w-12 items-center justify-center overflow-hidden rounded-md border"
+                      className="flex h-10 w-full items-center justify-center overflow-hidden rounded-md border"
                       style={{ borderColor: CAT_BORDER, background: CAT_BG }}
                     >
                       {eye.image ? (
                         <Image
                           src={eye.image}
                           alt=""
-                          width={48}
-                          height={32}
+                          width={80}
+                          height={40}
                           className="object-contain"
                         />
                       ) : (
@@ -180,7 +180,7 @@ export default function CatDetailClient({ cat }: CatDetailClientProps) {
                       )}
                     </div>
                     <span
-                      className="text-center text-xs font-semibold"
+                      className="text-center text-sm font-semibold"
                       style={{ color: "var(--wiki-text-secondary)" }}
                     >
                       {eye.name}
@@ -206,22 +206,22 @@ export default function CatDetailClient({ cat }: CatDetailClientProps) {
                   {cat.eyeColors.length}종
                 </span>
               </div>
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(90px,1fr))] gap-2.5 p-4">
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(130px,1fr))] gap-2.5 p-4">
                 {cat.eyeColors.map((color) => (
                   <div
                     key={color.id}
-                    className="flex flex-col items-center gap-2 rounded-xl border border-[var(--wiki-border-light)] px-2 py-3 transition-colors hover:bg-[var(--wiki-bg)]"
+                    className="flex flex-col items-center gap-2 rounded-xl border border-[var(--wiki-border-light)] px-4 py-4 transition-colors hover:bg-[var(--wiki-bg)]"
                   >
                     <div
-                      className="flex h-8 w-12 items-center justify-center overflow-hidden rounded-md border"
+                      className="flex h-10 w-full items-center justify-center overflow-hidden rounded-md border"
                       style={{ borderColor: CAT_BORDER, background: CAT_BG }}
                     >
                       {color.image ? (
                         <Image
                           src={color.image}
                           alt=""
-                          width={48}
-                          height={32}
+                          width={80}
+                          height={64}
                           className="object-contain"
                         />
                       ) : (
@@ -229,7 +229,7 @@ export default function CatDetailClient({ cat }: CatDetailClientProps) {
                       )}
                     </div>
                     <span
-                      className="text-center text-xs font-semibold"
+                      className="text-center text-sm font-semibold"
                       style={{ color: "var(--wiki-text-secondary)" }}
                     >
                       {color.name}
@@ -278,25 +278,32 @@ export default function CatDetailClient({ cat }: CatDetailClientProps) {
         </div>
 
         {/* Patterns (full width) */}
-        {cat.patterns.length > 0 && (
-          <div
-            className="overflow-hidden rounded-2xl border border-[var(--wiki-border)] bg-white"
-            style={{ animation: "fadeUp 0.4s ease-out 0.1s both" }}
-          >
-            <div className="flex items-center justify-between border-b border-[var(--wiki-border-light)] px-5 py-3.5">
-              <span
-                className="text-sm font-semibold"
-                style={{ color: "var(--wiki-text-primary)" }}
-              >
-                🐾 무늬 종류
-              </span>
-              <span
-                className="text-sm font-medium"
-                style={{ color: "var(--wiki-text-muted)" }}
-              >
-                {cat.patterns.length}종
-              </span>
-            </div>
+        <div
+          className="overflow-hidden rounded-2xl border border-[var(--wiki-border)] bg-white"
+          style={{ animation: "fadeUp 0.4s ease-out 0.1s both" }}
+        >
+          <div className="flex items-center justify-between border-b border-[var(--wiki-border-light)] px-5 py-3.5">
+            <span
+              className="text-sm font-semibold"
+              style={{ color: "var(--wiki-text-primary)" }}
+            >
+              🐾 무늬 종류
+            </span>
+            <span
+              className="text-sm font-medium"
+              style={{ color: "var(--wiki-text-muted)" }}
+            >
+              {cat.patterns.length}종
+            </span>
+          </div>
+          {cat.patterns.length === 0 ? (
+            <p
+              className="px-5 py-6 text-sm"
+              style={{ color: "var(--wiki-text-muted)" }}
+            >
+              데이터 준비중입니다.
+            </p>
+          ) : (
             <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-3 p-5">
               {cat.patterns.map((pattern) => (
                 <div
@@ -327,8 +334,8 @@ export default function CatDetailClient({ cat }: CatDetailClientProps) {
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </section>
   );

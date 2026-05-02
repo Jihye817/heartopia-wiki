@@ -12,12 +12,14 @@ const SUBCATEGORIES = [
     emoji: "🐶",
     title: "강아지",
     desc: "두근두근타운에서 함께할 수 있는 강아지 종류를 확인해 보세요.",
+    comingSoon: false,
   },
   {
     href: "/pets/cats",
     emoji: "🐱",
     title: "고양이",
     desc: "두근두근타운에서 함께할 수 있는 고양이 종류를 확인해 보세요.",
+    comingSoon: true,
   },
 ];
 
@@ -72,54 +74,94 @@ export default function PetsClient() {
           className="grid grid-cols-1 gap-4 md:grid-cols-2"
           style={{ animation: "fadeUp 0.4s ease-out 0.1s both" }}
         >
-          {SUBCATEGORIES.map((cat) => (
-            <Link
-              key={cat.href}
-              href={cat.href}
-              className="group relative flex flex-col overflow-hidden rounded-2xl border-2 bg-white px-6 pt-7 pb-6 no-underline transition-all duration-200 hover:-translate-y-0.5"
-              style={{ borderColor: `${PET_ACCENT}44` }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = `${PET_ACCENT}99`;
-                e.currentTarget.style.boxShadow = `0 8px 24px ${PET_ACCENT}20`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = `${PET_ACCENT}44`;
-                e.currentTarget.style.boxShadow = "none";
-              }}
-            >
-              {/* Icon */}
+          {SUBCATEGORIES.map((item) =>
+            item.comingSoon ? (
               <div
-                className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6"
-                style={{ background: PET_BG, borderColor: PET_BORDER }}
+                key={item.href}
+                className="group relative flex flex-col overflow-hidden rounded-2xl border-2 bg-white px-6 pt-7 pb-6 opacity-60 cursor-not-allowed"
+                style={{ borderColor: `${PET_ACCENT}22` }}
               >
-                {cat.emoji}
+                {/* 준비중 badge */}
+                <span
+                  className="absolute top-4 right-4 rounded-full px-2.5 py-0.5 text-xs font-semibold"
+                  style={{ background: PET_BG, color: PET_ACCENT }}
+                >
+                  준비중
+                </span>
+
+                {/* Icon */}
+                <div
+                  className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border text-2xl"
+                  style={{ background: PET_BG, borderColor: PET_BORDER }}
+                >
+                  {item.emoji}
+                </div>
+
+                {/* Title */}
+                <h3
+                  className="mb-1.5 text-xl font-bold"
+                  style={{ color: "var(--wiki-text-primary)" }}
+                >
+                  {item.title}
+                </h3>
+
+                {/* Description */}
+                <p
+                  className="mb-5 flex-1 text-sm leading-relaxed"
+                  style={{ color: "var(--wiki-text-secondary)" }}
+                >
+                  {item.desc}
+                </p>
               </div>
-
-              {/* Title */}
-              <h3
-                className="mb-1.5 text-xl font-bold"
-                style={{ color: "var(--wiki-text-primary)" }}
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="group relative flex flex-col overflow-hidden rounded-2xl border-2 bg-white px-6 pt-7 pb-6 no-underline transition-all duration-200 hover:-translate-y-0.5"
+                style={{ borderColor: `${PET_ACCENT}44` }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = `${PET_ACCENT}99`;
+                  e.currentTarget.style.boxShadow = `0 8px 24px ${PET_ACCENT}20`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = `${PET_ACCENT}44`;
+                  e.currentTarget.style.boxShadow = "none";
+                }}
               >
-                {cat.title}
-              </h3>
+                {/* Icon */}
+                <div
+                  className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6"
+                  style={{ background: PET_BG, borderColor: PET_BORDER }}
+                >
+                  {item.emoji}
+                </div>
 
-              {/* Description */}
-              <p
-                className="mb-5 flex-1 text-sm leading-relaxed"
-                style={{ color: "var(--wiki-text-secondary)" }}
-              >
-                {cat.desc}
-              </p>
+                {/* Title */}
+                <h3
+                  className="mb-1.5 text-xl font-bold"
+                  style={{ color: "var(--wiki-text-primary)" }}
+                >
+                  {item.title}
+                </h3>
 
-              {/* CTA */}
-              <span
-                className="mt-auto text-sm font-semibold transition-colors"
-                style={{ color: "var(--wiki-text-tertiary)" }}
-              >
-                보러 가기 →
-              </span>
-            </Link>
-          ))}
+                {/* Description */}
+                <p
+                  className="mb-5 flex-1 text-sm leading-relaxed"
+                  style={{ color: "var(--wiki-text-secondary)" }}
+                >
+                  {item.desc}
+                </p>
+
+                {/* CTA */}
+                <span
+                  className="mt-auto text-sm font-semibold transition-colors"
+                  style={{ color: "var(--wiki-text-tertiary)" }}
+                >
+                  보러 가기 →
+                </span>
+              </Link>
+            )
+          )}
         </div>
       </div>
     </section>

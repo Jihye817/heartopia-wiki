@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Search } from "lucide-react";
+import { Search, LayoutGrid, List } from "lucide-react";
 import type { Npc, NpcCategory } from "./_data/npcs";
 
 const CATEGORY_LABEL: NpcCategory[] = [
@@ -122,6 +122,88 @@ function NpcCard({ npc }: { npc: Npc }) {
   );
 }
 
+function NpcListView({ npcs }: { npcs: Npc[] }) {
+  return (
+    <div className="overflow-x-auto rounded-2xl border border-[var(--wiki-border-light)] bg-white">
+      <table className="w-full min-w-[300px] border-collapse">
+        <thead>
+          <tr className="border-b border-[var(--wiki-border-light)] bg-[var(--wiki-bg)]">
+            <th
+              className="px-4 py-3 text-left text-sm font-semibold tracking-wide"
+              style={{ color: "var(--wiki-text-tertiary)" }}
+            >
+              이름
+            </th>
+            <th
+              className="px-4 py-3 text-left text-sm font-semibold tracking-wide"
+              style={{ color: "var(--wiki-text-tertiary)" }}
+            >
+              카테고리
+            </th>
+            <th
+              className="px-4 py-3 text-left text-sm font-semibold tracking-wide"
+              style={{ color: "var(--wiki-text-tertiary)" }}
+            >
+              위치
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {npcs.map((npc) => (
+            <tr
+              key={npc.id}
+              className="border-b border-[var(--wiki-border-light)] transition-colors last:border-0 hover:bg-[rgba(0,0,0,0.015)]"
+            >
+              <td className="p-0">
+                <Link
+                  href={`/npc/detail/${npc.id}`}
+                  className="flex items-center gap-2.5 px-4 py-3 no-underline"
+                >
+                  <span
+                    className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md p-1 text-sm"
+                    style={{ background: "var(--wiki-cat-npc-bg)" }}
+                  >
+                    {npc.thumbnail ? (
+                      <Image
+                        src={npc.thumbnail}
+                        alt=""
+                        width={40}
+                        height={40}
+                        className="h-full w-full object-contain"
+                      />
+                    ) : (
+                      "🧑"
+                    )}
+                  </span>
+                  <span
+                    className="text-sm font-semibold"
+                    style={{ color: "var(--wiki-text-primary)" }}
+                  >
+                    {npc.name}
+                  </span>
+                </Link>
+              </td>
+              <td className="px-4 py-3">
+                <div className="flex flex-wrap gap-1">
+                  {npc.category.map((cat) => (
+                    <CategoryBadge key={cat} category={cat} />
+                  ))}
+                </div>
+              </td>
+              <td
+                className="px-4 py-3 text-sm font-semibold"
+                style={{ color: "var(--wiki-text-secondary)" }}
+              >
+                {npc.location ?? "-"}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 interface NpcPageClientProps {
   npcs: Npc[];
 }
@@ -129,6 +211,7 @@ interface NpcPageClientProps {
 export default function NpcPageClient({ npcs }: NpcPageClientProps) {
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<NpcCategory | "">("");
+  const [viewMode, setViewMode] = useState<"card" | "list">("card");
 
   const filtered = useMemo(() => {
     let result = npcs;
@@ -181,23 +264,59 @@ export default function NpcPageClient({ npcs }: NpcPageClientProps) {
         </nav>
 
         {/* Header */}
-        <div className="mb-7" style={{ animation: "fadeUp 0.4s ease-out" }}>
-          <h1
-            className="m-0 mb-1 text-3xl font-bold tracking-tight"
-            style={{
-              color: "var(--wiki-text-primary)",
-              fontFamily: "'Outfit', var(--font-pretendard), sans-serif",
-              letterSpacing: "-0.5px",
-            }}
+        <div
+          className="mb-7 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
+          style={{ animation: "fadeUp 0.4s ease-out" }}
+        >
+          <div>
+            <h1
+              className="m-0 mb-1 text-3xl font-bold tracking-tight"
+              style={{
+                color: "var(--wiki-text-primary)",
+                fontFamily: "'Outfit', var(--font-pretendard), sans-serif",
+                letterSpacing: "-0.5px",
+              }}
+            >
+              NPC 도감
+            </h1>
+            <p
+              className="text-sm"
+              style={{ color: "var(--wiki-text-secondary)" }}
+            >
+              마을 주민과 캐릭터 정보
+            </p>
+          </div>
+          <div
+            className="flex w-fit gap-0.5 rounded-lg bg-[var(--wiki-border-light)] p-0.5"
+            role="tablist"
+            aria-label="보기 방식"
           >
-            NPC 도감
-          </h1>
-          <p
-            className="text-sm"
-            style={{ color: "var(--wiki-text-secondary)" }}
-          >
-            마을 주민과 캐릭터 정보
-          </p>
+            {[
+              { mode: "card" as const, icon: LayoutGrid, label: "카드" },
+              { mode: "list" as const, icon: List, label: "리스트" },
+            ].map(({ mode, icon: Icon, label }) => (
+              <button
+                key={mode}
+                type="button"
+                onClick={() => setViewMode(mode)}
+                role="tab"
+                aria-selected={viewMode === mode}
+                className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-semibold transition-all"
+                style={{
+                  background: viewMode === mode ? "white" : "transparent",
+                  color:
+                    viewMode === mode
+                      ? "var(--wiki-text-primary)"
+                      : "var(--wiki-text-tertiary)",
+                  boxShadow:
+                    viewMode === mode ? "0 1px 3px rgba(0,0,0,0.04)" : "none",
+                }}
+              >
+                <Icon size={14} strokeWidth={2.2} aria-hidden />
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Filter Bar */}
@@ -317,12 +436,14 @@ export default function NpcPageClient({ npcs }: NpcPageClientProps) {
                 검색 결과가 없어요
               </p>
             </div>
-          ) : (
+          ) : viewMode === "card" ? (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]">
               {filtered.map((npc) => (
                 <NpcCard key={npc.id} npc={npc} />
               ))}
             </div>
+          ) : (
+            <NpcListView npcs={filtered} />
           )}
         </div>
       </div>

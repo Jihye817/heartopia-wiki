@@ -362,7 +362,7 @@ const CATEGORIES = [
     color: "var(--wiki-cat-pets)",
     accent: "#c96a42",
     bg: "var(--wiki-cat-pets-bg)",
-    href: undefined,
+    href: "/pets",
   },
   {
     id: "npc",
@@ -384,7 +384,7 @@ const CATEGORIES = [
     bg: "var(--wiki-cat-others-bg)",
     href: "/others",
   },
-] as const;
+];
 
 export function CategorySection() {
   return (
