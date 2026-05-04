@@ -265,12 +265,18 @@ export default function FoodDetailClient({ food }: FoodDetailClientProps) {
                 {food.ko}
               </div>
               <div className="flex flex-wrap justify-center gap-1.5">
-                <span className="rounded-md bg-[#EBF3F9] px-3 py-1 text-sm font-semibold text-[#4A8DB7]">
-                  요리 Lv.{food.level}
-                </span>
+                {food.availability !== "event" && food.availability !== "event_unlock" && (
+                  <span className="rounded-md bg-[#EBF3F9] px-3 py-1 text-sm font-semibold text-[#4A8DB7]">
+                    요리 Lv.{food.level}
+                  </span>
+                )}
                 {food.availability === "event" ? (
                   <span className="rounded-md bg-[#FDF2EC] px-3 py-1 text-sm font-semibold text-[#D4845A]">
                     이벤트 : {food.event ?? "이벤트"}
+                  </span>
+                ) : food.availability === "event_unlock" ? (
+                  <span className="rounded-md bg-[#F0EBFF] px-3 py-1 text-sm font-semibold text-[#7B5EAE]">
+                    이벤트 해금
                   </span>
                 ) : (
                   <span className="rounded-md bg-[#EEF6F0] px-3 py-1 text-sm font-semibold text-[#5B9A6F]">
@@ -290,22 +296,24 @@ export default function FoodDetailClient({ food }: FoodDetailClientProps) {
               </div>
               <table className="w-full border-collapse">
                 <tbody>
-                  <tr className="border-b border-[var(--wiki-border-light)]">
-                    <th
-                      className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
-                      style={{ color: "var(--wiki-text-secondary)" }}
-                    >
-                      요리 레벨
-                    </th>
-                    <td
-                      className="px-5 py-3.5 text-sm"
-                      style={{ color: "var(--wiki-text-primary)" }}
-                    >
-                      <span className="inline-flex rounded-md bg-[#EBF3F9] px-3 py-1 text-sm font-semibold text-[#4A8DB7]">
-                        Lv.{food.level}
-                      </span>
-                    </td>
-                  </tr>
+                  {food.availability !== "event" && food.availability !== "event_unlock" && (
+                    <tr className="border-b border-[var(--wiki-border-light)]">
+                      <th
+                        className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
+                        style={{ color: "var(--wiki-text-secondary)" }}
+                      >
+                        요리 레벨
+                      </th>
+                      <td
+                        className="px-5 py-3.5 text-sm"
+                        style={{ color: "var(--wiki-text-primary)" }}
+                      >
+                        <span className="inline-flex rounded-md bg-[#EBF3F9] px-3 py-1 text-sm font-semibold text-[#4A8DB7]">
+                          Lv.{food.level}
+                        </span>
+                      </td>
+                    </tr>
+                  )}
                   <tr className="border-b border-[var(--wiki-border-light)]">
                     <th
                       className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"
@@ -321,6 +329,15 @@ export default function FoodDetailClient({ food }: FoodDetailClientProps) {
                         <span className="inline-flex rounded-md bg-[#FDF2EC] px-3 py-1 text-sm font-semibold text-[#D4845A]">
                           이벤트 : {food.event ?? "이벤트"}
                         </span>
+                      ) : food.availability === "event_unlock" ? (
+                        <div className="flex flex-wrap gap-1.5">
+                          <span className="inline-flex rounded-md bg-[#F0EBFF] px-3 py-1 text-sm font-semibold text-[#7B5EAE]">
+                            이벤트 해금
+                          </span>
+                          <span className="inline-flex rounded-md bg-[#EEF6F0] px-3 py-1 text-sm font-semibold text-[#5B9A6F]">
+                            일상
+                          </span>
+                        </div>
                       ) : (
                         <span className="inline-flex rounded-md bg-[#EEF6F0] px-3 py-1 text-sm font-semibold text-[#5B9A6F]">
                           일상
