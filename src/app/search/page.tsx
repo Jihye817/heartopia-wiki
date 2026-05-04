@@ -52,6 +52,18 @@ const CATEGORY_CONFIG: Record<
     bg: "var(--wiki-cat-others-bg)",
     defaultEmoji: "📦",
   },
+  npc: {
+    label: "NPC",
+    emoji: "👤",
+    bg: "var(--wiki-cat-npc-bg)",
+    defaultEmoji: "👤",
+  },
+  pet: {
+    label: "반려동물",
+    emoji: "🐾",
+    bg: "var(--wiki-cat-pets-bg)",
+    defaultEmoji: "🐾",
+  },
 };
 
 const CATEGORY_ORDER = [
@@ -62,6 +74,8 @@ const CATEGORY_ORDER = [
   "bird",
   "food",
   "product",
+  "npc",
+  "pet",
 ];
 
 // ── Metadata ───────────────────────────────────────────────────────────────────
