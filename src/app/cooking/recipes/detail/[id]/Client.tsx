@@ -265,7 +265,7 @@ export default function FoodDetailClient({ food }: FoodDetailClientProps) {
                 {food.ko}
               </div>
               <div className="flex flex-wrap justify-center gap-1.5">
-                {food.availability !== "event" && food.availability !== "event_unlock" && (
+                {food.level > 0 && food.availability !== "event" && food.availability !== "event_unlock" && (
                   <span className="rounded-md bg-[#EBF3F9] px-3 py-1 text-sm font-semibold text-[#4A8DB7]">
                     요리 Lv.{food.level}
                   </span>
@@ -296,7 +296,7 @@ export default function FoodDetailClient({ food }: FoodDetailClientProps) {
               </div>
               <table className="w-full border-collapse">
                 <tbody>
-                  {food.availability !== "event" && food.availability !== "event_unlock" && (
+                  {food.level > 0 && food.availability !== "event" && food.availability !== "event_unlock" && (
                     <tr className="border-b border-[var(--wiki-border-light)]">
                       <th
                         className="w-[110px] bg-[var(--wiki-bg)] px-5 py-3.5 text-left text-sm font-semibold"

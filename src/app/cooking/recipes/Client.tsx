@@ -62,7 +62,7 @@ function FoodCard({ food }: { food: FoodListItem }) {
 
       {/* 뱃지 */}
       <div className="mb-4 flex flex-wrap justify-center gap-1.5">
-        {food.availability !== "event" && food.availability !== "event_unlock" && (
+        {food.level > 0 && food.availability !== "event" && food.availability !== "event_unlock" && (
           <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
             Lv.{food.level}
           </span>
@@ -72,9 +72,16 @@ function FoodCard({ food }: { food: FoodListItem }) {
             {food.event ?? "이벤트"}
           </span>
         ) : food.availability === "event_unlock" ? (
-          <span className="rounded-full border border-[#D8C8F0] bg-[#F0EBFF] px-2.5 py-0.5 text-sm font-semibold text-[#7B5EAE]">
-            이벤트 해금
-          </span>
+          <>
+            <span className="rounded-full border border-[#C8E0CF] bg-[#EEF6F0] px-2.5 py-0.5 text-sm font-semibold text-[#5B9A6F]">
+              일상
+            </span>
+            {food.event && (
+              <span className="rounded-full border border-[#D8C8F0] bg-[#F0EBFF] px-2.5 py-0.5 text-sm font-semibold text-[#7B5EAE]">
+                {food.event}
+              </span>
+            )}
+          </>
         ) : (
           <span className="rounded-full border border-[#C8E0CF] bg-[#EEF6F0] px-2.5 py-0.5 text-sm font-semibold text-[#5B9A6F]">
             일상
@@ -168,7 +175,7 @@ function FoodListView({ foods }: { foods: FoodListItem[] }) {
                   href={`/cooking/recipes/detail/${food.id}`}
                   className="block px-4 py-3 no-underline"
                 >
-                  {food.availability !== "event" && food.availability !== "event_unlock" && (
+                  {food.level > 0 && food.availability !== "event" && food.availability !== "event_unlock" && (
                     <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
                       Lv.{food.level}
                     </span>
@@ -185,9 +192,16 @@ function FoodListView({ foods }: { foods: FoodListItem[] }) {
                       {food.event ?? "이벤트"}
                     </span>
                   ) : food.availability === "event_unlock" ? (
-                    <span className="rounded-full border border-[#D8C8F0] bg-[#F0EBFF] px-2.5 py-0.5 text-sm font-semibold text-[#7B5EAE]">
-                      이벤트 해금
-                    </span>
+                    <div className="flex flex-wrap gap-1">
+                      <span className="rounded-full border border-[#C8E0CF] bg-[#EEF6F0] px-2.5 py-0.5 text-sm font-semibold text-[#5B9A6F]">
+                        일상
+                      </span>
+                      {food.event && (
+                        <span className="rounded-full border border-[#D8C8F0] bg-[#F0EBFF] px-2.5 py-0.5 text-sm font-semibold text-[#7B5EAE]">
+                          {food.event}
+                        </span>
+                      )}
+                    </div>
                   ) : (
                     <span className="rounded-full border border-[#C8E0CF] bg-[#EEF6F0] px-2.5 py-0.5 text-sm font-semibold text-[#5B9A6F]">
                       {AVAILABILITY_LABEL[food.availability] ?? food.availability}
@@ -239,7 +253,7 @@ export default function FoodsPageClient({ foods }: FoodsPageClientProps) {
   const [levelFilter, setLevelFilter] = useState<number | null>(null);
 
   const levels = useMemo(() => {
-    return Array.from(new Set(foods.map((f) => f.level))).sort((a, b) => a - b);
+    return Array.from(new Set(foods.map((f) => f.level).filter((l) => l > 0))).sort((a, b) => a - b);
   }, [foods]);
 
   const tabCounts = useMemo(
@@ -259,12 +273,19 @@ export default function FoodsPageClient({ foods }: FoodsPageClientProps) {
     return Array.from(new Set(names)).sort();
   }, [foods]);
 
+  const eventUnlockNames = useMemo(() => {
+    const names = foods
+      .filter((f) => f.availability === "event_unlock" && f.event)
+      .map((f) => f.event as string);
+    return Array.from(new Set(names)).sort();
+  }, [foods]);
+
   const filteredFoods = useMemo(() => {
     let result =
       seasonFilter === "all"
         ? foods
         : foods.filter((f) => f.availability === seasonFilter);
-    if (seasonFilter === "event" && eventFilter)
+    if ((seasonFilter === "event" || seasonFilter === "event_unlock") && eventFilter)
       result = result.filter((f) => f.event === eventFilter);
     if (levelFilter !== null)
       result = result.filter((f) => f.level === levelFilter);
@@ -424,6 +445,26 @@ export default function FoodsPageClient({ foods }: FoodsPageClientProps) {
               );
             })}
 
+            {seasonFilter === "event_unlock" && eventUnlockNames.length > 0 && (
+              <select
+                value={eventFilter ?? ""}
+                onChange={(e) => setEventFilter(e.target.value || null)}
+                aria-label="이벤트 해금 필터"
+                className="h-[34px] cursor-pointer rounded-lg border border-[var(--wiki-border)] bg-white pr-8 pl-3 text-sm font-semibold transition-all outline-none"
+                style={{
+                  color: "#D4845A",
+                  appearance: "none",
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 10px center",
+                }}
+              >
+                <option value="">전체 이벤트</option>
+                {eventUnlockNames.map((name) => (
+                  <option key={name} value={name}>{name}</option>
+                ))}
+              </select>
+            )}
             {seasonFilter === "event" && eventNames.length > 0 && (
               <select
                 value={eventFilter ?? ""}

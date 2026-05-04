@@ -7,22 +7,6 @@ import type { PetDetail } from "../../../_data/pets";
 const DOG_BG = "var(--wiki-cat-pets-bg)";
 const DOG_BORDER = "#f5d0c4";
 
-const PERSONALITY_EMOJI: Record<string, string> = {
-  quiet: "😌",
-  active: "😊",
-  independent: "😎",
-  lazy: "😴",
-  sleepy: "🥱",
-  social: "🤗",
-  talkative: "💬",
-  playful: "🎮",
-  clingy: "🫂",
-  sensitive: "😢",
-  aloof: "🙄",
-  slow: "🐢",
-  solitary: "🌙",
-};
-
 interface DogDetailClientProps {
   dog: PetDetail;
 }
