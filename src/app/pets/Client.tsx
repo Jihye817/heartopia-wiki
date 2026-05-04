@@ -19,7 +19,7 @@ const SUBCATEGORIES = [
     emoji: "🐱",
     title: "고양이",
     desc: "두근두근타운에서 함께할 수 있는 고양이 종류를 확인해 보세요.",
-    comingSoon: true,
+    comingSoon: false,
   },
 ];
 

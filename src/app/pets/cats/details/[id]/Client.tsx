@@ -7,22 +7,6 @@ import type { PetDetail } from "../../../_data/pets";
 const CAT_BG = "var(--wiki-cat-pets-bg)";
 const CAT_BORDER = "#f5d0c4";
 
-const PERSONALITY_EMOJI: Record<string, string> = {
-  quiet: "😌",
-  active: "😊",
-  independent: "😎",
-  lazy: "😴",
-  sleepy: "🥱",
-  social: "🤗",
-  talkative: "💬",
-  playful: "🎮",
-  clingy: "🫂",
-  sensitive: "😢",
-  aloof: "🙄",
-  slow: "🐢",
-  solitary: "🌙",
-};
-
 interface CatDetailClientProps {
   cat: PetDetail;
 }
@@ -221,7 +205,7 @@ export default function CatDetailClient({ cat }: CatDetailClientProps) {
                           src={color.image}
                           alt=""
                           width={80}
-                          height={64}
+                          height={40}
                           className="object-contain"
                         />
                       ) : (
@@ -255,18 +239,16 @@ export default function CatDetailClient({ cat }: CatDetailClientProps) {
                   {cat.personalities.length}종
                 </span>
               </div>
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-2 p-4">
+              <div className="flex flex-wrap gap-2 p-4">
                 {cat.personalities.map((p) => (
                   <div
                     key={p.id}
-                    className="flex items-center gap-2 rounded-lg border border-[var(--wiki-border-light)] px-3 py-2.5 transition-colors hover:bg-[var(--wiki-bg)]"
+                    className="flex items-center justify-center rounded-lg border px-3 py-1.5"
+                    style={{ background: CAT_BG, borderColor: CAT_BORDER }}
                   >
-                    <span className="text-base" aria-hidden>
-                      {PERSONALITY_EMOJI[p.id] ?? "✨"}
-                    </span>
                     <span
                       className="text-sm font-semibold"
-                      style={{ color: "var(--wiki-text-primary)" }}
+                      style={{ color: "var(--wiki-cat-pets)" }}
                     >
                       {p.name}
                     </span>
@@ -307,10 +289,11 @@ export default function CatDetailClient({ cat }: CatDetailClientProps) {
             <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-3 p-5">
               {cat.patterns.map((pattern) => (
                 <div
-                  key={pattern.color}
-                  className="overflow-hidden rounded-xl border border-[var(--wiki-border-light)] transition-all hover:-translate-y-0.5 hover:border-[var(--wiki-border)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
+                  key={pattern.id}
+                  className="overflow-hidden rounded-xl border transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(201,106,66,0.12)]"
+                  style={{ borderColor: CAT_BORDER }}
                 >
-                  <div className="flex aspect-square items-center justify-center">
+                  <div className="flex aspect-square items-center justify-center p-3">
                     {pattern.images[0] ? (
                       <Image
                         src={pattern.images[0]}
@@ -324,12 +307,6 @@ export default function CatDetailClient({ cat }: CatDetailClientProps) {
                         🐱
                       </span>
                     )}
-                  </div>
-                  <div
-                    className="border-t border-[var(--wiki-border-light)] px-3 py-2 text-center text-sm font-semibold"
-                    style={{ color: "var(--wiki-text-primary)" }}
-                  >
-                    {pattern.color}
                   </div>
                 </div>
               ))}
