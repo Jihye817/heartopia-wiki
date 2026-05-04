@@ -2,7 +2,7 @@ import { supabase } from "@/lib/supabase";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
-export type FoodAvailability = "always" | "event";
+export type FoodAvailability = "always" | "event" | "event_unlock";
 
 export interface IngredientItem {
   id: string;
