@@ -6,11 +6,12 @@ import Image from "next/image";
 import { LayoutGrid, List, Search } from "lucide-react";
 import type { FoodListItem } from "../_data/foods";
 
-type SeasonFilter = "all" | "always" | "event";
+type SeasonFilter = "all" | "always" | "event" | "event_unlock";
 
 const AVAILABILITY_LABEL: Record<string, string> = {
   always: "일상",
   event: "이벤트",
+  event_unlock: "이벤트 해금",
 };
 
 // 요리 포인트 색상 (주황 계열)
@@ -61,7 +62,7 @@ function FoodCard({ food }: { food: FoodListItem }) {
 
       {/* 뱃지 */}
       <div className="mb-4 flex flex-wrap justify-center gap-1.5">
-        {food.availability !== "event" && (
+        {food.availability !== "event" && food.availability !== "event_unlock" && (
           <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
             Lv.{food.level}
           </span>
@@ -69,6 +70,10 @@ function FoodCard({ food }: { food: FoodListItem }) {
         {food.availability === "event" ? (
           <span className="rounded-full border border-[#F0D4C0] bg-[#FDF2EC] px-2.5 py-0.5 text-sm font-semibold text-[#D4845A]">
             {food.event ?? "이벤트"}
+          </span>
+        ) : food.availability === "event_unlock" ? (
+          <span className="rounded-full border border-[#D8C8F0] bg-[#F0EBFF] px-2.5 py-0.5 text-sm font-semibold text-[#7B5EAE]">
+            이벤트 해금
           </span>
         ) : (
           <span className="rounded-full border border-[#C8E0CF] bg-[#EEF6F0] px-2.5 py-0.5 text-sm font-semibold text-[#5B9A6F]">
@@ -163,7 +168,7 @@ function FoodListView({ foods }: { foods: FoodListItem[] }) {
                   href={`/cooking/recipes/detail/${food.id}`}
                   className="block px-4 py-3 no-underline"
                 >
-                  {food.availability !== "event" && (
+                  {food.availability !== "event" && food.availability !== "event_unlock" && (
                     <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
                       Lv.{food.level}
                     </span>
@@ -175,14 +180,17 @@ function FoodListView({ foods }: { foods: FoodListItem[] }) {
                   href={`/cooking/recipes/detail/${food.id}`}
                   className="block px-4 py-3 no-underline"
                 >
-                  {food.event ? (
+                  {food.availability === "event" ? (
                     <span className="rounded-full border border-[#F0D4C0] bg-[#FDF2EC] px-2.5 py-0.5 text-sm font-semibold text-[#D4845A]">
-                      {food.event}
+                      {food.event ?? "이벤트"}
+                    </span>
+                  ) : food.availability === "event_unlock" ? (
+                    <span className="rounded-full border border-[#D8C8F0] bg-[#F0EBFF] px-2.5 py-0.5 text-sm font-semibold text-[#7B5EAE]">
+                      이벤트 해금
                     </span>
                   ) : (
                     <span className="rounded-full border border-[#C8E0CF] bg-[#EEF6F0] px-2.5 py-0.5 text-sm font-semibold text-[#5B9A6F]">
-                      {AVAILABILITY_LABEL[food.availability] ??
-                        food.availability}
+                      {AVAILABILITY_LABEL[food.availability] ?? food.availability}
                     </span>
                   )}
                 </Link>
@@ -239,6 +247,7 @@ export default function FoodsPageClient({ foods }: FoodsPageClientProps) {
       all: foods.length,
       always: foods.filter((f) => f.availability === "always").length,
       event: foods.filter((f) => f.availability === "event").length,
+      event_unlock: foods.filter((f) => f.availability === "event_unlock").length,
     }),
     [foods],
   );
@@ -273,6 +282,7 @@ export default function FoodsPageClient({ foods }: FoodsPageClientProps) {
     { id: "all", label: "전체" },
     { id: "always", label: "일상" },
     { id: "event", label: "이벤트" },
+    { id: "event_unlock", label: "이벤트 해금" },
   ];
 
   return (
