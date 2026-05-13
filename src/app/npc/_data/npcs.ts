@@ -15,6 +15,22 @@ export interface NpcItem {
   price?: number | null;
 }
 
+export interface NpcShopItem {
+  id: string;
+  name: string;
+  thumbnail?: string | null;
+  price?: number | null;
+  category: string;
+  description?: string | null;
+  ref_id?: string | null;
+  ref_table?: string | null;
+  availability: string;
+  event?: string | null;
+  sort_order?: number | null;
+  currency: string;
+  stock?: number | null;
+}
+
 export interface Npc {
   id: string;
   name: string;
@@ -28,6 +44,7 @@ export interface Npc {
   unlock_condition?: string | null;
   details?: NpcDetails | null;
   items?: NpcItem[];
+  shopItems?: NpcShopItem[];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -57,12 +74,36 @@ export async function getNpcs(): Promise<Npc[]> {
   return (data ?? []).map(mapNpc);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapNpcShopItem(row: any): NpcShopItem {
+  return {
+    id: row.id,
+    name: row.name,
+    thumbnail: row.thumbnail ?? null,
+    price: row.price ?? null,
+    category: row.category ?? "",
+    description: row.description ?? null,
+    ref_id: row.ref_id ?? null,
+    ref_table: row.ref_table ?? null,
+    availability: row.availability ?? "always",
+    event: row.event ?? null,
+    sort_order: row.sort_order ?? null,
+    currency: row.currency ?? "gold",
+    stock: row.stock ?? null,
+  };
+}
+
 export async function getNpcDetail(id: string): Promise<Npc | null> {
-  const { data, error } = await supabase
-    .from("npcs")
-    .select("*")
-    .eq("id", id)
-    .single();
-  if (error || !data) return null;
-  return mapNpc(data);
+  const [npcRes, itemsRes] = await Promise.all([
+    supabase.from("npcs").select("*").eq("id", id).single(),
+    supabase
+      .from("npc_items")
+      .select("*")
+      .eq("npc_id", id)
+      .order("sort_order", { ascending: true }),
+  ]);
+  if (npcRes.error || !npcRes.data) return null;
+  const npc = mapNpc(npcRes.data);
+  npc.shopItems = (itemsRes.data ?? []).map(mapNpcShopItem);
+  return npc;
 }
