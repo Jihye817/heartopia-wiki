@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type { Npc, NpcCategory, NpcItem } from "../../_data/npcs";
+import { useState } from "react";
+import type { Npc, NpcCategory, NpcShopItem } from "../../_data/npcs";
 
 const NPC_BG = "var(--wiki-cat-npc-bg)";
 const NPC_BORDER = "#b0b8f0";
@@ -20,6 +21,163 @@ const CATEGORY_COLOR: Record<
 
 interface NpcDetailClientProps {
   npc: Npc;
+}
+
+function NpcShopItemSection({
+  category,
+  categoryItems,
+}: {
+  category: string;
+  categoryItems: NpcShopItem[];
+}) {
+  const [open, setOpen] = useState(true);
+
+  return (
+    <div className="overflow-hidden rounded-2xl border border-[var(--wiki-border)] bg-white">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full cursor-pointer items-center justify-between px-5 py-4 transition-colors hover:bg-[var(--wiki-bg)]"
+        style={{ borderBottom: open ? "1px solid var(--wiki-border-light)" : "none" }}
+      >
+        <span
+          className="text-base font-bold"
+          style={{ color: "var(--wiki-text-primary)" }}
+        >
+          {category}
+        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-sm" style={{ color: "var(--wiki-text-muted)" }}>
+            {categoryItems.length}개
+          </span>
+          <span
+            className="text-xs transition-transform duration-200"
+            style={{
+              color: "var(--wiki-text-muted)",
+              display: "inline-block",
+              transform: open ? "rotate(0deg)" : "rotate(180deg)",
+            }}
+          >
+            ▾
+          </span>
+        </div>
+      </button>
+      {open && (
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="border-b border-[var(--wiki-border-light)] bg-[var(--wiki-bg)]">
+              <th
+                className="px-5 py-3 text-left text-sm font-semibold"
+                style={{ color: "var(--wiki-text-tertiary)" }}
+              >
+                아이템
+              </th>
+              <th
+                className="px-5 py-3 text-right text-sm font-semibold"
+                style={{ color: "var(--wiki-text-tertiary)" }}
+              >
+                가격
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {categoryItems.map((item) => (
+              <tr
+                key={item.id}
+                className="border-b border-[var(--wiki-border-light)] last:border-0 hover:bg-[rgba(0,0,0,0.01)]"
+              >
+                <td className="px-5 py-3">
+                  <div className="flex items-center gap-2.5">
+                    <div
+                      className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-md border"
+                      style={{ background: NPC_BG, borderColor: NPC_BORDER }}
+                    >
+                      {item.thumbnail ? (
+                        <Image
+                          src={item.thumbnail}
+                          alt=""
+                          width={32}
+                          height={32}
+                          className="object-contain"
+                        />
+                      ) : (
+                        <span className="text-sm" aria-hidden>
+                          📦
+                        </span>
+                      )}
+                    </div>
+                    <span
+                      className="text-sm font-semibold"
+                      style={{ color: "var(--wiki-text-primary)" }}
+                    >
+                      {item.name}
+                    </span>
+                    {item.availability === "event" && (
+                      <span className="rounded-md border border-[#F0D0B8] bg-[#FFF4ED] px-2 py-0.5 text-xs font-semibold text-[#C06A2A]">
+                        {item.event || "이벤트"}
+                      </span>
+                    )}
+                  </div>
+                </td>
+                <td className="px-5 py-3 text-right">
+                  {item.price != null ? (
+                    <span className="inline-flex items-center justify-end gap-1">
+                      {item.currency === "star" ? (
+                        <span className="text-base" style={{ color: "#9B6DFF" }}>★</span>
+                      ) : (
+                        <span
+                          className="flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold"
+                          style={{ background: "#F59E0B", color: "white" }}
+                        >
+                          G
+                        </span>
+                      )}
+                      <span
+                        className="text-sm font-semibold tabular-nums"
+                        style={{
+                          color: item.currency === "star" ? "#9B6DFF" : "#b45309",
+                        }}
+                      >
+                        {item.price.toLocaleString()}
+                      </span>
+                    </span>
+                  ) : (
+                    <span
+                      className="text-sm"
+                      style={{ color: "var(--wiki-text-muted)" }}
+                    >
+                      -
+                    </span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
+
+function NpcShopItemSections({ items }: { items: NpcShopItem[] }) {
+  const grouped = new Map<string, NpcShopItem[]>();
+  for (const item of items) {
+    const key = item.category || "기타";
+    if (!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key)!.push(item);
+  }
+
+  return (
+    <>
+      {[...grouped.entries()].map(([category, categoryItems]) => (
+        <NpcShopItemSection
+          key={category}
+          category={category}
+          categoryItems={categoryItems}
+        />
+      ))}
+    </>
+  );
 }
 
 export default function NpcDetailClient({ npc }: NpcDetailClientProps) {
@@ -87,7 +245,9 @@ export default function NpcDetailClient({ npc }: NpcDetailClientProps) {
                     className="h-full w-full object-contain"
                   />
                 ) : (
-                  <span className="text-6xl" aria-hidden>🧑</span>
+                  <span className="text-6xl" aria-hidden>
+                    🧑
+                  </span>
                 )}
               </div>
               <div
@@ -289,99 +449,9 @@ export default function NpcDetailClient({ npc }: NpcDetailClientProps) {
               )}
             </div>
 
-            {/* 아이템 목록 — 있을 때만 표시 */}
-            {npc.items && npc.items.length > 0 && (
-              <div className="overflow-hidden rounded-2xl border border-[var(--wiki-border)] bg-white">
-                <div className="flex items-center justify-between border-b border-[var(--wiki-border-light)] px-5 py-4">
-                  <span
-                    className="text-base font-bold"
-                    style={{ color: "var(--wiki-text-primary)" }}
-                  >
-                    아이템 목록
-                  </span>
-                  <span
-                    className="text-sm"
-                    style={{ color: "var(--wiki-text-muted)" }}
-                  >
-                    {npc.items.length}개
-                  </span>
-                </div>
-                <table className="w-full border-collapse">
-                  <thead>
-                    <tr className="border-b border-[var(--wiki-border-light)] bg-[var(--wiki-bg)]">
-                      <th
-                        className="px-5 py-3 text-left text-sm font-semibold"
-                        style={{ color: "var(--wiki-text-tertiary)" }}
-                      >
-                        아이템
-                      </th>
-                      <th
-                        className="px-5 py-3 text-left text-sm font-semibold"
-                        style={{ color: "var(--wiki-text-tertiary)" }}
-                      >
-                        가격
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {npc.items.map((item: NpcItem) => (
-                      <tr
-                        key={item.id}
-                        className="border-b border-[var(--wiki-border-light)] last:border-0 hover:bg-[rgba(0,0,0,0.01)]"
-                      >
-                        <td className="px-5 py-3">
-                          <div className="flex items-center gap-2.5">
-                            <div
-                              className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-md border"
-                              style={{
-                                background: NPC_BG,
-                                borderColor: NPC_BORDER,
-                              }}
-                            >
-                              {item.thumbnail ? (
-                                <Image
-                                  src={item.thumbnail}
-                                  alt=""
-                                  width={32}
-                                  height={32}
-                                  className="object-contain"
-                                />
-                              ) : (
-                                <span className="text-sm" aria-hidden>
-                                  📦
-                                </span>
-                              )}
-                            </div>
-                            <span
-                              className="text-sm font-semibold"
-                              style={{ color: "var(--wiki-text-primary)" }}
-                            >
-                              {item.name}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-5 py-3">
-                          {item.price != null ? (
-                            <span
-                              className="text-sm font-semibold tabular-nums"
-                              style={{ color: "#b45309" }}
-                            >
-                              {item.price.toLocaleString()} G
-                            </span>
-                          ) : (
-                            <span
-                              className="text-sm"
-                              style={{ color: "var(--wiki-text-muted)" }}
-                            >
-                              -
-                            </span>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+            {/* 아이템 목록 — category별 그룹핑 */}
+            {npc.shopItems && npc.shopItems.length > 0 && (
+              <NpcShopItemSections items={npc.shopItems} />
             )}
           </div>
         </div>
