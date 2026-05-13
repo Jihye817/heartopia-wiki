@@ -89,7 +89,7 @@ function NpcShopItemSection({
                 <td className="px-5 py-3">
                   <div className="flex items-center gap-2.5">
                     <div
-                      className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-md border"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-md border p-1"
                       style={{ background: NPC_BG, borderColor: NPC_BORDER }}
                     >
                       {item.thumbnail ? (
