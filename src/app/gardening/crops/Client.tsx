@@ -38,9 +38,13 @@ function CropCard({ crop }: { crop: CropListItem }) {
         className="mb-4 flex h-[100px] w-[100px] items-center justify-center overflow-hidden rounded-xl border p-2 transition-transform duration-200 group-hover:scale-105"
         style={{ background: CROP_BG, borderColor: CROP_BORDER }}
       >
-        <div className="relative h-full w-full">
-          <Image src={crop.thumbnail} alt="" fill className="object-contain" />
-        </div>
+        {crop.thumbnail ? (
+          <div className="relative h-full w-full">
+            <Image src={crop.thumbnail} alt="" fill className="object-contain" />
+          </div>
+        ) : (
+          <span className="text-4xl">🌾</span>
+        )}
       </div>
 
       {/* 작물 이름 */}
@@ -136,13 +140,17 @@ function CropListView({ crops }: { crops: CropListItem[] }) {
                     className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md"
                     style={{ background: CROP_BG }}
                   >
-                    <Image
-                      src={c.thumbnail}
-                      alt=""
-                      width={28}
-                      height={28}
-                      className="object-contain"
-                    />
+                    {c.thumbnail ? (
+                      <Image
+                        src={c.thumbnail}
+                        alt=""
+                        width={28}
+                        height={28}
+                        className="object-contain"
+                      />
+                    ) : (
+                      <span className="text-base">🌾</span>
+                    )}
                   </span>
                   <span
                     className="text-sm font-semibold"

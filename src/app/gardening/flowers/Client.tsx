@@ -46,7 +46,7 @@ function FlowerCard({ flower }: { flower: FlowerListItem }) {
 
       {/* 뱃지 */}
       <div className="mb-4 flex flex-wrap justify-center gap-1.5">
-        {flower.level !== null && (
+        {flower.level !== null && flower.availability !== "event" && (
           <span className="rounded-full border border-[#C8DFF0] bg-[#EBF3F9] px-2.5 py-0.5 text-sm font-semibold text-[#4A8DB7]">
             Lv.{flower.level}
           </span>
