@@ -54,9 +54,9 @@ function ColorChip({
     ? "inline-flex min-w-[120px] items-center gap-2 rounded-full border-[1.5px] px-1.5 py-1 md:min-w-[150px] md:px-2.5 md:py-1.5 bg-[var(--wiki-cat-garden-bg)] border-[var(--wiki-cat-garden-border)]"
     : "inline-flex min-w-[120px] items-center gap-2 rounded-full border-[1.5px] px-1.5 py-1 md:min-w-[150px] md:px-2.5 md:py-1.5 bg-[var(--wiki-bg)] border-[var(--wiki-border)] transition-all hover:border-[var(--wiki-text-muted)] hover:shadow-sm";
 
-  if (image) {
-    return (
-      <span className={chipStyle}>
+  return (
+    <span className={chipStyle}>
+      {image ? (
         <span className="relative flex h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-[var(--wiki-cat-garden-bg)] md:h-11 md:w-11">
           <Image
             src={image}
@@ -66,24 +66,14 @@ function ColorChip({
             className="h-full w-full object-contain"
           />
         </span>
-        {nameBlock}
-      </span>
-    );
-  }
-
-  return (
-    <span
-      className={chipStyle}
-      style={
-        !isResult && hex
-          ? {
-              background: hex,
-              color: hex === "#ffffff" ? "#374151" : undefined,
-            }
-          : undefined
-      }
-    >
-      {emoji && <span style={{ fontSize: "0.9em" }}>{emoji}</span>}
+      ) : hex ? (
+        <span
+          className="h-8 w-8 flex-shrink-0 rounded-full border border-black/10 md:h-11 md:w-11"
+          style={{ background: hex }}
+        />
+      ) : emoji ? (
+        <span style={{ fontSize: "0.9em" }}>{emoji}</span>
+      ) : null}
       {nameBlock}
     </span>
   );
