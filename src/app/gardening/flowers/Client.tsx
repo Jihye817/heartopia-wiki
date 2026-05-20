@@ -26,14 +26,18 @@ function FlowerCard({ flower }: { flower: FlowerListItem }) {
         className="mb-4 flex h-[100px] w-[100px] items-center justify-center overflow-hidden rounded-xl border bg-[var(--wiki-cat-garden-bg)] p-2 transition-transform duration-200 group-hover:scale-105"
         style={{ borderColor: "var(--wiki-cat-garden-border)" }}
       >
-        <div className="relative h-full w-full">
-          <Image
-            src={flower.thumbnail}
-            alt=""
-            fill
-            className="object-contain"
-          />
-        </div>
+        {flower.thumbnail ? (
+          <div className="relative h-full w-full">
+            <Image
+              src={flower.thumbnail}
+              alt=""
+              fill
+              className="object-contain"
+            />
+          </div>
+        ) : (
+          <span className="text-4xl">🌸</span>
+        )}
       </div>
 
       {/* 꽃 이름 */}
@@ -122,13 +126,17 @@ function FlowerListView({ flowers }: { flowers: FlowerListItem[] }) {
                   className="flex items-center gap-2.5 px-4 py-3 no-underline"
                 >
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[var(--wiki-cat-garden-bg)]">
-                    <Image
-                      src={f.thumbnail}
-                      alt=""
-                      width={28}
-                      height={28}
-                      className="object-contain"
-                    />
+                    {f.thumbnail ? (
+                      <Image
+                        src={f.thumbnail}
+                        alt=""
+                        width={28}
+                        height={28}
+                        className="object-contain"
+                      />
+                    ) : (
+                      <span className="text-base">🌸</span>
+                    )}
                   </span>
                   <span
                     className="text-sm font-semibold"

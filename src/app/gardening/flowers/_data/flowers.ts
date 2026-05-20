@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabase";
 export interface Flower {
   id: string;
   name: string;
-  thumbnail: string;
+  thumbnail?: string;
   description?: string;
   level: number;
   stages: number;

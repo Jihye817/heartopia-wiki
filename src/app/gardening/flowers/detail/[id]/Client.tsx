@@ -110,13 +110,17 @@ export default function FlowerDetailClient({
                 className="mb-5 flex h-[180px] w-[180px] items-center justify-center overflow-hidden rounded-xl border bg-[var(--wiki-cat-garden-bg)] p-5"
                 style={{ borderColor: "var(--wiki-cat-garden-border)" }}
               >
-                <Image
-                  src={flower.thumbnail}
-                  alt={flower.name}
-                  width={130}
-                  height={130}
-                  className="h-full w-full object-contain"
-                />
+                {flower.thumbnail ? (
+                  <Image
+                    src={flower.thumbnail}
+                    alt={flower.name}
+                    width={130}
+                    height={130}
+                    className="h-full w-full object-contain"
+                  />
+                ) : (
+                  <span className="text-6xl">🌸</span>
+                )}
               </div>
               <div
                 className="text-2xl font-bold"
