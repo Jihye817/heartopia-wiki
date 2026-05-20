@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabase";
 export interface Crop {
   id: string;
   name: string;
-  thumbnail: string;
+  thumbnail?: string;
   level: number | null;
   availability: string;
   event?: string;
@@ -19,6 +19,7 @@ export interface Crop {
 export interface CropGrade {
   stars: number;
   sell_price: number | null;
+  event_price?: number;
 }
 
 export interface CropListItem extends Crop {

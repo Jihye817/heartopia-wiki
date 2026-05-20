@@ -88,13 +88,17 @@ export default function CropDetailClient({ crop }: CropDetailClientProps) {
                 className="mb-5 flex h-[180px] w-[180px] items-center justify-center overflow-hidden rounded-xl border p-5"
                 style={{ background: CROP_BG, borderColor: CROP_BORDER }}
               >
-                <Image
-                  src={crop.thumbnail}
-                  alt={crop.name}
-                  width={130}
-                  height={130}
-                  className="h-full w-full object-contain"
-                />
+                {crop.thumbnail ? (
+                  <Image
+                    src={crop.thumbnail}
+                    alt={crop.name}
+                    width={130}
+                    height={130}
+                    className="h-full w-full object-contain"
+                  />
+                ) : (
+                  <span className="text-6xl">🌾</span>
+                )}
               </div>
               <div
                 className="text-2xl font-bold"
@@ -243,11 +247,20 @@ export default function CropDetailClient({ crop }: CropDetailClientProps) {
                       </td>
                       <td className="px-4 py-3">
                         <span
-                          className="text-sm font-semibold"
+                          className="text-sm font-semibold tabular-nums"
                           style={{ color: "#b45309" }}
                         >
                           {g.sell_price ?? "-"} G
                         </span>
+                        {crop.availability === "event" &&
+                          g.event_price != null && (
+                            <div
+                              className="mt-0.5 text-sm font-semibold tabular-nums"
+                              style={{ color: "#7c3aed" }}
+                            >
+                              Ⓔ {g.event_price}
+                            </div>
+                          )}
                       </td>
                     </tr>
                   ))}
